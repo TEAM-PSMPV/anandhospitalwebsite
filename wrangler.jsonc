@@ -6,6 +6,18 @@
   "main": "./worker/index.ts",
   "workers_dev": true,
   "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "anandhospitalmbd.org",
+      "zone_name": "anandhospitalmbd.org",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.anandhospitalmbd.org",
+      "zone_name": "anandhospitalmbd.org",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "binding": "ASSETS",
     "directory": "./public"
