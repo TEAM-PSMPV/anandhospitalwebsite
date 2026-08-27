@@ -3,7 +3,7 @@
 [![CI](https://github.com/TEAM-PSMPV/anandhospitalwebsite/actions/workflows/ci.yml/badge.svg)](https://github.com/TEAM-PSMPV/anandhospitalwebsite/actions/workflows/ci.yml)
 [![Deploy](https://github.com/TEAM-PSMPV/anandhospitalwebsite/actions/workflows/deploy.yml/badge.svg)](https://github.com/TEAM-PSMPV/anandhospitalwebsite/actions/workflows/deploy.yml)
 
-Production website for Anand Hospital, Moradabad: [anandhospitalmbd.org](https://www.anandhospitalmbd.org/).
+Website for Anand Hospital, Moradabad. The automated Cloudflare deployment target is [anand-hospital.anandhospital.workers.dev](https://anand-hospital.anandhospital.workers.dev/). The public custom domain is [anandhospitalmbd.org](https://www.anandhospitalmbd.org/).
 
 The responsive site uses the Next.js App Router, React, TypeScript, Vinext/Vite, Tailwind CSS, and Cloudflare Workers. The Worker adds security headers and uses Cloudflare Images for compatible image optimization.
 
@@ -41,7 +41,7 @@ npm test
 
 ## Deployment
 
-Pushes to `main` run CI and then deploy the Worker to the apex and `www` custom domains. GitHub must contain these Actions secrets:
+Pushes to `main` run CI and then deploy the Worker to its `workers.dev` production hostname. GitHub must contain these Actions secrets:
 
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`

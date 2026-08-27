@@ -3,20 +3,21 @@
 ## Production target
 
 - Worker: `anand-hospital`
-- Domains: `anandhospitalmbd.org` and `www.anandhospitalmbd.org`
+- Automated target: `anand-hospital.anandhospital.workers.dev`
+- Intended custom domains: `anandhospitalmbd.org` and `www.anandhospitalmbd.org`
 - Configuration: `wrangler.jsonc`
 - Pipeline: `.github/workflows/deploy.yml`
 
 ## Required GitHub configuration
 
-Add Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Restrict the token to the intended account/zone with only Worker deployment and route/DNS permissions needed for Custom Domains. Never store values in files.
+Add Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Restrict the token to the intended account with Worker deployment permission. Never store values in files.
 
 Create a GitHub environment named `production`, restrict it to `main`, optionally add required reviewers, and place the secrets there (repository secrets also work).
 
 ## First deployment checks
 
-1. Confirm the domain is an active zone in the secret's Cloudflare account.
-2. Check DNS for incompatible records; a hostname with a conflicting CNAME cannot become a Worker Custom Domain.
+1. Confirm `anand-hospital.anandhospital.workers.dev` belongs to the account identified by the secret.
+2. To enable the custom domains later, first add `anandhospitalmbd.org` as an active proxied zone in the same Cloudflare account, resolve conflicting DNS records, and then add explicit Custom Domain routes to `wrangler.jsonc`.
 3. Obtain hospital approval for contact/doctor details, photos, legal text, and medical statements.
 4. Protect `main`: require pull requests, code-owner review, and CI.
 5. Run `npm ci`, `npm run lint`, and `npm test` locally.
@@ -35,7 +36,7 @@ npm run deploy
 
 ## Verify and roll back
 
-Check both hosts, key routes, mobile and keyboard navigation, assets, response headers, and Worker logs. Verify the expected commit before announcing release.
+Check the `workers.dev` host, key routes, mobile and keyboard navigation, assets, response headers, and Worker logs. Verify the expected commit before announcing release.
 
 Prefer Cloudflare's Worker rollback controls for fast restoration. Then revert the faulty Git commit through a pull request so source and production agree. Do not rewrite shared history. Document cause, impact, timeline, and prevention without secrets or patient data.
 

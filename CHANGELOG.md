@@ -12,8 +12,7 @@ Notable changes use [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) cat
 
 ### Changed
 
-- Worker configuration declares apex and `www` Custom Domains.
-- Custom Domain routes explicitly identify the Cloudflare zone for API-token deployments.
+- Worker deployment targets the account's existing `workers.dev` hostname until the custom domain zone is available in the same Cloudflare account.
 - Build configuration no longer depends on local `.openai` metadata.
 
 [Unreleased]: https://github.com/TEAM-PSMPV/anandhospitalwebsite/commits/main
