@@ -7,7 +7,7 @@ export function HomeHero() {
       <div className="hero-media">
         <Image
           className="hero-image-desktop"
-          src="/images/anand-hospital-hero-1910x681.png"
+          src="/images/herobanner.jpg"
           alt="Anand Hospital medical team"
           fill
           priority
@@ -16,7 +16,7 @@ export function HomeHero() {
         />
         <Image
           className="hero-image-mobile"
-          src="/images/mobile-hero-banner.png"
+          src="/images/mobileherobanner.jpg"
           alt="Dr Subhash and Dr Nidhi of Anand Hospital"
           fill
           priority
