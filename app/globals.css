@@ -4834,3 +4834,61 @@ body :is(svg, .site-icon) {
     padding-block: clamp(32px, 3vw, 48px) !important;
   }
 }
+
+/* About page: compact, scannable metrics and a focused FAQ accordion. */
+.glance.viewport-section {
+  min-height: auto;
+  padding: clamp(64px, 6vw, 88px) 0;
+}
+.glance .container {
+  width: min(calc(100% - 40px), 1120px);
+}
+.glance .stats {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: clamp(30px, 4vw, 44px);
+}
+.glance .stats div {
+  min-width: 0;
+  padding: clamp(16px, 2vw, 24px) 12px;
+}
+.faq {
+  padding: clamp(64px, 6vw, 88px) 0;
+}
+.faq .container {
+  width: min(calc(100% - 40px), 920px);
+}
+.faq-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin-top: clamp(28px, 4vw, 40px);
+}
+.faq-grid details {
+  padding: 16px 20px;
+}
+.faq-grid details[open] {
+  border-color: #98c7f2;
+}
+.faq-grid summary {
+  line-height: 1.45;
+}
+.faq-grid p {
+  max-width: 72ch;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 960px) {
+  .glance .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .glance .container,
+  .faq .container {
+    width: min(calc(100% - 30px), 920px);
+  }
+  .glance .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

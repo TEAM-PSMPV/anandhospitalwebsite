@@ -44,6 +44,10 @@ test("renders Anand Hospital identity and supplied clinical details", async () =
   assert.match(html, /Anand Hospital/);
   assert.match(html, /Dr Subhash Singh/);
   assert.match(html, /Dr Nidhi Thakur/);
+  assert.match(html, /Dr Bhoopendra Kumar Sharma/);
+  assert.match(html, /20\+ years in high-risk obstetrics/);
+  assert.match(html, /MCh \(Urology\)/);
+  assert.doesNotMatch(html, /Dr Mohammad Fareed/);
   assert.match(html, /Dr Rajiv Kumar/);
   assert.doesNotMatch(html, /Talvar Rahul Bala Ratna/);
   assert.match(html, /Near Miglani Cinema/);
