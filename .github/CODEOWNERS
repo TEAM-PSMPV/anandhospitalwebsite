@@ -1,0 +1,7 @@
+# GitHub requires an extensionless CODEOWNERS file.
+* @TEAM-PSMPV
+
+/.github/ @TEAM-PSMPV
+/worker/ @TEAM-PSMPV
+/wrangler.jsonc @TEAM-PSMPV
+/SECURITY.md @TEAM-PSMPV

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500" role="img" aria-labelledby="title desc">
+  <title id="title">Anand Hospital logo on transparent background</title>
+  <desc id="desc">Faithful vector reconstruction with the outer white matte removed. The original light-blue enclosure remains part of the logo artwork.</desc>
+  <defs>
+    <style>
+      .brand-blue { fill: #023767; }
+      .brand-panel { fill: url(#panel-gradient); }
+    </style>
+    <radialGradient id="panel-gradient" gradientUnits="userSpaceOnUse" cx="250" cy="250" r="290">
+      <stop offset="0%" stop-color="#D0E8FC"/>
+      <stop offset="58%" stop-color="#D0E8FC"/>
+      <stop offset="100%" stop-color="#D0E8FC"/>
+    </radialGradient>
+  </defs>
+
+  <g id="enclosure">
+    <path id="rounded-panel"
+      d="M 130 94 H 370 C 413 94 447 127 447 170 V 330 C 447 373 413 406 370 406 H 130 C 87 406 56 373 56 330 V 170 C 56 127 87 94 130 94 Z"
+      class="brand-panel" stroke="#023767" stroke-width="11" stroke-linejoin="round"/>
+  </g>
+
+  <path id="internal-sweep" class="brand-blue"
+    d="M 119 176
+       C 157 137 211 118 267 114
+       C 337 109 385 140 409 190
+       C 434 249 412 309 376 346
+       L 365 333
+       C 400 298 416 249 395 201
+       C 372 151 321 130 268 130
+       C 211 130 159 150 119 176 Z"/>
+
+  <g id="monogram" class="brand-blue" fill-rule="evenodd">
+    <path id="letter-a"
+      d="M 161 179 L 109 330 H 148 L 158 297 H 200 L 210 330 H 248 L 195 179 Z
+         M 179 215 L 160 270 H 198 Z"/>
+    <path id="letter-h"
+      d="M 263 179 H 292 V 239 H 343 V 179 H 372 V 330 H 343 V 267 H 292 V 330 H 263 Z"/>
+  </g>
+
+  <g id="nameplate">
+    <rect id="nameplate-background" x="115" y="342" width="270" height="43" class="brand-blue"/>
+    <text id="hospital-name" x="250" y="375" text-anchor="middle"
+      fill="#FFFFFF" font-family="Nimbus Sans Narrow, Liberation Sans Narrow, Arial Narrow, sans-serif"
+      font-size="25" font-weight="bold" letter-spacing="0.6" textLength="244" lengthAdjust="spacingAndGlyphs">ANAND HOSPITAL</text>
+  </g>
+</svg>
