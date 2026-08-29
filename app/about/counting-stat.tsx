@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export function CountingStat({ value, suffix = "" }: { value: number; suffix?: string }) {
   const ref = useRef<HTMLElement>(null);
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
     const node = ref.current;
@@ -12,6 +12,7 @@ export function CountingStat({ value, suffix = "" }: { value: number; suffix?: s
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       observer.disconnect();
+      setDisplay(0);
       const started = performance.now();
       const duration = 900;
       const animate = (now: number) => {
@@ -25,5 +26,7 @@ export function CountingStat({ value, suffix = "" }: { value: number; suffix?: s
     return () => observer.disconnect();
   }, [value]);
 
-  return <strong ref={ref}>{display}{suffix}</strong>;
+  return <strong ref={ref} aria-label={`${value}${suffix}`}>
+    <span aria-hidden="true">{display}{suffix}</span>
+  </strong>;
 }

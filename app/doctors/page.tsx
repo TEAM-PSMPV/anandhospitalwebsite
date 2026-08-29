@@ -11,7 +11,12 @@ export default function Doctors() { return <SiteShell>
 
   <section className="doctor-section viewport-section" id="medical-team"><div className="container"><p className="kicker">Meet Our Doctors</p><h2>Specialists committed to your health.</h2><DoctorCards /></div></section>
 
-  <section className="reasons viewport-section"><div className="container"><p className="kicker center">Why Choose Our Medical Team</p><div className="reason-grid">{[["Experienced specialists","doctors"],["Patient-first care","heart"],["Modern technology","pulse"],["24×7 support","shield"]].map(([label,icon])=><article key={label}><Icon name={icon as "heart"}/><h3>{label}</h3><p>Clear guidance, thoughtful care and trusted clinical expertise.</p></article>)}</div></div></section>
+  <section className="reasons viewport-section"><div className="container"><p className="kicker center">Why Choose Our Medical Team</p><div className="reason-grid">{[
+    ["Experienced specialists","doctors","Skilled clinicians provide thoughtful guidance across a range of specialties."],
+    ["Patient-first care","heart","Every patient is treated with compassion, respect and clear communication."],
+    ["Modern technology","pulse","Up-to-date facilities support timely assessment and coordinated care."],
+    ["24×7 support","shield","Hospital and emergency support is available around the clock."],
+  ].map(([label,icon,description])=><article key={label}><Icon name={icon as "heart"}/><h3>{label}</h3><p>{description}</p></article>)}</div></div></section>
 
   <section className="recognition"><div className="container recognition-grid"><article><p className="kicker">Awards, Certifications &amp; Fellowships</p><div className="award-row">{[1,2,3,4].map(i=><span key={i}><Icon name="star"/></span>)}</div></article><article><p className="kicker">Patient Testimonials</p><blockquote>“The team explained every step clearly and treated our family with genuine care.”<cite>— Anand Hospital patient</cite></blockquote></article></div></section>
   <Assistance />

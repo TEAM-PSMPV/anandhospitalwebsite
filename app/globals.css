@@ -23,7 +23,8 @@
   --paper: #ffffff;
   --soft: #d0e8fc;
   --shadow: 0 18px 52px #023767;
-  --font: "Montserrat", Arial, sans-serif;
+  --font: Arial, sans-serif;
+  --header-font: "Montserrat", Arial, sans-serif;
 }
 * {
   box-sizing: border-box;
@@ -595,7 +596,7 @@ h3 {
   color: var(--blue);
 }
 .leadership {
-  border-top: 14px solid #000000;
+  border-top: 0;
 }
 .leadership h2 {
   margin-bottom: 40px;
@@ -638,7 +639,7 @@ h3 {
   font-size: 0.75rem;
 }
 .glance {
-  border-top: 14px solid #000000;
+  border-top: 0;
 }
 .stats {
   display: grid;
@@ -3033,7 +3034,7 @@ main > section,
 .home-page .care-feature {
   margin: 0 22px;
   padding: 22px 0;
-  background: #dceeff;
+  background-color: rgba(66, 165, 245, 0.12) !important;
 }
 .home-page .care-grid {
   grid-template-columns: 0.82fr 1.18fr;
@@ -3120,6 +3121,7 @@ main > section,
   min-height: 0;
   margin: 0;
   font-size: 0.78rem;
+  font-weight: 600;
   line-height: 1.35;
 }
 .home-page .pathway-grid article > .pathway-copy {
@@ -3139,6 +3141,7 @@ main > section,
   border: 0;
   padding: 2px 0;
   font-size: 0.76rem;
+  font-weight: 600;
 }
 .home-page .pathway-links :is(svg, .site-icon) {
   width: 16px;
@@ -4803,10 +4806,10 @@ body :is(svg, .site-icon) {
 
   .home-page > .care-feature {
     display: flex;
-    min-height: 100svh !important;
+    min-height: 0 !important;
     align-items: center;
     margin-inline: 0;
-    padding-block: clamp(56px, 7vh, 84px) !important;
+    padding-block: clamp(45px, 4vw, 60px) !important;
   }
 
   .home-page > .care-feature .care-grid {
@@ -4890,5 +4893,1016 @@ body :is(svg, .site-icon) {
   }
   .glance .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 761px) and (max-width: 991px) {
+  .home-page > .care-feature {
+    min-height: 0 !important;
+    padding-block: 48px !important;
+  }
+}
+
+/* Focused scale refinement for content cards; primary heroes and CTAs are unchanged. */
+.service-tile > :is(svg, .site-icon) {
+  width: clamp(37px, 3.4vw, 49px);
+  height: clamp(37px, 3.4vw, 49px);
+}
+.pathway-grid article > :is(svg, .site-icon) {
+  width: clamp(40px, 3.8vw, 54px);
+  height: clamp(40px, 3.8vw, 54px);
+}
+.why-grid article > :is(svg, .site-icon) {
+  width: clamp(49px, 4.2vw, 62px);
+  height: clamp(49px, 4.2vw, 62px);
+}
+.facility-grid article > :is(svg, .site-icon),
+.reason-grid article > :is(svg, .site-icon) {
+  width: clamp(37px, 3.4vw, 47px);
+  height: clamp(37px, 3.4vw, 47px);
+}
+.reason-grid article > svg {
+  width: clamp(37px, 3.4vw, 47px);
+  height: clamp(37px, 3.4vw, 47px);
+}
+.topic-grid article > :is(svg, .site-icon) {
+  width: clamp(40px, 3.4vw, 49px);
+  height: clamp(40px, 3.4vw, 49px);
+}
+.services-specialty-grid article > :is(svg, .site-icon) {
+  width: clamp(49px, 4.2vw, 60px);
+  height: clamp(49px, 4.2vw, 60px);
+}
+:is(.service-care-grid, .service-reason-grid) article > :is(svg, .site-icon) {
+  width: clamp(45px, 3.8vw, 57px);
+  height: clamp(45px, 3.8vw, 57px);
+}
+
+@media (min-width: 761px) {
+  :is(.about-story, .leadership, .doctor-section, .reasons).viewport-section,
+  :is(.faq, .recognition) {
+    min-height: 88svh;
+    padding-block: clamp(76px, 7vw, 112px);
+  }
+
+  :is(
+    .pathway-grid article,
+    .facility-grid article,
+    .reason-grid article,
+    .topic-grid article,
+    .services-specialty-grid article,
+    .service-care-grid article,
+    .service-reason-grid article
+  ) {
+    padding: 33px;
+  }
+
+  .reason-grid article,
+  .topic-grid article {
+    min-height: 238px;
+  }
+}
+
+@media (max-width: 760px) {
+  :is(
+    .pathway-grid article,
+    .facility-grid article,
+    .reason-grid article,
+    .topic-grid article,
+    .services-specialty-grid article,
+    .service-care-grid article,
+    .service-reason-grid article
+  ) {
+    padding-block: 28px;
+  }
+}
+
+/* Shared header refinement based on the supplied Figma navbar reference. */
+.site-header {
+  background: #f9fcfd;
+  border-bottom-color: rgba(4, 90, 167, 0.16);
+  font-family: var(--header-font);
+}
+
+.site-header .nav > a,
+.site-header .nav-services > button {
+  color: #000000;
+  font-weight: 500;
+}
+
+.site-header .nav > a:hover,
+.site-header .nav > a.active,
+.site-header .nav-services > button:hover,
+.site-header .nav-services > button.active {
+  color: #1b8cff;
+}
+
+.site-header .nav > a::after,
+.site-header .nav-services > button::after {
+  background: #1b8cff;
+}
+
+@media (min-width: 1101px) {
+  .site-header .header-inner {
+    min-height: 144px;
+    gap: 42px;
+  }
+
+  .site-header .brand img {
+    width: 118px;
+    height: 118px;
+  }
+
+  .site-header .nav > a,
+  .site-header .nav-services > button {
+    min-width: 114px;
+    gap: 6px;
+    padding: 16px 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .site-header .nav :is(svg, .site-icon) {
+    width: 31px;
+    height: 31px;
+  }
+
+  .site-header .nav-dropdown-arrow {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .site-header .services-menu {
+    top: 144px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .site-header .nav.is-open :is(svg, .site-icon) {
+    width: 25.5px;
+    height: 25.5px;
+  }
+}
+
+/* Brand-color social icons from the supplied Figma reference. */
+.social-strip nav {
+  gap: 18px;
+}
+
+.social-strip a {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 0;
+  padding: 2px;
+  background: transparent;
+}
+
+.social-strip a img {
+  width: 32px;
+  height: 32px;
+  opacity: 1;
+  filter: none;
+}
+
+/* Shared footer refinement based on the supplied Figma wireframe. */
+.site-footer,
+.site-footer .footer-main,
+.site-footer .footer-copyright {
+  background: #07538f !important;
+  color: #ffffff !important;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.site-footer .footer-main {
+  padding: 34px 0 28px;
+}
+
+.site-footer .footer-grid {
+  gap: 30px;
+  align-items: start;
+}
+
+.site-footer .footer-brand {
+  border-color: rgba(255, 255, 255, 0.5);
+  padding-right: 28px;
+}
+
+.site-footer .footer-logo {
+  width: 150px;
+  height: 108px;
+  border-radius: 0;
+  background: transparent;
+}
+
+.site-footer .footer-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.site-footer .footer-brand p {
+  max-width: 300px;
+  margin-top: 14px;
+  color: #ffffff !important;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.site-footer .footer-links h2 {
+  margin: 0 0 16px;
+  color: #ffffff !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.site-footer .footer-links a {
+  gap: 9px;
+  margin-bottom: 9px;
+  color: #ffffff !important;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.site-footer .footer-links a > span {
+  color: #1b8cff;
+  font-size: 1.45rem;
+  line-height: 0.75;
+}
+
+.site-footer .footer-links a:hover,
+.site-footer .footer-links a:focus-visible {
+  color: #ffffff !important;
+  text-decoration: underline;
+  text-decoration-color: #1b8cff;
+  text-underline-offset: 3px;
+}
+
+.site-footer .footer-contact {
+  background: #034f8f !important;
+  color: #ffffff !important;
+}
+
+.site-footer .footer-contact-grid > * {
+  min-height: 74px;
+  gap: 14px;
+  border-color: rgba(255, 255, 255, 0.42) !important;
+  padding: 10px 24px;
+  color: #ffffff !important;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.site-footer .footer-contact-grid :is(svg, .site-icon) {
+  width: 30px;
+  height: 30px;
+  flex-basis: 30px;
+}
+
+.site-footer .footer-copyright {
+  min-height: 30px;
+  padding: 6px 15px;
+  font-size: 0.66rem;
+  font-weight: 400;
+}
+
+@media (max-width: 1180px) {
+  .site-footer .footer-brand {
+    padding: 0 0 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .site-footer .footer-main {
+    padding: 34px 0 28px;
+  }
+
+  .site-footer .footer-grid {
+    gap: 26px 24px;
+  }
+
+  .site-footer .footer-contact-grid > * {
+    min-height: 64px;
+    padding: 10px 18px;
+  }
+}
+
+@media (max-width: 460px) {
+  .site-footer .footer-logo {
+    width: 138px;
+    height: 100px;
+  }
+}
+
+/* Footer text is intentionally regular-weight throughout. */
+.site-footer,
+.site-footer .footer-brand p,
+.site-footer .footer-links h2,
+.site-footer .footer-links a,
+.site-footer .footer-contact-grid > *,
+.site-footer .footer-contact-grid > * > span,
+.site-footer .footer-copyright {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+/* Homepage quick actions: one compact shared surface with lightweight icons. */
+.home-page .quick-actions {
+  min-height: 0 !important;
+  height: auto !important;
+  margin-inline: 18px;
+  padding: 28px 0 !important;
+  background: #f5f5f5 !important;
+}
+
+.home-page .quick-actions .container {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(28px, 5vw, 64px);
+  padding-inline: clamp(20px, 4vw, 56px);
+}
+
+.home-page .quick-actions a {
+  min-height: 72px;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 14px;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent !important;
+  color: #000000;
+}
+
+.home-page .quick-actions .quick-action-icon {
+  width: 34px;
+  height: 34px;
+  color: #045aa7;
+}
+
+.home-page .quick-actions strong {
+  color: #045aa7;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.home-page .quick-actions small {
+  max-width: 220px;
+  color: #000000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .home-page .quick-actions {
+    margin-inline: 10px;
+    padding-block: 24px !important;
+  }
+
+  .home-page .quick-actions .container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    padding-inline: 20px;
+  }
+
+  .home-page .quick-actions a {
+    min-height: 62px;
+  }
+}
+
+/* Homepage primary action cards: compact white outlined Figma treatment. */
+.home-page .service-tiles {
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.home-page .service-tile {
+  min-height: 190px;
+  grid-template-columns: 58px minmax(0, 1fr) 22px;
+  gap: 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 28px 24px;
+  background: #ffffff !important;
+  color: #000000;
+}
+
+.home-page .service-tile > .site-icon:first-child {
+  width: 50px;
+  height: 50px;
+  color: #045aa7;
+}
+
+.home-page .service-tile > span {
+  gap: 8px;
+}
+
+.home-page .service-tile strong {
+  color: #045aa7;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.06rem;
+  font-weight: 500;
+}
+
+.home-page .service-tile small {
+  color: #000000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.home-page .service-tile > svg:last-child {
+  width: 20px;
+  height: 20px;
+  align-self: end;
+  justify-self: end;
+  border-radius: 50%;
+  padding: 4px;
+  background: #045aa7;
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .home-page .service-tile {
+    min-height: 160px;
+    grid-template-columns: 52px minmax(0, 1fr) 22px;
+    padding: 24px 20px;
+  }
+
+  .home-page .service-tile > .site-icon:first-child {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+/* Homepage Why Anand Hospital: compact, section-scoped Figma treatment. */
+.home-page .why {
+  min-height: 0 !important;
+  padding: 30px 0 38px !important;
+}
+
+.home-page .why h2 {
+  margin: 0 0 18px;
+  color: #073f70;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.home-page .why-grid {
+  gap: clamp(24px, 3vw, 40px);
+}
+
+.home-page .why-grid article {
+  min-height: 185px;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  justify-items: center;
+  border: 0;
+  border-radius: 13px;
+  padding: 28px 14px 20px;
+  background: #dceefd !important;
+  box-shadow: none;
+  text-align: center;
+}
+
+.home-page .why-grid article > .site-icon {
+  position: static !important;
+  inset: auto !important;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 12px;
+  align-self: start;
+  justify-self: center;
+  color: #045aa7;
+  transform: none !important;
+  translate: none !important;
+}
+
+.home-page .why-grid h3 {
+  margin: 0 0 7px;
+  color: #045aa7;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.home-page .why-grid p {
+  max-width: 27ch;
+  margin: 0;
+  color: #000000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+@media (max-width: 760px) {
+  .home-page .why {
+    padding: 26px 0 32px !important;
+  }
+
+  .home-page .why-grid article {
+    min-height: 170px;
+    padding: 24px 16px 18px;
+  }
+}
+
+/* Homepage care feature list: compact Figma-style outline icons. */
+.home-page .check-list li {
+  gap: 8px;
+}
+
+.home-page .check-list .care-feature-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  color: #045aa7;
+}
+
+/* Homepage care feature copy: improve rhythm without changing section geometry. */
+.home-page .care-grid .kicker {
+  margin-bottom: 16px;
+}
+
+.home-page .care-grid > div:last-child > p:not(.kicker) {
+  max-width: 620px;
+  margin-top: 24px;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.home-page .check-list {
+  gap: 9px;
+  margin: 22px 0 26px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@media (max-width: 760px) {
+  .home-page .care-grid .kicker {
+    margin-bottom: 12px;
+  }
+
+  .home-page .care-grid > div:last-child > p:not(.kicker) {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .home-page .check-list {
+    gap: 7px;
+    margin: 18px 0 20px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+}
+
+/* Homepage care pathways: outlined checks only; preserve deployed card styling. */
+.home-page .pathway-grid .pathway-links a {
+  grid-template-columns: 18px minmax(0, 1fr) 18px;
+  column-gap: 11px;
+  align-items: center;
+}
+
+.home-page .pathway-grid .pathway-links a::before {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border: 1px solid #107417;
+  border-radius: 5px;
+  color: #107417;
+  content: "✓";
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+@media (min-width: 1200px) {
+  .home-page > .pathways {
+    padding-bottom: 40px !important;
+  }
+
+  .home-page .pathway-grid article {
+    min-height: 308px;
+  }
+}
+
+/* About purpose and values: compact horizontal Figma composition. */
+.about-story .purpose-values {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(520px, 1.1fr);
+  align-items: center;
+  gap: clamp(44px, 5vw, 72px);
+}
+
+.about-story .mission-vision-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.about-story :is(.mission-card, .vision-card) {
+  min-height: 170px;
+  gap: 14px;
+  border-radius: 14px;
+  padding: 20px 16px;
+}
+
+.about-story :is(.mission-card, .vision-card) > :is(svg, .site-icon) {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+}
+
+.about-story :is(.mission-card, .vision-card) h3 {
+  margin: 0 0 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.about-story :is(.mission-card, .vision-card) p {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.about-story .purpose-values .values {
+  grid-column: auto;
+  min-width: 0;
+}
+
+.about-story .purpose-values .values > h2 {
+  margin: 0 0 28px;
+  color: #3973cc;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.about-story .purpose-values .values > div {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.about-story .purpose-values .values span {
+  gap: 8px;
+}
+
+.about-story .purpose-values .values :is(svg, .site-icon) {
+  width: 36px;
+  height: 36px;
+}
+
+.about-story .purpose-values .values .core-value-icon {
+  color: #1b8cff;
+}
+
+.about-story .purpose-values .values b {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+@media (max-width: 1099px) {
+  .about-story .purpose-values {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 38px;
+  }
+}
+
+@media (max-width: 760px) {
+  .about-story .mission-vision-group {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about-story :is(.mission-card, .vision-card) {
+    min-height: 0;
+  }
+
+  .about-story .purpose-values .values > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+}
+
+/* About glance: a wider, taller statistics presentation. */
+.glance.viewport-section {
+  padding-block: clamp(88px, 8vw, 120px);
+}
+
+.glance .container {
+  width: min(calc(100% - 40px), 1320px);
+}
+
+.glance .stats {
+  margin-top: clamp(44px, 5vw, 64px);
+}
+
+.glance .stats div {
+  gap: 16px;
+  padding: 36px 16px;
+}
+
+.glance .stats strong {
+  font-size: 2.625rem;
+  font-weight: 700;
+}
+
+.glance .stats strong > span {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.glance .stats span {
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .glance.viewport-section {
+    padding-block: 72px;
+  }
+
+  .glance .stats {
+    margin-top: 36px;
+  }
+
+  .glance .stats div {
+    gap: 12px;
+    padding: 24px 8px;
+  }
+
+  .glance .stats strong {
+    font-size: 2.1rem;
+  }
+
+  .glance .stats span {
+    font-size: 0.8rem;
+  }
+}
+
+/* About FAQ: compact outlined accordion grid. */
+main > section.faq {
+  min-height: auto;
+  padding-block: 48px;
+}
+
+.faq .container {
+  width: min(calc(100% - 40px), 1320px);
+}
+
+.faq .container > .kicker {
+  margin: 0;
+  color: #045aa7;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.faq .faq-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 12px 46px;
+  margin-top: 24px;
+}
+
+.faq .faq-grid details {
+  height: auto;
+  align-self: start;
+  overflow: hidden;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 0;
+  background: #ffffff !important;
+  box-shadow: none;
+}
+
+.faq .faq-grid details[open] {
+  border-color: #d9d9d9;
+}
+
+.faq .faq-grid summary {
+  position: relative;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  padding: 10px 42px 10px 16px;
+  color: #000000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.35;
+  list-style: none;
+}
+
+.faq .faq-grid summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq .faq-grid summary::after {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid #045aa7;
+  border-bottom: 2px solid #045aa7;
+  content: "";
+  transform: translateY(-65%) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.faq .faq-grid details[open] summary::after {
+  transform: translateY(-25%) rotate(225deg);
+}
+
+.faq .faq-grid p {
+  max-width: none;
+  margin: 0;
+  padding: 0 16px 14px;
+  color: #000000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@media (max-width: 960px) {
+  .faq .faq-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  main > section.faq {
+    padding-block: 40px;
+  }
+
+  .faq .container {
+    width: min(calc(100% - 30px), 1320px);
+  }
+
+  .faq .faq-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .faq .faq-grid summary {
+    min-height: 52px;
+  }
+}
+
+/* Shared medical assistance CTA: retain design at a slightly smaller scale. */
+main .cta-wrap {
+  padding-block: 49px;
+}
+
+main .cta {
+  min-height: 160px;
+}
+
+main .cta-copy {
+  gap: 31px;
+}
+
+main .cta-photo {
+  width: 160px;
+}
+
+main .cta h2 {
+  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+}
+
+main .cta .button {
+  min-height: 44px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+@media (max-width: 760px) {
+  main .cta {
+    padding: 27px 30px;
+  }
+}
+
+/* About section boundary: reduce only the space before the FAQ. */
+.glance.viewport-section {
+  padding-bottom: 28px;
+}
+
+@media (max-width: 640px) {
+  .glance.viewport-section {
+    padding-bottom: 20px;
+  }
+}
+
+/* About FAQ boundary: keep the shared CTA close without changing the CTA. */
+main > section.faq {
+  padding-bottom: 8px;
+}
+
+@media (max-width: 640px) {
+  main > section.faq {
+    padding-bottom: 6px;
+  }
+}
+
+/* About glance: retain width and type scale while balancing vertical rhythm. */
+.glance.viewport-section {
+  padding-top: 56px;
+  padding-bottom: 20px;
+}
+
+.glance .container > .kicker {
+  color: #3973cc;
+}
+
+.glance .stats {
+  margin-top: 36px;
+}
+
+.glance .stats div {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+/* About Our Story: balanced headline typography only. */
+.about-story .story-grid > div:first-child > h2 {
+  color: #045aa7;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(1.7rem, 3.1vw, 3.35rem);
+  line-height: 1.15;
+}
+
+.about-story .story-grid > div:first-child > p:not(.kicker) {
+  max-width: 58ch;
+  margin-top: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+/* About hero: preserve the composition at a more compact desktop height. */
+@media (min-width: 761px) {
+  main > section.about-hero {
+    min-height: 0;
+    padding-block: clamp(64px, 5.8vw, 82px);
+  }
+
+  .about-hero .about-hero-grid {
+    min-height: 500px;
+  }
+
+  .about-hero .about-hero-photo {
+    min-height: 500px;
+  }
+
+  .about-hero h1 {
+    font-size: clamp(2.85rem, 5.1vw, 5.6rem);
+  }
+
+  .about-hero .kicker {
+    margin-bottom: 10px;
+  }
+
+  .about-hero .trust-row {
+    margin-block: 32px;
+  }
+
+  /* About section boundary: connect Core Values and Medical Team. */
+  .about-story.viewport-section {
+    padding-bottom: 32px;
+  }
+
+  .leadership.doctor-section.viewport-section {
+    padding-top: 32px;
+    padding-bottom: 16px;
   }
 }
