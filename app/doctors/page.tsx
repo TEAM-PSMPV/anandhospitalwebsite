@@ -9,15 +9,11 @@ export default function Doctors() { return <SiteShell>
     <Link className="button button-blue" href="/appointment">Book Appointment <Icon name="arrow"/></Link>
   </div><div className="medical-photo" /></div></section>
 
-  <section className="doctor-section viewport-section" id="medical-team"><div className="container"><p className="kicker">Meet Our Doctors</p><h2>Specialists committed to your health.</h2><DoctorCards /></div></section>
+  <section className="doctor-section viewport-section" id="medical-team"><div className="container"><p className="kicker">Meet Our Doctors</p><h2>Specialists committed to your health.</h2><DoctorCards compactRemainder /></div></section>
 
-  <section className="reasons viewport-section"><div className="container"><p className="kicker center">Why Choose Our Medical Team</p><div className="reason-grid">{[
-    ["Experienced specialists","doctors","Skilled clinicians provide thoughtful guidance across a range of specialties."],
-    ["Patient-first care","heart","Every patient is treated with compassion, respect and clear communication."],
-    ["Modern technology","pulse","Up-to-date facilities support timely assessment and coordinated care."],
-    ["24×7 support","shield","Hospital and emergency support is available around the clock."],
-  ].map(([label,icon,description])=><article key={label}><Icon name={icon as "heart"}/><h3>{label}</h3><p>{description}</p></article>)}</div></div></section>
-
-  <section className="recognition"><div className="container recognition-grid"><article><p className="kicker">Awards, Certifications &amp; Fellowships</p><div className="award-row">{[1,2,3,4].map(i=><span key={i}><Icon name="star"/></span>)}</div></article><article><p className="kicker">Patient Testimonials</p><blockquote>“The team explained every step clearly and treated our family with genuine care.”<cite>— Anand Hospital patient</cite></blockquote></article></div></section>
+  <section className="recognition"><div className="container recognition-grid">
+    <article className="recognition-awards"><h2>Awards, Certifications &amp; Fellowships</h2><div className="award-row" aria-label="Awards, certifications and fellowships">{[1,2,3,4].map(i=><span key={i} aria-hidden="true" />)}</div></article>
+    <article className="recognition-testimonials"><header><h2>Patient Testimonials</h2><span>View All Testimonials <b aria-hidden="true">→</b></span></header><div className="testimonial-stage"><button type="button" aria-label="Previous testimonial" disabled>‹</button><blockquote>“The team explained every step clearly and treated our family with genuine care.”<cite>— Anand Hospital patient</cite></blockquote><button type="button" aria-label="Next testimonial" disabled>›</button></div><div className="testimonial-dots" aria-label="Testimonial 1 of 1"><span className="active" /></div></article>
+  </div></section>
   <Assistance />
 </SiteShell> }
