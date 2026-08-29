@@ -29,7 +29,7 @@ const topActions: ReadonlyArray<{
 ];
 
 const pathways: ReadonlyArray<{
-  icon: IconName;
+  icon: "medical-care" | "live-healthy" | "questions";
   title: string;
   text: string;
   links: ReadonlyArray<readonly [string, string]>;
@@ -90,6 +90,26 @@ const reasons: ReadonlyArray<{ icon: IconName; title: string; text: string }> =
     },
   ];
 
+function QuickActionIcon({ name }: { name: "appointments" | "questions" | "feedback" }) {
+  const paths = {
+    appointments: <><rect x="3.5" y="5.5" width="17" height="15" rx="2" /><path d="M7.5 3.5v4M16.5 3.5v4M3.5 9.5h17M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01" /></>,
+    questions: <><path d="M5 17.5 3.5 21l4.2-1.7a9 9 0 1 0-2.7-1.8Z" /><path d="M9.5 9a2.8 2.8 0 0 1 5.2 1.4c0 2-2.7 2.2-2.7 4M12 17.5h.01" /></>,
+    feedback: <><path d="M6 4.5h9.5l3 3v12H6a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2Z" /><path d="M15.5 4.5v3h3M8 11h6M8 14h6M8 17h3" /></>,
+  } as const;
+
+  return <svg className="quick-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
+}
+
+function CareFeatureIcon({ name }: { name: "infrastructure" | "affordable" | "personalised" }) {
+  const paths = {
+    infrastructure: <><path d="M4 21V5h10v16M14 9h6v12M2 21h20" /><path d="M7 8h2M7 12h2M7 16h2M17 12h1M17 16h1" /></>,
+    affordable: <><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /><path d="M6 9h.01M18 15h.01M5 21h14" /></>,
+    personalised: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="9" r="3" /><path d="M6.8 18c1.1-2.7 2.8-4 5.2-4s4.1 1.3 5.2 4" /></>,
+  } as const;
+
+  return <svg className="care-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
+}
+
 export default function Home() {
   return (
     <SiteShell>
@@ -135,9 +155,9 @@ export default function Home() {
                 patients and their families.
               </p>
               <ul className="check-list">
-                <li>Modern Infrastructure</li>
-                <li>Affordable Treatment</li>
-                <li>Personalised Care</li>
+                <li><CareFeatureIcon name="infrastructure" />Modern Infrastructure</li>
+                <li><CareFeatureIcon name="affordable" />Affordable Treatment</li>
+                <li><CareFeatureIcon name="personalised" />Personalised Care</li>
               </ul>
               <Link className="button button-blue" href="/services">
                 Get Help <Icon name="arrow" />
@@ -186,21 +206,21 @@ export default function Home() {
         <section className="quick-actions">
           <div className="container">
             <Link href="/appointment">
-              <Icon name="calendar" />
+              <QuickActionIcon name="appointments" />
               <span>
                 <strong>Appointments</strong>
                 <small>Book your visit online</small>
               </span>
             </Link>
             <Link href="/search">
-              <Icon name="questions" />
+              <QuickActionIcon name="questions" />
               <span>
                 <strong>Questions ?</strong>
                 <small>Find answers to common queries</small>
               </span>
             </Link>
             <Link href="/about">
-              <Icon name="feedback" />
+              <QuickActionIcon name="feedback" />
               <span>
                 <strong>Feedbacks</strong>
                 <small>Share your feedback to help us improve</small>

@@ -158,7 +158,7 @@ function Footer() {
       <div className="container-wide footer-grid">
         <div className="footer-brand">
           <Link className="footer-logo" href="/" aria-label="Anand Hospital home">
-            <Image src="/brand/anand-hospital-logo.svg" width={240} height={240} alt="Anand Hospital" />
+            <Image src="/brand/anand-hospital-footer-logo.webp" width={320} height={320} alt="Anand Hospital" />
           </Link>
           <p>Providing compassionate, affordable and quality healthcare for families in Moradabad. Your health and well-being are our top priority.</p>
         </div>
