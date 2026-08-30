@@ -36,7 +36,7 @@ const pathways: ReadonlyArray<{
 }> = [
   {
     icon: "medical-care",
-    title: "Get care",
+    title: "Get Care",
     text: "Comprehensive healthcare services for you and your family.",
     links: [
       ["OPD Consultation", "/doctors"],
