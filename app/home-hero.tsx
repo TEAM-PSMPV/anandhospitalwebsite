@@ -26,7 +26,7 @@ export function HomeHero() {
       </div>
       <div className="container">
         <div className="hero-content">
-          <h1>Personalized Expert care.</h1>
+          <h1><span>Personalized</span><span>Expert</span><span>care.</span></h1>
           <div className="hero-actions">
             <Link className="button button-white" href="/doctors">
               Find a Doctor
