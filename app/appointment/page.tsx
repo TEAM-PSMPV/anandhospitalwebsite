@@ -16,6 +16,14 @@ export default function Appointment(){
       <a className="appointment-address" href="https://maps.google.com/?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001" target="_blank" rel="noreferrer"><Icon name="location"/><span><strong>Hospital Address</strong>Near Miglani Cinema, Rampur Road,<br/>Moradabad [244001]</span></a>
     </aside>
   </div></section>
+  <section className="services-contact appointment-contact-strip" aria-label="Hospital contact information">
+    <div className="container services-contact-grid">
+      <a href="tel:+917351028221"><Icon name="phone"/><span><strong>Book Appointment</strong>+91 7351028221</span></a>
+      <a href="tel:+919528261199"><Icon name="phone"/><span><strong>Follow-up Patient Help</strong>+91 9528261199</span></a>
+      <a href="mailto:info@anandhospitalmbd.org"><Icon name="mail"/><span><strong>Email</strong>info@anandhospitalmbd.org</span></a>
+      <div><Icon name="clock"/><span><strong>OPD Timings</strong>10:15 AM to 03:00 PM</span></div>
+    </div>
+  </section>
   <section className="appointment-faq" aria-labelledby="appointment-faq-title"><div className="container">
     <h2 id="appointment-faq-title">Appointment FAQs</h2>
     <div className="appointment-faq-grid">

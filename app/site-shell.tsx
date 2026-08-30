@@ -3,21 +3,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, type CSSProperties, type ReactNode, type SVGProps } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type SVGProps } from "react";
 import { services as hospitalServices } from "./data";
 import { SiteChatbot } from "./site-chatbot";
 
 export type IconName =
   | "home" | "info" | "services" | "doctors" | "library" | "calendar" | "search"
   | "menu" | "arrow" | "heart" | "shield" | "pulse" | "phone" | "target"
-  | "eye" | "star" | "learning" | "community" | "check" | "location" | "mail" | "clock"
+  | "eye" | "star" | "learning" | "community" | "check" | "location" | "mail" | "clock" | "female" | "wellness"
   | "medical-care" | "live-healthy" | "questions" | "feedback"
   | "emergency" | "general-medicine" | "general-surgery" | "pediatrics" | "obstetrics"
   | "urology" | "anesthesia" | "critical-care" | "path-lab" | "ultrasound" | "pharmacy"
   | "blood-bank" | "health-checkup" | "diet-and-nutrition" | "deluxe-beds" | "home-care"
   | "a-female-doctor" | "alcohol-disinfection" | "doctor-set-3" | "hospital-set-3" | "male-doctor"
   | "medical-examination-female" | "medical-examination-male" | "thermometer" | "trusted-community" | "holding-hands"
-  | "ayushman";
+  | "ayushman" | "siren"
+  | "service-baby" | "service-woman";
 
 export function Icon({ name, ...props }: { name: IconName } & SVGProps<SVGSVGElement>) {
   const suppliedIcons: Partial<Record<IconName, string>> = {
@@ -46,6 +47,8 @@ export function Icon({ name, ...props }: { name: IconName } & SVGProps<SVGSVGEle
     thermometer: "set-3/thermometer-svgrepo-com.svg", "trusted-community": "set-3/trustedbycommunity.svg",
     "holding-hands": "set-3/various-races-holding-hands-svgrepo-com.svg",
     ayushman: "set-3/Ayushman-Bharat-Black.svg",
+    "service-baby": "services-wireframe/baby.svg",
+    "service-woman": "services-wireframe/woman.svg",
   };
   const suppliedIcon = suppliedIcons[name];
   if (suppliedIcon) {
@@ -76,6 +79,9 @@ export function Icon({ name, ...props }: { name: IconName } & SVGProps<SVGSVGEle
     location: <><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></>,
     mail: <><rect x="3" y="5" width="18" height="14" rx="1" /><path d="m4 7 8 7 8-7" /></>,
     clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v6l4 2" /></>,
+    female: <><circle cx="12" cy="8" r="5" /><path d="M12 13v8M8.5 17h7" /></>,
+    wellness: <><path d="M12 20c-4.5 0-8-2.4-9-6.5 3.6-.4 6.6.6 9 3.1 2.4-2.5 5.4-3.5 9-3.1-1 4.1-4.5 6.5-9 6.5Z" /><path d="M12 16.6c-2.5-2.4-3.2-5.5-2-9.4 2.9 1.5 4.4 3.7 4.5 6.6M12 16.6c2.5-2.4 3.2-5.5 2-9.4-1 .5-1.8 1.1-2.5 1.8M6.5 13.5C7 10.8 8.3 9 10 7.8M17.5 13.5c-.4-2.4-1.5-4.1-3.2-5.3" /></>,
+    siren: <><path d="M7 17v-6a5 5 0 0 1 10 0v6M5 17h14v3H5zM12 2v3M4.9 4.9 7 7M19.1 4.9 17 7M2 12h3M19 12h3" /></>,
     "medical-care": null,
     "live-healthy": null,
     questions: null,
@@ -99,6 +105,7 @@ export function Icon({ name, ...props }: { name: IconName } & SVGProps<SVGSVGEle
     "a-female-doctor": null, "alcohol-disinfection": null, "doctor-set-3": null, "hospital-set-3": null,
     "male-doctor": null, "medical-examination-female": null, "medical-examination-male": null,
     thermometer: null, "trusted-community": null, "holding-hands": null, ayushman: null,
+    "service-baby": null, "service-woman": null,
   };
   return <svg {...p}>{paths[name]}</svg>;
 }
@@ -112,8 +119,19 @@ const nav = [
 export function SiteShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const closeNavigation = () => { setOpen(false); setServicesOpen(false); };
+  useEffect(() => {
+    if (!servicesOpen) return;
+    const closeServicesOnOutsidePointer = (event: PointerEvent) => {
+      const target = event.target;
+      if (target instanceof Element && servicesRef.current?.contains(target) && target.closest("button, a")) return;
+      setServicesOpen(false);
+    };
+    document.addEventListener("pointerdown", closeServicesOnOutsidePointer);
+    return () => document.removeEventListener("pointerdown", closeServicesOnOutsidePointer);
+  }, [servicesOpen]);
   return <>
     <a className="skip-link" href="#main">Skip to main content</a>
     <header className="site-header">
@@ -122,7 +140,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           <Image src="/brand/anand-hospital-logo.svg" width={160} height={136} alt="Anand Hospital" priority />
         </Link>
         <nav className={`${open ? "nav is-open" : "nav"}${servicesOpen ? " services-view" : ""}`} aria-label="Main navigation">
-          {nav.map(([icon, label, href]) => label === "Services" ? <div className={servicesOpen ? "nav-services is-open" : "nav-services"} key={label}>
+          {nav.map(([icon, label, href]) => label === "Services" ? <div ref={servicesRef} className={servicesOpen ? "nav-services is-open" : "nav-services"} key={label}>
             <button className={pathname.startsWith("/services") ? "active" : ""} type="button" aria-expanded={servicesOpen} aria-controls="services-navigation-menu" onClick={() => setServicesOpen((current) => !current)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><Image className="nav-dropdown-arrow" src="/icons/set-3/dropdown-arrow.svg" width={16} height={16} alt="" /></span></button>
             <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list"><p>Services &amp; Specialty Areas</p>{hospitalServices.map((service) => <Link href={`/services/${service.slug}`} key={service.slug} onClick={closeNavigation}>{service.shortName}</Link>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div><div className="services-menu-art"><Image src="/images/facilities/reception-area.png" width={1448} height={1086} alt="Anand Hospital reception area" /></div></div>
           </div> : <Link className={pathname === href ? "active" : ""} href={href} key={label} onClick={closeNavigation}><Icon name={icon} /><span>{label}</span></Link>)}
