@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Assistance, Icon, SiteShell } from "../site-shell";
 import { DoctorCards } from "../doctor-cards";
+import { PatientTestimonials } from "../patient-testimonials";
 
 export default function Doctors() { return <SiteShell>
   <section className="medical-hero"><div className="container medical-hero-grid"><div>
@@ -13,7 +14,7 @@ export default function Doctors() { return <SiteShell>
 
   <section className="recognition"><div className="container recognition-grid">
     <article className="recognition-awards"><h2>Awards, Certifications &amp; Fellowships</h2><div className="award-row" aria-label="Awards, certifications and fellowships">{[1,2,3,4].map(i=><span key={i} aria-hidden="true" />)}</div></article>
-    <article className="recognition-testimonials"><header><h2>Patient Testimonials</h2><span>View All Testimonials <b aria-hidden="true">→</b></span></header><div className="testimonial-stage"><button type="button" aria-label="Previous testimonial" disabled>‹</button><blockquote>“The team explained every step clearly and treated our family with genuine care.”<cite>— Anand Hospital patient</cite></blockquote><button type="button" aria-label="Next testimonial" disabled>›</button></div><div className="testimonial-dots" aria-label="Testimonial 1 of 1"><span className="active" /></div></article>
+    <PatientTestimonials />
   </div></section>
   <Assistance />
 </SiteShell> }

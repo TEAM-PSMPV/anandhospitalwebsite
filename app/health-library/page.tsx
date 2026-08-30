@@ -1,10 +1,30 @@
 import Link from "next/link";
-import { Assistance, Icon, InteriorHero, SiteShell } from "../site-shell";
+import Image from "next/image";
+import { Assistance, Icon, InteriorHero, SiteShell, type IconName } from "../site-shell";
+
+const healthTopics: { title: string; description: string; icon: IconName }[] = [
+  { title: "Health Tips", description: "Practical tips for everyday wellness", icon: "emergency" },
+  { title: "Disease Guide", description: "Understand conditions, symptoms and care", icon: "shield" },
+  { title: "Nutrition", description: "Healthy eating and balanced living", icon: "diet-and-nutrition" },
+  { title: "Women’s Health", description: "Every stage, every solution", icon: "female" },
+  { title: "Child Health", description: "Care and guidance for your child", icon: "pediatrics" },
+  { title: "Wellness", description: "Mind, body and lifestyle balance", icon: "wellness" },
+];
+
+const featuredArticles = [
+  { category: "HEART HEALTH", title: "10 Simple Steps to Keep Your Heart Healthy", description: "Small daily habits can make a big difference in your heart health.", image: "/images/health-library/heart-health-cover.png", imageAlt: "Heart model, blood pressure monitor, berries, oats and walking shoes representing heart-healthy habits" },
+  { category: "DIABETES CARE", title: "Understanding Type 2 Diabetes: Symptoms & Management", description: "Learn about causes, early signs and effective ways to manage diabetes.", image: "/images/health-library/diabetes-care-cover.png", imageAlt: "Glucose meter, measuring tape and a balanced meal representing diabetes care" },
+  { category: "NUTRITION", title: "Superfoods for a Stronger Immune System", description: "Boost your immunity naturally with these power-packed foods.", image: "/images/health-library/immune-superfoods-cover.png", imageAlt: "Colorful fruits, vegetables, nuts and spices associated with nutritious eating" },
+  { category: "WOMEN’S HEALTH", title: "PCOS: Causes, Symptoms and Treatment Options", description: "An expert guide to understanding PCOS and managing it effectively.", image: "/images/health-library/pcos-wellness-cover.png", imageAlt: "Flax seeds, pumpkin seeds, walnuts, berries and leafy greens arranged beside a teal awareness ribbon" },
+  { category: "CHILD HEALTH", title: "Childhood Vaccination: What Every Parent Should Know", description: "Vaccines protect your child today for a healthier tomorrow.", image: "/images/health-library/child-vaccination-cover.png", imageAlt: "A pediatric clinician caring for a child during a routine vaccination visit with a parent present" },
+  { category: "WELLNESS", title: "Managing Stress: Tips for a Healthier Mind", description: "Simple strategies to reduce stress and improve mental well-being.", image: "/images/health-library/stress-management-cover.png", imageAlt: "A person practicing calm breathing beside a sunlit window" },
+];
 
 export default function HealthLibrary(){return <SiteShell>
   <InteriorHero className="health-library-hero" title="Live Healthy" text="Practical, clinician-guided information for healthier everyday decisions."/>
-  <section className="library-top viewport-section"><div className="container"><p className="kicker center">Health Topics</p><h2>Information for every stage of life.</h2><div className="topic-grid">{[["General wellness","Everyday habits that support long-term health.","heart"],["Women’s health","Guidance for reproductive, maternity and lifelong health.","community"],["Child health","Support for growth, nutrition and preventive care.","doctors"]].map(([t,d,i])=><article key={t}><Icon name={i as "heart"}/><h3>{t}</h3><p>{d}</p><Link href="#articles">Explore topics <Icon name="arrow"/></Link></article>)}</div></div></section>
-  <section className="articles viewport-section" id="articles"><div className="container"><p className="kicker">Latest Health Articles</p><h2>Clear guidance from trusted clinicians.</h2><div className="article-grid">{["Preparing for a hospital visit","A practical guide to preventive checkups","Women’s health at every life stage","Everyday nutrition for growing children"].map((t,i)=><article key={t}><div><span>Health guide · {i+3} min read</span><Icon name={i%2?"heart":"pulse"}/></div><h3>{t}</h3><p>Simple, useful information to help you make confident health decisions.</p><Link href="/appointment">Read article <Icon name="arrow"/></Link></article>)}</div></div></section>
+  <div className="health-library-search-wrap"><form className="health-library-search" action="/search" method="get"><button type="submit" aria-label="Search health topics"><Icon name="search"/></button><label className="sr-only" htmlFor="health-topic-search">Search health topics</label><input id="health-topic-search" name="q" type="search" placeholder="Search health topics, conditions and wellness advice"/></form></div>
+  <section className="library-top viewport-section" aria-label="Health topics"><div className="container"><div className="topic-grid">{healthTopics.map((topic)=><article key={topic.title}><Icon name={topic.icon}/><h3>{topic.title}</h3><p>{topic.description}</p><Link href="#articles" aria-label={`Explore ${topic.title}`}><Icon name="arrow"/></Link></article>)}</div></div></section>
+  <section className="articles health-featured-articles" id="articles"><div className="container"><header className="health-featured-heading"><h2>Featured Health Articles</h2><Link href="#articles">View All Articles <Icon name="arrow"/></Link></header><div className="featured-article-grid">{featuredArticles.map((article)=><article className="health-feature-card" key={article.title}><Image className="health-article-image" src={article.image} alt={article.imageAlt} width={1536} height={1024}/><span>{article.category}</span><h3>{article.title}</h3><p>{article.description}</p><Link href="/appointment">Read Article <Icon name="arrow"/></Link></article>)}</div></div></section>
   <section className="health-library-extras" aria-labelledby="popular-health-topics"><div className="container">
     <h2 id="popular-health-topics">Popular Health Topics</h2>
     <nav className="health-topic-chips" aria-label="Popular health topics">{["Hypertension","Diabetes","Obesity","Heart Health","COVID-19","Mental Health","Pregnancy","Bone Health","Sleep","Immunity"].map((topic)=><Link href="#articles" key={topic}>{topic}</Link>)}</nav>

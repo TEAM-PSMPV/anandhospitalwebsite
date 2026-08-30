@@ -21,6 +21,16 @@ const facilityGroups: ReadonlyArray<{ title: string; tone: "blue" | "green"; ite
   ] },
 ];
 
+const specialtyCardCopy: Partial<Record<(typeof services)[number]["slug"], { name?: string; description?: string }>> = {
+  pediatrics: { name: "Pediatrics" },
+  anaesthesiology: { description: "Safe and effective anaesthesia care for all surgical procedures." },
+};
+
+const specialtyCardIcons: Partial<Record<(typeof services)[number]["slug"], IconName>> = {
+  pediatrics: "service-baby",
+  "obstetrics-gynaecology": "service-woman",
+};
+
 export default function Services() {
   return <SiteShell>
     <div className="services-page">
@@ -43,29 +53,23 @@ export default function Services() {
 
       <section className="services-specialties" aria-label="Medical specialties">
         <div className="container services-specialty-grid">
-          {services.map((item) => <article id={item.slug} key={item.name}>
-            <Icon name={item.icon} />
-            <h2>{item.name}</h2>
-            <p>{item.description}</p>
-            <Link href={`/services/${item.slug}`}>Learn More <Icon name="arrow" /></Link>
-          </article>)}
+          {services.map((item) => {
+            const cardCopy = specialtyCardCopy[item.slug];
+            return <article id={item.slug} key={item.name}>
+              <Icon name={specialtyCardIcons[item.slug] ?? item.icon} />
+              <h2>{cardCopy?.name ?? item.name}</h2>
+              <p>{cardCopy?.description ?? item.description}</p>
+              <Link href={`/services/${item.slug}`}>Learn More <Icon name="arrow" /></Link>
+            </article>;
+          })}
         </div>
       </section>
 
       <section className="services-emergency">
         <div className="container services-emergency-inner">
-          <Icon name="emergency" />
+          <Icon name="siren" />
           <div><h2>Emergency Care — Available 24x7</h2><p>Our emergency team is always ready to provide immediate care when you need it the most.</p></div>
           <a href="tel:+917351028221"><Icon name="phone" /><span>Call Emergency<strong>+91 7351028221</strong></span></a>
-        </div>
-      </section>
-
-      <section className="services-contact" aria-label="Hospital contact information">
-        <div className="container services-contact-grid">
-          <a href="tel:+917351028221"><Icon name="phone" /><span><strong>Book Appointment</strong>+91 7351028221</span></a>
-          <a href="tel:+919528261199"><Icon name="phone" /><span><strong>Follow-up Patient Help</strong>+91 9528261199</span></a>
-          <a href="mailto:info@anandhospitalmbd.org"><Icon name="mail" /><span><strong>Email</strong>info@anandhospitalmbd.org</span></a>
-          <div><Icon name="clock" /><span><strong>OPD Timings</strong>10:15 AM to 03:00 PM</span></div>
         </div>
       </section>
 
