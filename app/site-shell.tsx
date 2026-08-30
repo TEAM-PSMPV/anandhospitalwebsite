@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type CSSProperties, type ReactNode, type SVGProps } from "react";
 import { services as hospitalServices } from "./data";
+import { SiteChatbot } from "./site-chatbot";
 
 export type IconName =
   | "home" | "info" | "services" | "doctors" | "library" | "calendar" | "search"
@@ -132,6 +133,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
     <main id="main">{children}</main>
     <SocialStrip />
     <Footer />
+    <SiteChatbot />
   </>;
 }
 
@@ -177,8 +179,8 @@ function Footer() {
   </footer>;
 }
 
-export function InteriorHero({ title, text }: { title: string; text: string }) {
-  return <section className="interior-hero"><div className="container"><h1>{title}</h1><p>{text}</p></div></section>;
+export function InteriorHero({ title, text, className = "" }: { title: string; text: string; className?: string }) {
+  return <section className={`interior-hero${className ? ` ${className}` : ""}`}><div className="container"><h1>{title}</h1><p>{text}</p></div></section>;
 }
 
 export function Assistance() {

@@ -38,7 +38,7 @@ export default function About() { return <SiteShell>
     </div><div className="values"><h2>Our Core Values</h2><div>{values.map(([icon,label])=><span key={label}><CoreValueIcon name={icon}/><b>{label}</b></span>)}</div></div></div>
   </div></section>
 
-  <section className="leadership doctor-section viewport-section"><div className="container"><p className="kicker">Our Medical Team</p><h2>Experienced people. Shared purpose.</h2><DoctorCards /></div></section>
+  <section className="leadership doctor-section viewport-section"><div className="container"><div className="leadership-heading"><div><p className="kicker">Our Medical Team</p><h2>Experienced people. Shared purpose.</h2></div><Link href="/doctors">View All Doctors <span aria-hidden="true">→</span></Link></div><DoctorCards carousel /></div></section>
 
   <section className="glance viewport-section"><div className="container"><p className="kicker">Anand Hospital at a Glance</p><div className="stats">{[[19,"+","Years of experience"],[100,"+","Team members"],[8,"","Core services"],[24,"×7","Emergency care"],[2007,"","Established"]].map(([value,suffix,label])=><div key={label}><CountingStat value={value as number} suffix={suffix as string}/><span>{label}</span></div>)}</div></div></section>
 
