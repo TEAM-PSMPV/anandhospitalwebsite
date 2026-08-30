@@ -5568,13 +5568,67 @@ body :is(svg, .site-icon) {
   line-height: 1;
 }
 
+/* Homepage care pathways: compact pale-green cards matching the approved reference. */
+.home-page .pathway-grid {
+  gap: clamp(22px, 2.2vw, 34px);
+  padding-inline: 0;
+}
+
+.home-page .pathway-grid article,
+.home-page .pathway-grid article:nth-child(2) {
+  min-height: 274px;
+  grid-template-columns: 70px minmax(0, 1fr);
+  column-gap: 18px;
+  border: 1px solid #d7ead9;
+  padding: 26px 34px 22px;
+  background: #f4faf4 !important;
+  box-shadow: 0 5px 14px rgba(9, 104, 11, 0.06);
+}
+
+.home-page .pathway-grid article > .site-icon {
+  width: 64px;
+  height: 64px;
+  padding: 3px;
+  background: #08751a;
+}
+
+.home-page .pathway-grid h2 {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.home-page .pathway-grid article > .pathway-links {
+  margin-top: 18px;
+  border-top: 1px solid #d5e5d7;
+  padding-top: 10px;
+}
+
+.home-page .pathway-links a > svg:last-child {
+  color: #107417;
+  background-color: #d7ead8;
+}
+
 @media (min-width: 1200px) {
   .home-page > .pathways {
     padding-bottom: 40px !important;
   }
 
   .home-page .pathway-grid article {
-    min-height: 308px;
+    min-height: 274px;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-page .pathway-grid article,
+  .home-page .pathway-grid article:nth-child(2) {
+    min-height: 0;
+    grid-template-columns: 58px minmax(0, 1fr);
+    padding: 24px 22px 20px;
+  }
+
+  .home-page .pathway-grid article > .site-icon {
+    width: 52px;
+    height: 52px;
   }
 }
 
@@ -6795,11 +6849,22 @@ main > section.recognition {
   gap: 20px;
 }
 
+.recognition .recognition-grid > article.recognition-testimonials {
+  background: #f4faf5 !important;
+}
+
+.recognition .recognition-testimonials h2 {
+  color: #074c2f;
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
 .recognition-testimonials header > span {
-  color: #045aa7;
+  color: #159447;
   font-family: "Montserrat", sans-serif;
-  font-size: 0.76rem;
-  font-weight: 400;
+  font-size: 0.82rem;
+  font-weight: 500;
   line-height: 1.4;
   white-space: nowrap;
 }
@@ -6822,7 +6887,7 @@ main > section.recognition {
   border: 0;
   padding: 0;
   background: transparent;
-  color: #045aa7;
+  color: #075c38;
   font: 600 1.35rem/1 "Montserrat", sans-serif;
   cursor: pointer;
 }
@@ -6837,18 +6902,20 @@ main > section.recognition {
   margin: 0;
   padding: 28px 24px;
   background: #ffffff;
-  color: #023767;
+  color: #075c38;
   font-family: "Montserrat", sans-serif;
-  font-size: 0.84rem;
-  font-weight: 400;
+  font-size: 0.82rem;
+  font-weight: 600;
   line-height: 1.65;
 }
 
 .recognition .testimonial-stage cite {
-  margin-top: 12px;
-  color: #52606d;
-  font-size: 0.65rem;
+  margin-top: 16px;
+  color: #78b892;
+  font-size: 0.82rem;
   font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
 }
 
 .recognition .testimonial-dots {
@@ -6869,7 +6936,7 @@ main > section.recognition {
 }
 
 .recognition .testimonial-dots :is(span, button).active {
-  background: #1b8cff;
+  background: #075c38;
 }
 
 @media (max-width: 760px) {
@@ -7018,13 +7085,21 @@ main > section.library-top {
 .library-top .topic-grid article {
   display: flex;
   min-width: 0;
-  min-height: 205px;
+  min-height: 188px;
   flex-direction: column;
   align-items: center;
-  border: 1px solid #a9d9ad;
+  border: 1px solid #cfe8d2;
   border-radius: 14px;
-  padding: 26px 18px 18px;
-  background: #f3fbf3 !important;
+  padding: 22px 18px 16px;
+  background: #f3f9f3 !important;
+  box-shadow: 0 4px 12px rgba(4, 90, 167, 0.045);
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.library-top .topic-grid article:hover,
+.library-top .topic-grid article:focus-within {
+  border-color: #c5e2c9;
+  background: #eef7ef !important;
 }
 
 .library-top .topic-grid > article > :is(svg, .site-icon) {
@@ -7062,6 +7137,12 @@ main > section.library-top {
   border-radius: 50%;
   background: #045aa7;
   color: #ffffff;
+  transition: transform 180ms ease;
+}
+
+.library-top .topic-grid article:hover a,
+.library-top .topic-grid article:focus-within a {
+  transform: translateX(3px);
 }
 
 .library-top .topic-grid a :is(svg, .site-icon) {
@@ -7090,7 +7171,7 @@ main > section.library-top {
   }
 
   .library-top .topic-grid article {
-    min-height: 190px;
+    min-height: 180px;
     padding: 22px 12px 14px;
   }
 }
