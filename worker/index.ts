@@ -26,6 +26,7 @@ const securityHeaders = {
     "connect-src 'self'",
     "font-src 'self' data:",
     "form-action 'self'",
+    "frame-src 'self' https://www.instagram.com",
     "frame-ancestors 'none'",
     "img-src 'self' data:",
     "object-src 'none'",

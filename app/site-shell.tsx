@@ -48,7 +48,7 @@ export function Icon({ name, ...props }: { name: IconName } & SVGProps<SVGSVGEle
     "holding-hands": "set-3/various-races-holding-hands-svgrepo-com.svg",
     ayushman: "set-3/Ayushman-Bharat-Black.svg",
     "service-baby": "services-wireframe/baby.svg",
-    "service-woman": "services-wireframe/woman.svg",
+    "service-woman": "services-wireframe/motherhood-baby-mother-woman.svg",
   };
   const suppliedIcon = suppliedIcons[name];
   if (suppliedIcon) {
@@ -188,7 +188,7 @@ function Footer() {
     <div className="footer-contact">
       <div className="container-wide footer-contact-grid">
         <a href="https://maps.google.com/?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001" target="_blank" rel="noreferrer"><Icon name="location" /><span>Near Miglani Cinema, Rampur Road,<br />Moradabad [244001]</span></a>
-        <a href="tel:+917351028221" aria-label="Call Anand Hospital"><Icon name="phone" /></a>
+        <div className="footer-phone-numbers"><Icon name="phone" /><span><a href="tel:+917351028221">+91 7351028221</a><a href="tel:+919528261199">+91 9528261199</a></span></div>
         <a href="mailto:info@anandhospitalmbd.org"><Icon name="mail" /><span>info@anandhospitalmbd.org</span></a>
         <div><Icon name="clock" /><span>Open 24x7</span></div>
       </div>
