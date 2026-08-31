@@ -8,6 +8,21 @@ type CoreValueIconName = "compassion" | "patient-first" | "integrity" | "excelle
 
 const values: ReadonlyArray<readonly [CoreValueIconName, string]> = [["compassion", "Compassion"], ["patient-first", "Patient first"], ["integrity", "Integrity"], ["excellence", "Excellence"], ["learning", "Learning"], ["community", "Community"]];
 
+const faqColumns = [
+  [
+    ["How can I book an appointment?", "Use our online appointment page or contact the hospital reception."],
+    ["Where is Anand Hospital located?", "Near Miglani Cinema, Rampur Road, Moradabad [244001]."],
+  ],
+  [
+    ["What are OPD timings?", "Doctor schedules vary. Please request an appointment for the latest availability."],
+    ["What facilities are available?", "Emergency, surgery, maternity, diagnostics and inpatient care are available."],
+  ],
+  [
+    ["Is emergency service available 24×7?", "Yes. Anand Hospital is open 24 hours every day."],
+    ["Can I reschedule or cancel my appointment?", "Please contact the hospital reception team for the latest information about rescheduling or cancelling your appointment."],
+  ],
+] as const;
+
 function CoreValueIcon({ name }: { name: CoreValueIconName }) {
   const paths = {
     compassion: <><path d="M12 11.2 8.7 8a2.7 2.7 0 0 1 3.8-3.8l.5.5.5-.5A2.7 2.7 0 0 1 17.3 8L14 11.2a1.4 1.4 0 0 1-2 0Z" /><path d="M3.5 16.5h3l3.2 1.7 6.8-2.4c1.5-.5 2.4 1.4 1.1 2.2l-6.8 3.4a3 3 0 0 1-2.6 0l-4.7-2.2M6.5 16.5l3.8-1.5a2.2 2.2 0 0 1 2 .2l1.5.9" /></>,
@@ -42,12 +57,6 @@ export default function About() { return <SiteShell>
 
   <section className="glance viewport-section"><div className="container"><p className="kicker">Anand Hospital at a Glance</p><div className="stats">{[[19,"+","Years of experience"],[100,"+","Team members"],[8,"","Core services"],[24,"×7","Emergency care"],[2007,"","Established"]].map(([value,suffix,label])=><div key={label}><CountingStat value={value as number} suffix={suffix as string}/><span>{label}</span></div>)}</div></div></section>
 
-  <section className="faq" id="faq"><div className="container"><p className="kicker">Frequently Asked Questions</p><div className="faq-grid">{[
-    ["How can I book an appointment?","Use our online appointment page or contact the hospital reception."],
-    ["What are OPD timings?","Doctor schedules vary. Please request an appointment for the latest availability."],
-    ["Is emergency service available 24×7?","Yes. Anand Hospital is open 24 hours every day."],
-    ["Where is Anand Hospital located?","Near Miglani Cinema, Rampur Road, Moradabad [244001]."],
-    ["What facilities are available?","Emergency, surgery, maternity, diagnostics and inpatient care are available."],
-  ].map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
+  <section className="faq" id="faq"><div className="container"><p className="kicker">Frequently Asked Questions</p><div className="faq-grid">{faqColumns.map((column, index)=><div key={index}>{column.map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div>)}</div></div></section>
   <Assistance />
 </SiteShell> }
