@@ -136,6 +136,42 @@ final result: passed
 
 ---
 
+# Current-vs-Reference Hero Correction QA — 2026-09-11
+
+- Current-result source: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/currentheroimage.png`
+- Desired-reference source: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/herocorrect.png`
+- Existing hero asset inspected: `public/images/herobanner.jpg` (1910 × 681)
+- Combined comparison: `qa-artifacts/home-reference-comparison-final.png`
+- Responsive captures: `qa-artifacts/home-desktop.png`, `qa-artifacts/home-tablet.png`, `qa-artifacts/home-mobile.png`
+- Viewports: 1813 × 868 desktop, 1024 × 900 tablet, and 390 × 844 mobile at deviceScaleFactor 1
+
+## Findings and resolution
+
+- The current-result image used an oversized full-cover crop; the desired reference preserves more left-side breathing room and smaller, fully visible subjects.
+- The existing team image is suitable, so no generated or replacement asset was needed.
+- Desktop now uses the existing team image at 82% right alignment with `object-fit: contain`, a reference-matched vertical field, and a soft left mask to blend the image into the readable text area.
+- The existing desktop overlay copy and CTA links remain in place; tablet and mobile rules continue using their existing responsive behavior.
+- No borders, horizontal overflow, page exceptions, or missing hero image loads were found.
+
+## Required fidelity surfaces
+
+- Fonts and typography: passed; existing hero copy, font hierarchy, weight, and line breaks are unchanged.
+- Spacing and layout rhythm: passed; desktop subject scale and left text clearance now follow the desired reference geometry.
+- Colors and visual tokens: passed; the blue-gray outer field and light photo field are blended without dark blue framing.
+- Image quality and asset fidelity: passed; the original `herobanner.jpg` remains the source, with all six people, faces, clothing, and colors preserved.
+- Copy and content: passed; no text or CTA functionality changed.
+- Responsive behavior: passed; desktop, tablet, and mobile captures have no horizontal overflow, and mobile continues to use the dedicated mobile hero image.
+
+## Comparison history
+
+- Initial comparison: P1—the full-cover desktop crop enlarged the doctors and differed materially from the desired reference.
+- Fix: restored the reference-sized right-side contained composition and added a soft blend into the left background.
+- Post-fix comparison: no actionable P0, P1, or P2 issues remain in the requested hero surface.
+
+final result: passed
+
+---
+
 # Homepage Full-Bleed Cover Hero Design QA — 2026-09-11
 
 - Source visual truth: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/herocorrect.png`

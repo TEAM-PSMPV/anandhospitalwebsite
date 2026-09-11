@@ -6604,18 +6604,18 @@ main > section.faq {
 /* Landing hero: match the supplied desktop team-banner composition. */
 @media (min-width: 992px) {
   .home-page .home-hero {
-    background: transparent !important;
+    background: linear-gradient(180deg, #657687 0%, #788b9e 100%) !important;
   }
 
   .home-page .home-hero .hero-media {
     position: absolute;
     z-index: 0;
-    inset: 0;
-    width: 100%;
+    inset: 0 0 0 auto;
+    width: 82%;
     height: 100%;
-    background: transparent;
-    -webkit-mask-image: none;
-    mask-image: none;
+    background: linear-gradient(180deg, #c6cfd6 0%, #f2f5f7 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000000 10%, #000000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000000 10%, #000000 100%);
   }
 
   .home-page .home-hero .hero-media::after {
@@ -6623,8 +6623,8 @@ main > section.faq {
   }
 
   .home-page .home-hero .hero-media img.hero-image-desktop {
-    object-fit: cover !important;
-    object-position: center center !important;
+    object-fit: contain !important;
+    object-position: right center !important;
     opacity: 1;
   }
 
