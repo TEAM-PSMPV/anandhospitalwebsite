@@ -6601,10 +6601,10 @@ main > section.faq {
   }
 }
 
-/* Landing hero: contain the full team photograph on the right with a soft dissolve. */
+/* Landing hero: match the supplied desktop team-banner composition. */
 @media (min-width: 992px) {
   .home-page .home-hero {
-    background: #023767 !important;
+    background: #6c7e90 !important;
   }
 
   .home-page .home-hero .hero-media {
@@ -6613,24 +6613,19 @@ main > section.faq {
     inset: 0 0 0 auto;
     width: 82%;
     height: 100%;
-    background: #023767;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000000 10%, #000000 92%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, #000000 10%, #000000 92%, transparent 100%);
+    background: #ced5da;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .home-page .home-hero .hero-media::after {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(2, 55, 103, 0.32) 0%, transparent 16%, transparent 90%, rgba(2, 55, 103, 0.16) 100%);
-    pointer-events: none;
-    content: "";
+    display: none;
   }
 
   .home-page .home-hero .hero-media img.hero-image-desktop {
     object-fit: contain !important;
     object-position: right center !important;
-    opacity: 0.97;
+    opacity: 1;
   }
 
   .home-page .home-hero > .container {

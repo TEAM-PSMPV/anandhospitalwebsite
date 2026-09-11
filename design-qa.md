@@ -133,3 +133,56 @@ final result: blocked
 - Post-fix evidence: all desktop/mobile screenshots were recaptured; the corrected headline, cards and icons are visible in the listed artifacts, and automated browser checks pass.
 
 final result: passed
+
+---
+
+# Homepage Hero Reference Match Design QA — 2026-09-11
+
+- Source visual truth: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/herocorrect.png`
+- Source pixels: 1813 × 868
+- Browser-rendered implementation: `qa-artifacts/home-desktop-1813x868.png`
+- Combined comparison: `qa-artifacts/home-reference-comparison.png`
+- Responsive evidence: `qa-artifacts/home-mobile-390x844.png`
+- Implementation pixels and CSS viewport: 1813 × 868 desktop and 390 × 844 mobile at deviceScaleFactor 1; no density normalization required
+- State: homepage initial load, desktop Find a Doctor hover state, and unchanged mobile hero rendering
+
+## Full-view comparison evidence
+
+- The combined comparison confirms the supplied right-aligned team-photo composition, clear left text area, three-line white headline, stacked CTAs, and blue-gray backdrop.
+- The site header, navigation, text, buttons, downstream content, and mobile-specific hero image remain unchanged.
+- Desktop and mobile captures have no horizontal overflow or clipped hero controls.
+
+## Focused region comparison evidence
+
+- A separate focused crop was unnecessary because the complete hero and all critical details are readable at the native 1813 × 868 comparison size.
+- The desktop media measures 1486.66 × 646.41 CSS pixels, begins at x=326.34, uses the supplied 1910 × 681 image at full opacity, and has no mask or fade overlay.
+
+## Findings
+
+- No actionable P0, P1, or P2 mismatch remains.
+- [P3] The supplied screenshot was captured with a taller existing header than the current implementation. The header was intentionally not altered because the requested scope was strictly limited to the homepage hero.
+
+## Required fidelity surfaces
+
+- Fonts and typography: passed; existing families, weights, line heights, hierarchy, and copy are unchanged.
+- Spacing and layout rhythm: passed; the photo occupies the reference's right-aligned 82% frame and leaves the left content area clear.
+- Colors and visual tokens: passed; the dark blue framing was replaced with the reference's blue-gray outer field and light image field.
+- Image quality and asset fidelity: passed; the existing supplied team photograph is rendered directly at full opacity with no fade mask, generated replacement, or crop that removes a doctor.
+- Copy and content: passed; all hero and site copy remains unchanged.
+- Responsiveness and accessibility: passed; the desktop-only rule leaves the mobile image behavior unchanged, no overflow is present, the hero retains descriptive alt text, and both CTAs remain semantic links.
+
+## Interaction and console checks
+
+- The Find a Doctor CTA hover state rendered successfully.
+- Both desktop and mobile pages loaded with no page exceptions.
+- Console inspection found only the known local-preview CSP warning caused by the production-origin favicon URL; it does not occur when served from the same production origin.
+
+## Comparison history
+
+- Initial pass: P1—the image was allowed to span the full hero width, enlarging the doctors and obscuring the intended clear text field.
+- Fix: restored the reference's right-aligned 82% media frame while removing the dark mask and reduced opacity.
+- Second pass: P2—the flat frame color did not match the reference's distinct outer and image fields.
+- Fix: sampled and applied the reference-aligned blue-gray outer field and light media field, then recaptured desktop, mobile, and combined comparison evidence.
+- Post-fix evidence: `qa-artifacts/home-reference-comparison.png` and `qa-artifacts/visual-qa-results.json` show the corrected composition, full-opacity image, disabled mask, working hover state, and overflow-free desktop/mobile layouts.
+
+final result: passed
