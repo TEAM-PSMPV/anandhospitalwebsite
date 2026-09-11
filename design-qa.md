@@ -167,6 +167,7 @@ final result: passed
 - Initial comparison: P1—the full-cover desktop crop enlarged the doctors and differed materially from the desired reference.
 - Fix: restored the reference-sized right-side contained composition and added a soft blend into the left background.
 - Post-fix comparison: no actionable P0, P1, or P2 issues remain in the requested hero surface.
+- Final dissolve refinement: added a vertical top/bottom fade over the contained media field so its letterbox edges dissolve into the hero background without moving or covering the doctors.
 
 final result: passed
 

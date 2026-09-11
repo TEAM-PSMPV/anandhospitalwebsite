@@ -6619,7 +6619,20 @@ main > section.faq {
   }
 
   .home-page .home-hero .hero-media::after {
-    display: none;
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      #657687 0%,
+      rgba(101, 118, 135, 0.86) 4%,
+      transparent 14%,
+      transparent 86%,
+      rgba(120, 139, 158, 0.84) 96%,
+      #788b9e 100%
+    );
+    pointer-events: none;
+    content: "";
   }
 
   .home-page .home-hero .hero-media img.hero-image-desktop {
