@@ -6604,16 +6604,16 @@ main > section.faq {
 /* Landing hero: match the supplied desktop team-banner composition. */
 @media (min-width: 992px) {
   .home-page .home-hero {
-    background: #6c7e90 !important;
+    background: transparent !important;
   }
 
   .home-page .home-hero .hero-media {
     position: absolute;
     z-index: 0;
-    inset: 0 0 0 auto;
-    width: 82%;
+    inset: 0;
+    width: 100%;
     height: 100%;
-    background: #6c7e90;
+    background: transparent;
     -webkit-mask-image: none;
     mask-image: none;
   }
@@ -6623,8 +6623,8 @@ main > section.faq {
   }
 
   .home-page .home-hero .hero-media img.hero-image-desktop {
-    object-fit: contain !important;
-    object-position: right center !important;
+    object-fit: cover !important;
+    object-position: center center !important;
     opacity: 1;
   }
 
