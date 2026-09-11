@@ -4,20 +4,20 @@ import { Assistance, Icon, type IconName, SiteShell } from "../site-shell";
 import Image from "next/image";
 import { FacilitySlideshow } from "../facility-slideshow";
 
-const facilityGroups: ReadonlyArray<{ title: string; tone: "blue" | "green"; items: ReadonlyArray<{ title: string; description: string; icon: IconName }> }> = [
+const facilityGroups: ReadonlyArray<{ title: string; tone: "blue" | "green"; items: ReadonlyArray<{ title: string; description: string; icon: IconName; image: string; imageAlt: string; imageKind?: "icon" }> }> = [
   { title: "Diagnostics & Facilities", tone: "blue", items: [
-    { title: "Pathology Lab", description: "Accurate and timely lab testing with advanced equipment.", icon: "path-lab" },
-    { title: "Imaging Services", description: "X-Ray and ultrasound imaging for precise diagnosis.", icon: "ultrasound" },
-    { title: "Pharmacy", description: "Well-stocked pharmacy with genuine medicines and expert guidance.", icon: "pharmacy" },
-    { title: "Blood Bank", description: "Safe and reliable blood storage and transfusion services.", icon: "blood-bank" },
+    { title: "Pathology Lab", description: "Accurate and timely lab testing with advanced equipment.", icon: "path-lab", image: "/icons/set-2/path-lab.svg", imageAlt: "Pathology laboratory", imageKind: "icon" },
+    { title: "Imaging Services", description: "X-Ray and ultrasound imaging for precise diagnosis.", icon: "ultrasound", image: "/images/facilities/imaging-services.png", imageAlt: "Anand Hospital imaging services" },
+    { title: "Pharmacy", description: "Well-stocked pharmacy with genuine medicines and expert guidance.", icon: "pharmacy", image: "/icons/set-2/pharmacy.svg", imageAlt: "Hospital pharmacy", imageKind: "icon" },
+    { title: "Critical Care High Tech ICU", description: "Advanced critical care with continuous monitoring and round-the-clock clinical support.", icon: "critical-care", image: "/images/facilities/nicu.png", imageAlt: "Anand Hospital intensive care facility" },
   ] },
   { title: "Patient Care Services", tone: "green", items: [
-    { title: "Health Checkups", description: "Preventive health packages tailored for individuals and families.", icon: "health-checkup" },
-    { title: "Diet & Nutrition", description: "Personalized diet plans for better health and wellness.", icon: "diet-and-nutrition" },
-    { title: "Deluxe Room", description: "Comfortable private rooms designed for a restful recovery.", icon: "deluxe-beds" },
-    { title: "Home Care", description: "Professional medical care in the comfort of your home.", icon: "home-care" },
-    { title: "Reception Area", description: "A welcoming reception team to guide patients and families.", icon: "hospital-set-3" },
-    { title: "Ayushman Card Facility Available", description: "Ayushman Bharat card support is available for eligible patients.", icon: "ayushman" },
+    { title: "Health Checkups", description: "Preventive health packages tailored for individuals and families.", icon: "health-checkup", image: "/icons/set-2/health-checkup.svg", imageAlt: "Preventive health checkup", imageKind: "icon" },
+    { title: "Diet & Nutrition", description: "Personalized diet plans for better health and wellness.", icon: "diet-and-nutrition", image: "/icons/set-2/diet-and-nutrition.svg", imageAlt: "Diet and nutrition guidance", imageKind: "icon" },
+    { title: "Deluxe Room", description: "Comfortable private rooms designed for a restful recovery.", icon: "deluxe-beds", image: "/images/facilities/ward-2.png", imageAlt: "Anand Hospital patient room" },
+    { title: "Home Care", description: "Professional medical care in the comfort of your home.", icon: "home-care", image: "/icons/set-2/home-care.svg", imageAlt: "Home healthcare", imageKind: "icon" },
+    { title: "Reception Area", description: "A welcoming reception team to guide patients and families.", icon: "hospital-set-3", image: "/images/facilities/reception-area.png", imageAlt: "Anand Hospital reception area" },
+    { title: "Ayushman Card Facility Available", description: "Ayushman Bharat card support is available for eligible patients.", icon: "ayushman", image: "/images/facilities/ayushman-card-facility.png", imageAlt: "Ayushman Card facility at Anand Hospital" },
   ] },
 ];
 
@@ -78,7 +78,7 @@ export default function Services() {
           {facilityGroups.map((group) => <div className={`services-facility-group ${group.tone}`} key={group.title}>
             <h2>{group.title}</h2>
             <div>{group.items.map((item) => <article key={item.title}>
-              <div className="services-facility-image">{item.title === "Reception Area" ? <Image src="/images/facilities/reception-area.png" alt="Anand Hospital reception area" width={1448} height={1086} /> : item.title.startsWith("Ayushman") ? <><Image src="/images/facilities/ayushman-card-facility.png" alt="Ayushman Card facility" width={1448} height={1086} /><Icon name={item.icon} /></> : <Icon name={item.icon} />}</div>
+              <div className={`services-facility-image${item.imageKind === "icon" ? " services-facility-image--icon" : ""}`}><Image src={item.image} alt={item.imageAlt} width={1448} height={1086} /><Icon name={item.icon} /></div>
               <div className="services-facility-copy"><h3>{item.title}</h3>
               <p>{item.description}</p>
               <Link href="/appointment">Learn More <Icon name="arrow" /></Link></div>

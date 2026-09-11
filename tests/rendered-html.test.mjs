@@ -43,6 +43,7 @@ test("renders Anand Hospital identity and supplied clinical details", async () =
   assert.equal(response.status, 200);
   assert.match(html, /Anand Hospital/);
   assert.match(html, /Dr Subhash Singh/);
+  assert.match(html, /Former Lecturer, PGIMS Rohtak/);
   assert.match(html, /Dr Nidhi Thakur/);
   assert.match(html, /Dr Bhoopendra Kumar Sharma/);
   assert.match(html, /20\+ years in high-risk obstetrics/);
@@ -52,6 +53,31 @@ test("renders Anand Hospital identity and supplied clinical details", async () =
   assert.doesNotMatch(html, /Talvar Rahul Bala Ratna/);
   assert.match(html, /Near Miglani Cinema/);
   assert.match(html, /Open 24 hours/);
+  assert.match(html, /appointment\?doctor=Dr\+Subhash\+Singh&amp;department=General\+Surgery#appointment-form/);
+});
+
+test("renders the requested appointment and facility content", async () => {
+  const [appointmentResponse, prefilledAppointmentResponse, servicesResponse] = await Promise.all([
+    fetchPath("/appointment"),
+    fetchPath("/appointment?doctor=Dr%20Subhash%20Singh&department=General%20Surgery"),
+    fetchPath("/services"),
+  ]);
+  const appointmentHtml = await appointmentResponse.text();
+  const prefilledAppointmentHtml = await prefilledAppointmentResponse.text();
+  const servicesHtml = await servicesResponse.text();
+
+  assert.equal(appointmentResponse.status, 200);
+  assert.match(appointmentHtml, /\/images\/group-photo\.png/);
+  assert.match(appointmentHtml, /<label>Doctor<select/);
+  assert.match(appointmentHtml, /<label>Department<select/);
+  assert.match(prefilledAppointmentHtml, /<option value="Dr Subhash Singh" selected="">/);
+  assert.match(prefilledAppointmentHtml, /<option value="General Surgery" selected="">/);
+
+  assert.equal(servicesResponse.status, 200);
+  assert.match(servicesHtml, /Critical Care High Tech ICU/);
+  assert.doesNotMatch(servicesHtml, />Blood Bank</);
+  assert.match(servicesHtml, /\/images\/facilities\/imaging-services\.png/);
+  assert.match(servicesHtml, /\/images\/facilities\/nicu\.png/);
 });
 
 test("adds the public-site security baseline", async () => {

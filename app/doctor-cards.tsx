@@ -6,8 +6,17 @@ import { useRef } from "react";
 import { doctors } from "./data";
 import { Icon } from "./site-shell";
 
+function appointmentHref(doctor: (typeof doctors)[number]) {
+  const query = new URLSearchParams({
+    doctor: doctor.name,
+    department: doctor.department,
+  });
+
+  return `/appointment?${query.toString()}#appointment-form`;
+}
+
 function StandardDoctorCard({ doctor, index }: { doctor: (typeof doctors)[number]; index: number }) {
-  return <article className={"featured" in doctor && doctor.featured ? "featured-doctor" : ""}><div className="doctor-avatar">{"photo" in doctor && doctor.photo ? <Image src={doctor.photo} alt={doctor.name} width={1122} height={1402} /> : <Icon name="doctors" />}<span>0{index + 1}</span></div><div><small>{doctor.department}</small><h3>{doctor.name}</h3><p><b>Qualifications:</b> {doctor.qualification}</p><p><b>Experience:</b> {doctor.experience}</p><span>{doctor.role}</span></div></article>;
+  return <article className={"featured" in doctor && doctor.featured ? "featured-doctor" : ""}><div className="doctor-avatar">{"photo" in doctor && doctor.photo ? <Image src={doctor.photo} alt={doctor.name} width={1122} height={1402} /> : <Icon name="doctors" />}<span>0{index + 1}</span></div><div className="doctor-card-copy"><small>{doctor.department}</small><h3>{doctor.name}</h3><p><b>Qualifications:</b> {doctor.qualification}</p><p><b>Experience:</b> {doctor.experience}</p><span>{doctor.role}</span><Link className="doctor-book-link" href={appointmentHref(doctor)}>Book Appointment <Icon name="arrow" /></Link></div></article>;
 }
 
 function CompactDoctorCard({ doctor }: { doctor: (typeof doctors)[number] }) {
@@ -16,7 +25,7 @@ function CompactDoctorCard({ doctor }: { doctor: (typeof doctors)[number] }) {
     <h3>{doctor.name}</h3><small>{doctor.department}</small>
     <div className="doctor-profile-details"><p><b>Qualifications:</b> {doctor.qualification}</p><p><b>Experience:</b> {doctor.experience}</p></div>
     <div className="doctor-profile-stars" aria-hidden="true">★★★★★</div>
-    <Link href="/appointment">Book Appointment</Link>
+    <Link href={appointmentHref(doctor)}>Book Appointment <Icon name="arrow" /></Link>
   </article>;
 }
 

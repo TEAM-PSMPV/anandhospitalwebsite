@@ -1,14 +1,20 @@
+import Image from "next/image";
 import { Icon, SiteShell } from "../site-shell";
 import { AppointmentForm } from "./appointment-form";
 
-export default function Appointment(){
+type AppointmentPageProps = {
+  searchParams?: Promise<{ doctor?: string; department?: string }>;
+};
+
+export default async function Appointment({ searchParams }: AppointmentPageProps){
+  const requested = searchParams ? await searchParams : {};
   return <SiteShell><section className="appointment-page-hero"><div className="container appointment-page-hero-grid"><div className="appointment-page-hero-copy">
     <h1>Book an Appointment</h1><p>Schedule your visit with our experienced doctors.</p>
     <div className="appointment-page-hero-features"><span><Icon name="heart"/>Patient<br/>Centered Care</span><span><Icon name="pulse"/>Advanced<br/>Technology</span><span><Icon name="doctors"/>Experienced<br/>Doctors</span><span><Icon name="shield"/>24×7 Emergency<br/>Care</span></div>
-  </div><div className="appointment-page-hero-image" role="img" aria-label="Anand Hospital medical team" /></div></section>
+  </div><div className="appointment-page-hero-image"><Image src="/images/group-photo.png" alt="Anand Hospital medical team" fill priority sizes="(max-width: 640px) 100vw, 48vw" /></div></div></section>
   <section className="appointment viewport-section"><div className="container appointment-grid">
     <div className="appointment-form-card"><h2>Schedule Your Appointment</h2>
-      <AppointmentForm />
+      <AppointmentForm requestedDoctor={requested.doctor} requestedDepartment={requested.department} />
     </div>
     <aside className="appointment-next-card" aria-labelledby="appointment-next-title"><h2 id="appointment-next-title">What Happens Next?</h2>
       <ol className="appointment-steps"><li><span>1</span><div><h3>We receive your request</h3><p>Your appointment request is received successfully.</p></div></li><li><span>2</span><div><h3>Confirmation call</h3><p>Our team will call you to confirm your appointment details.</p></div></li><li><span>3</span><div><h3>Visit the hospital</h3><p>Arrive on time and our staff will assist you with a smooth experience.</p></div></li></ol>

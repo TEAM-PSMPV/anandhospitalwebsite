@@ -75,3 +75,61 @@ final result: blocked
 - Address any P1/P2 mismatch found in the rendered comparison.
 
 final result: blocked
+
+---
+
+# Production Content Refresh Design QA — 2026-09-11
+
+- Source visual truth: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/herocorrect.png`
+- Source asset: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/herobanner.jpg`
+- Browser-rendered implementation: `qa-artifacts/home-desktop-1813x868.png`
+- Combined comparison: `qa-artifacts/home-reference-comparison.png`
+- Additional evidence: `qa-artifacts/appointment-desktop-1813x868.png`, `qa-artifacts/services-desktop-full.png`, `qa-artifacts/doctors-desktop-full.png`, and corresponding 390px mobile captures
+- Viewports: 1813 × 868 desktop and 390 × 844 mobile
+- Source and implementation pixels: 1813 × 868 at deviceScaleFactor 1; no density normalization required
+- State: initial page load, doctor CTA keyboard focus, doctor-specific appointment navigation, and reduced-motion preference
+
+## Full-view comparison evidence
+
+- The combined comparison confirms that the implementation preserves the reference's left-aligned three-line headline, stacked appointment actions, six-person team image, blue/white palette and wide desktop composition.
+- The implementation intentionally retains a darker blue image frame so the complete supplied team photograph remains visible without cropping faces.
+- Desktop and mobile captures show no horizontal overflow, clipped controls or section collisions.
+
+## Focused region evidence
+
+- Appointment hero: the supplied six-person group photograph is sharp, centered and readable at desktop and mobile sizes.
+- Facility cards: available hospital photographs render for imaging, ICU, room, reception and Ayushman facilities; corresponding SVG image assets render at a consistent blue scale for the remaining cards.
+- Doctor cards: all six images load, Dr Subhash Singh's PGIMS Rohtak experience is visible, and every appointment button remains legible without wrapping.
+- Mobile homepage: the headline now renders as three separate readable lines over the hero photograph.
+
+## Findings
+
+- No actionable P0, P1 or P2 issues remain.
+- [P3] The implementation header and dark hero framing are slightly more compact than the supplied reference. This is acceptable because the full doctor group is preserved and all primary content remains above the fold.
+
+## Required fidelity surfaces
+
+- Fonts and typography: passed; display and body fonts preserve the existing site hierarchy, with corrected mobile headline wrapping.
+- Spacing and layout rhythm: passed; desktop and mobile captures show balanced hero, card and form spacing without overflow.
+- Colors and visual tokens: passed; hospital blue, light-blue and patient-care green tokens remain consistent.
+- Image quality and asset fidelity: passed; supplied raster images and existing SVG assets are used directly, with no placeholders or generated substitutes.
+- Copy and content: passed; requested facility and doctor wording appears in rendered output.
+- Icons: passed; card icons are consistently sized and aligned.
+- Accessibility: passed for labels, alt text, focus visibility, reduced motion and basic overflow checks.
+
+## Interaction checks
+
+- Doctor CTA navigated to `/appointment?doctor=Dr+Subhash+Singh&department=General+Surgery#appointment-form`.
+- Doctor and department selects were prefilled with Dr Subhash Singh and General Surgery.
+- Keyboard focus produced a visible solid outline.
+- Reduced-motion mode produced `0s` link transition duration.
+- All inputs, selects and textareas had accessible labels; no images lacked alt text and no empty links were found.
+- Console inspection found only the expected local-preview CSP warning for the canonical production favicon; metadata now targets the `www` production origin, where the icon is same-origin.
+
+## Comparison history
+
+- Initial pass: P1 mobile homepage headline collapsed into unreadable text; P2 featured-doctor buttons wrapped; P2 facility SVG assets rendered oversized.
+- Fixes: enforced three-line mobile hero typography, prevented appointment CTA wrapping, constrained and recolored facility SVG image assets, and corrected the canonical metadata origin.
+- Post-fix evidence: all desktop/mobile screenshots were recaptured; the corrected headline, cards and icons are visible in the listed artifacts, and automated browser checks pass.
+
+final result: passed
