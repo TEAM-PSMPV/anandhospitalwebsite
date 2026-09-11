@@ -2336,6 +2336,150 @@ body :is(svg, .site-icon) {
     font-size: 0.88rem;
   }
 }
+
+/* Production content refresh: facility photography, doctor CTAs and clear link affordances. */
+.appointment-page-hero-image {
+  background: #dceefc;
+}
+
+.appointment-page-hero-image > img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.appointment-page-hero-image::before {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.services-facility-image > img + .site-icon {
+  display: block;
+  box-sizing: content-box;
+  background-color: #045aa7;
+}
+
+.services-facility-image--icon {
+  padding: clamp(32px, 5vw, 68px);
+  background: #eef7ff;
+}
+
+.services-facility-group.green .services-facility-image--icon {
+  background: #f1faf3;
+}
+
+.services-facility-image--icon > img {
+  width: clamp(76px, 8vw, 108px);
+  height: clamp(76px, 8vw, 108px);
+  object-fit: contain;
+  filter: invert(27%) sepia(77%) saturate(1744%) hue-rotate(181deg) brightness(83%) contrast(101%);
+}
+
+.services-facility-image--icon > img + .site-icon {
+  display: none;
+}
+
+.doctor-card-copy {
+  display: flex;
+  min-width: 0;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.doctor-book-link {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 38px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  padding: 8px 13px;
+  color: #045aa7;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.featured-doctor .doctor-book-link {
+  color: #ffffff;
+}
+
+.doctor-book-link .site-icon,
+.doctor-profile-card > a .site-icon {
+  width: 15px;
+  height: 15px;
+}
+
+a[href] {
+  text-underline-offset: 0.18em;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease,
+    text-underline-offset 180ms ease,
+    transform 180ms ease;
+}
+
+a[href] :is(.site-icon, svg, img) {
+  transition: transform 180ms ease;
+}
+
+a[href]:focus-visible {
+  outline: 3px solid rgba(27, 140, 255, 0.45);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) {
+  a[href]:hover {
+    text-underline-offset: 0.3em;
+  }
+
+  a[href]:hover :is(.site-icon, svg) {
+    transform: translateX(2px) scale(1.04);
+  }
+
+  :is(.button, .services-book, .doctor-book-link, .doctor-profile-card > a, .service-tile, .quick-actions a):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(2, 55, 103, 0.14);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a[href],
+  a[href] :is(.site-icon, svg, img) {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page .home-hero .hero-content h1 {
+    display: flex;
+    width: min(100%, 350px) !important;
+    flex-direction: column;
+    color: #ffffff;
+    font-size: clamp(2.25rem, 11vw, 2.8rem) !important;
+    line-height: 0.98 !important;
+    white-space: normal !important;
+  }
+
+  .home-page .home-hero .hero-content h1 > span {
+    display: block;
+  }
+
+  .services-page .services-facility-group article {
+    min-height: 0;
+  }
+
+  .services-page .services-facility-image {
+    aspect-ratio: 16 / 9;
+  }
+}
 .cta-wrap {
   padding: 55px 0;
   background: #ffffff;

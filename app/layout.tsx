@@ -5,7 +5,7 @@ import "@fontsource/montserrat/600.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://anandhospitalmbd.org"),
+  metadataBase: new URL("https://www.anandhospitalmbd.org"),
   title: {
     default: "Anand Hospital | Surgical & Women's Healthcare in Moradabad",
     template: "%s | Anand Hospital",

@@ -16,7 +16,7 @@ export const services: readonly Service[] = [
 export const departments = services.map(({ name, icon, description, care }) => ({ name, icon, description, services: care }));
 
 export const doctors = [
-  { name: "Dr Subhash Singh", department: "General Surgery", qualification: "MBBS, MS", experience: "Experienced consultant in general and laparoscopic surgery", role: "Consultant General Surgeon", photo: "/images/doctors/drsubhash.png", featured: true },
+  { name: "Dr Subhash Singh", department: "General Surgery", qualification: "MBBS, MS", experience: "Former Lecturer, PGIMS Rohtak; experienced consultant in general and laparoscopic surgery", role: "Consultant General Surgeon", photo: "/images/doctors/drsubhash.png", featured: true },
   { name: "Dr Nidhi Thakur", department: "Obstetrics & Gynaecology", qualification: "MBBS (KGMU), DGO (LLRM Medical College)", experience: "20+ years in high-risk obstetrics, gynaecology, laparoscopy, hysteroscopy and infertility care; former Senior Resident at PGIMS Rohtak", role: "Consultant Obstetrician & Gynaecologist", photo: "/images/doctors/drnidhi.png", featured: true },
   { name: "Dr Bhoopendra Kumar Sharma", department: "Urology", qualification: "MBBS, MS (General Surgery), MCh (Urology)", experience: "Consultant and Assistant Professor of Urology; member of the Urological Society of India, Urology Academic Forum of Odisha and ASI", role: "Consultant Urologist & Assistant Professor", photo: "/images/doctors/drbhupendra.png" },
   { name: "Dr Rajiv Kumar", department: "Paediatrics", qualification: "MBBS, MD Paediatrics", experience: "12 years in paediatrics, neonatology, NICU, PICU and paediatric emergency care", role: "Consultant Paediatrician & Neonatologist", photo: "/images/doctors/drrajiv.png" },
