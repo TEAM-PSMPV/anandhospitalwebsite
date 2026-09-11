@@ -184,5 +184,6 @@ final result: passed
 - Second pass: P2—the flat frame color did not match the reference's distinct outer and image fields.
 - Fix: sampled and applied the reference-aligned blue-gray outer field and light media field, then recaptured desktop, mobile, and combined comparison evidence.
 - Post-fix evidence: `qa-artifacts/home-reference-comparison.png` and `qa-artifacts/visual-qa-results.json` show the corrected composition, full-opacity image, disabled mask, working hover state, and overflow-free desktop/mobile layouts.
+- Production continuity pass: the first deployment revealed a P2 light letterbox seam around the contained photograph; the media field was changed to the sampled outer blue-gray so the hero reads as one continuous field, then recaptured and redeployed.
 
 final result: passed
