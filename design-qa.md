@@ -136,6 +136,41 @@ final result: passed
 
 ---
 
+# Homepage Full-Bleed Cover Hero Design QA — 2026-09-11
+
+- Source visual truth: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/herocorrect.png`
+- Source and implementation comparison: `qa-artifacts/home-cover-comparison.png`
+- Implementation screenshot: `qa-artifacts/home-desktop-cover.png`
+- Viewport: 1813 × 868 desktop at deviceScaleFactor 1; no density normalization required
+- State: homepage initial load with existing hero copy and CTA links
+
+## Findings
+
+- No actionable P0, P1, or P2 issues remain for the requested hero layout.
+- The desktop hero media is full width and full height directly below the existing navbar.
+- The supplied image uses `object-fit: cover` and centered positioning, matching the reference's large doctor scale.
+- Existing text and CTA links remain layered over the left side; no copy, functionality, navbar, mobile rules, or downstream sections were changed.
+- The local browser reported only the known production-origin favicon CSP warning; there were no page exceptions or horizontal overflow issues.
+
+## Required fidelity surfaces
+
+- Fonts and typography: passed; existing homepage typography and text hierarchy are preserved.
+- Spacing and layout rhythm: passed; the inset frame, side gutters, and extra hero framing are removed.
+- Colors and visual tokens: passed; the source image supplies the full-bleed hero surface and existing overlay/button colors remain unchanged.
+- Image quality and asset fidelity: passed; the existing team image is used directly with cover-style cropping and no placeholder or generated substitute.
+- Copy and content: passed; “Personalized Expert care.” and both CTA labels are unchanged.
+- Responsiveness and accessibility: passed for desktop; the change is restricted to the existing `min-width: 992px` rule, preserving mobile image behavior, semantic links, alt text, and overflow safety.
+
+## Comparison history
+
+- Before this pass: the hero used an 82% inset media frame with visible outer gutters and letterbox treatment.
+- Fix: changed only the desktop hero media to `inset: 0`, `width: 100%`, and `object-fit: cover`, while retaining the existing left overlay.
+- Post-fix evidence: `qa-artifacts/home-cover-comparison.png` confirms the full-width crop and overlay composition against the supplied reference.
+
+final result: passed
+
+---
+
 # Homepage Hero Reference Match Design QA — 2026-09-11
 
 - Source visual truth: `/mnt/c/Shishir/team-psmpv/clients/anand-hospital/assets/Images/herocorrect.png`
