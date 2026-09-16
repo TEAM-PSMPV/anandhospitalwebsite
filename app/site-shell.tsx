@@ -145,6 +145,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list"><p>Services &amp; Specialty Areas</p>{hospitalServices.map((service) => <Link href={`/services/${service.slug}`} key={service.slug} onClick={closeNavigation}>{service.shortName}</Link>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div><div className="services-menu-art"><Image src="/images/facilities/reception-area.png" width={1448} height={1086} alt="Anand Hospital reception area" /></div></div>
           </div> : <Link className={pathname === href ? "active" : ""} href={href} key={label} onClick={closeNavigation}><Icon name={icon} /><span>{label}</span></Link>)}
         </nav>
+        <a className="header-emergency" href="tel:+917351028221"><Icon name="phone" /><span>Call Emergency<small>+91 7351028221</small></span></a>
         <button className={open ? "menu-button is-open" : "menu-button"} type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => { setOpen((current) => !current); setServicesOpen(false); }}>{open ? <svg className="menu-close-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" /></svg> : <Icon name="menu" />}</button>
       </div>
     </header>

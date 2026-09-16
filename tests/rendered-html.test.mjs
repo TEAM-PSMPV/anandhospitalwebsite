@@ -36,6 +36,21 @@ test("renders development preview metadata", async () => {
   assert.match(await response.text(), developmentPreviewMeta);
 });
 
+test("renders the homepage conversion and location content", async () => {
+  const response = await fetchPath();
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /Laparoscopic Surgery and Women’s Healthcare in Moradabad/);
+  assert.match(html, /Book an Appointment/);
+  assert.match(html, /Call Emergency/);
+  assert.match(html, /Verified Google rating · 229 reviews/);
+  assert.match(html, /Dr Subhash Singh/);
+  assert.match(html, /Dr Nidhi Thakur/);
+  assert.match(html, /Map showing Anand Hospital on Rampur Road/);
+  assert.match(html, /Parking is available at the hospital/);
+});
+
 test("renders Anand Hospital identity and supplied clinical details", async () => {
   const response = await fetchPath("/doctors");
   const html = await response.text();
@@ -94,6 +109,7 @@ test("adds the public-site security baseline", async () => {
   assert.match(contentSecurityPolicy, /frame-ancestors 'none'/);
   assert.match(contentSecurityPolicy, /script-src[^;]*https:\/\/static\.cloudflareinsights\.com/);
   assert.match(contentSecurityPolicy, /connect-src[^;]*https:\/\/cloudflareinsights\.com/);
+  assert.match(contentSecurityPolicy, /frame-src[^;]*https:\/\/www\.google\.com/);
 });
 
 test("answers chatbot questions through the grounded Llama endpoint", async () => {

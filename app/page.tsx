@@ -229,6 +229,27 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="home-find-us" id="find-us" aria-labelledby="home-find-us-title">
+          <div className="container home-find-us-grid">
+            <div className="home-map">
+              <iframe
+                title="Map showing Anand Hospital on Rampur Road, Moradabad"
+                src="https://www.google.com/maps?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <div className="home-find-us-copy">
+              <p className="kicker">Find Us</p>
+              <h2 id="home-find-us-title">Easy to reach on Rampur Road.</h2>
+              <div className="home-location-detail"><Icon name="location" /><div><strong>Landmark</strong><p>Near Miglani Cinema, Rampur Road, Moradabad [244001]</p></div></div>
+              <div className="home-location-detail"><Icon name="hospital-set-3" /><div><strong>Parking</strong><p>Parking is available at the hospital. Please follow the on-site guidance when you arrive.</p></div></div>
+              <div className="home-location-detail"><Icon name="clock" /><div><strong>Open 24×7</strong><p>Emergency care and hospital support are available every day.</p></div></div>
+              <a className="button button-blue" href="https://maps.google.com/?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001" target="_blank" rel="noreferrer">Get Directions <Icon name="arrow" /></a>
+            </div>
+          </div>
+        </section>
+
         <Assistance />
       </div>
     </SiteShell>
