@@ -166,6 +166,19 @@ function withSecurityHeaders(response: Response): Response {
   });
 }
 
+async function normalizeNotFoundMetadata(response: Response): Promise<Response> {
+  if (response.status !== 404 || !response.headers.get("content-type")?.startsWith("text/html")) return response;
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  let html = await response.text();
+  html = html
+    .replace(/<title>[^<]*<\/title>/i, "<title>Page Not Found | Anand Hospital</title>")
+    .replace(/<link rel="canonical"[^>]*>/i, "")
+    .replace(/<meta name="robots"[^>]*>/i, "<meta name=\"robots\" content=\"noindex, follow\"/>");
+  if (!/<meta name="robots"/i.test(html)) html = html.replace("</head>", "<meta name=\"robots\" content=\"noindex, follow\"/></head>");
+  return new Response(html, { status: response.status, statusText: response.statusText, headers });
+}
+
 // Image security config. SVG sources with .svg extension auto-skip the
 // optimization endpoint on the client side (served directly, no proxy).
 // To route SVGs through the optimizer (with security headers), set
@@ -228,7 +241,7 @@ const worker = {
       return withSecurityHeaders(imageResponse);
     }
 
-    return withSecurityHeaders(await handler.fetch(request, env, ctx));
+    return withSecurityHeaders(await normalizeNotFoundMetadata(await handler.fetch(request, env, ctx)));
   },
 };
 

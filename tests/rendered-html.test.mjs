@@ -152,6 +152,9 @@ test("renders indexable SEO metadata, doctor profiles, sitemap, breadcrumbs, red
 
   assert.equal(missingResponse.status, 404);
   assert.match(missing, /We couldn’t find that page/);
+  assert.match(missing, /<title>Page Not Found \| Anand Hospital<\/title>/);
+  assert.match(missing, /<meta name="robots" content="noindex, follow"\/>/);
+  assert.doesNotMatch(missing, /rel="canonical"/);
 
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("redirect-test", `${process.pid}-${Date.now()}`);
