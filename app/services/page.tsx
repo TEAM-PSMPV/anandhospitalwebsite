@@ -1,8 +1,12 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { services } from "../data";
 import { Assistance, Icon, type IconName, SiteShell } from "../site-shell";
 import Image from "next/image";
 import { FacilitySlideshow } from "../facility-slideshow";
+import { Breadcrumbs, createPageMetadata, hospitalKeywords, surgeryKeywords, womensHealthKeywords } from "../seo";
+
+export const metadata: Metadata = createPageMetadata({ title: "Hospital Services in Moradabad | Anand Hospital", description: "Explore surgery, maternity, emergency, ICU, paediatrics, urology and other hospital services at Anand Hospital in Moradabad.", path: "/services", keywords: [...hospitalKeywords, ...surgeryKeywords, ...womensHealthKeywords] });
 
 const facilityGroups: ReadonlyArray<{ title: string; tone: "blue" | "green"; items: ReadonlyArray<{ title: string; description: string; icon: IconName; image: string; imageAlt: string; imageKind?: "icon" }> }> = [
   { title: "Diagnostics & Facilities", tone: "blue", items: [
@@ -33,6 +37,7 @@ const specialtyCardIcons: Partial<Record<(typeof services)[number]["slug"], Icon
 
 export default function Services() {
   return <SiteShell>
+    <Breadcrumbs items={[{ name: "Services", href: "/services" }]} />
     <div className="services-page">
       <section className="services-hero">
         <div className="container services-hero-grid">

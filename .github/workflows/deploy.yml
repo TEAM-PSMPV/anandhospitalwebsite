@@ -20,6 +20,10 @@ jobs:
     environment:
       name: production
       url: https://www.anandhospitalmbd.org/
+    env:
+      NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
+      NEXT_PUBLIC_BING_SITE_VERIFICATION: ${{ secrets.BING_SITE_VERIFICATION }}
+      INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -30,6 +34,8 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      - name: Prepare webmaster verification assets
+        run: node scripts/prepare-indexnow-key.mjs
       - name: Verify production candidate
         run: |
           npm run lint
@@ -40,4 +46,11 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Smoke test production
-        run: curl --fail --show-error --silent --retry 6 --retry-all-errors --retry-delay 10 https://www.anandhospitalmbd.org/ > /dev/null
+        run: |
+          curl --fail --show-error --silent --retry 6 --retry-all-errors --retry-delay 10 https://www.anandhospitalmbd.org/ > /dev/null
+          curl --fail --show-error --silent https://www.anandhospitalmbd.org/sitemap.xml > /dev/null
+          curl --fail --show-error --silent https://www.anandhospitalmbd.org/robots.txt | grep -F "Sitemap: https://www.anandhospitalmbd.org/sitemap.xml"
+      - name: Notify Bing and participating search engines through IndexNow
+        if: ${{ env.INDEXNOW_KEY != '' }}
+        continue-on-error: true
+        run: node scripts/submit-indexnow.mjs

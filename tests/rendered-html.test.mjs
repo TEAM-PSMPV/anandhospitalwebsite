@@ -118,6 +118,49 @@ test("renders complete Health Library procedure guides", async () => {
   });
 });
 
+test("renders indexable SEO metadata, doctor profiles, sitemap, breadcrumbs, redirects and custom 404", async () => {
+  const [homeResponse, doctorResponse, sitemapResponse, robotsResponse, missingResponse] = await Promise.all([
+    fetchPath("/"),
+    fetchPath("/doctors/dr-subhash-singh"),
+    fetchPath("/sitemap.xml"),
+    fetchPath("/robots.txt"),
+    fetchPath("/missing-patient-page"),
+  ]);
+  const home = await homeResponse.text();
+  const doctor = await doctorResponse.text();
+  const sitemap = await sitemapResponse.text();
+  const robots = await robotsResponse.text();
+  const missing = await missingResponse.text();
+
+  assert.match(home, /<title>Anand Hospital Moradabad \| Surgery, Gynaecology &amp; 24×7 Care<\/title>/);
+  assert.match(home, /rel="canonical" href="https:\/\/www\.anandhospitalmbd\.org"/);
+  assert.match(home, /property="og:title"/);
+  assert.match(home, /name="twitter:card"/);
+  assert.match(home, /"@type":"Hospital"/);
+
+  assert.equal(doctorResponse.status, 200);
+  assert.match(doctor, /Dr Subhash Singh \| Laparoscopic Surgeon in Moradabad/);
+  assert.match(doctor, /laparoscopic surgeon near Rampur Road/);
+  assert.match(doctor, /"@type":"Physician"/);
+  assert.match(doctor, /"@type":"BreadcrumbList"/);
+
+  assert.equal(sitemapResponse.status, 200);
+  assert.match(sitemapResponse.headers.get("content-type") ?? "", /application\/xml/);
+  assert.match(sitemap, /health-library\/gallbladder-stone-surgery/);
+  assert.match(sitemap, /doctors\/dr-nidhi-thakur/);
+  assert.match(robots, /Sitemap: https:\/\/www\.anandhospitalmbd\.org\/sitemap\.xml/);
+
+  assert.equal(missingResponse.status, 404);
+  assert.match(missing, /We couldn’t find that page/);
+
+  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+  workerUrl.searchParams.set("redirect-test", `${process.pid}-${Date.now()}`);
+  const { default: worker } = await import(workerUrl.href);
+  const redirect = await worker.fetch(new Request("http://localhost/our-doctors?source=old"), {}, { waitUntil() {}, passThroughOnException() {} });
+  assert.equal(redirect.status, 301);
+  assert.equal(redirect.headers.get("location"), "https://www.anandhospitalmbd.org/doctors?source=old");
+});
+
 test("adds the public-site security baseline", async () => {
   const response = await fetchPath();
 

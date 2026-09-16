@@ -1,6 +1,10 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { Icon, SiteShell } from "../site-shell";
 import { AppointmentForm } from "./appointment-form";
+import { Breadcrumbs, createPageMetadata, hospitalKeywords } from "../seo";
+
+export const metadata: Metadata = createPageMetadata({ title: "Book a Doctor Appointment | Anand Hospital Moradabad", description: "Request a doctor appointment at Anand Hospital near Rampur Road, Moradabad, or call the hospital for 24×7 emergency care.", path: "/appointment", keywords: hospitalKeywords });
 
 type AppointmentPageProps = {
   searchParams?: Promise<{ doctor?: string; department?: string }>;
@@ -8,7 +12,7 @@ type AppointmentPageProps = {
 
 export default async function Appointment({ searchParams }: AppointmentPageProps){
   const requested = searchParams ? await searchParams : {};
-  return <SiteShell><section className="appointment-page-hero"><div className="container appointment-page-hero-grid"><div className="appointment-page-hero-copy">
+  return <SiteShell><Breadcrumbs items={[{ name: "Book Appointment", href: "/appointment" }]} /><section className="appointment-page-hero"><div className="container appointment-page-hero-grid"><div className="appointment-page-hero-copy">
     <h1>Book an Appointment</h1><p>Schedule your visit with our experienced doctors.</p>
     <div className="appointment-page-hero-features"><span><Icon name="heart"/>Patient<br/>Centered Care</span><span><Icon name="pulse"/>Advanced<br/>Technology</span><span><Icon name="doctors"/>Experienced<br/>Doctors</span><span><Icon name="shield"/>24×7 Emergency<br/>Care</span></div>
   </div><div className="appointment-page-hero-image"><Image src="/images/group-photo.png" alt="Anand Hospital medical team" fill priority sizes="(max-width: 640px) 100vw, 48vw" /></div></div></section>

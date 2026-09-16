@@ -1,7 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { Assistance, Icon, InteriorHero, SiteShell, type IconName } from "../site-shell";
 import { healthArticles } from "@/app/health-library/articles";
+import { Breadcrumbs, createPageMetadata, surgeryKeywords, womensHealthKeywords } from "../seo";
+
+export const metadata: Metadata = createPageMetadata({ title: "Doctor-Reviewed Health Information | Anand Hospital", description: "Read detailed health information about surgery, pregnancy, women’s health and common conditions from Anand Hospital in Moradabad.", path: "/health-library", keywords: [...surgeryKeywords, ...womensHealthKeywords] });
 
 const healthTopics: { title: string; description: string; icon: IconName }[] = [
   { title: "Health Tips", description: "Practical tips for everyday wellness", icon: "emergency" },
@@ -13,6 +17,7 @@ const healthTopics: { title: string; description: string; icon: IconName }[] = [
 ];
 
 export default function HealthLibrary(){return <SiteShell>
+  <Breadcrumbs items={[{ name: "Health Library", href: "/health-library" }]} />
   <InteriorHero className="health-library-hero" title="Live Healthy" text="Practical, clinician-guided information for healthier everyday decisions."/>
   <div className="health-library-search-wrap"><form className="health-library-search" action="/search" method="get"><button type="submit" aria-label="Search health topics"><Icon name="search"/></button><label className="sr-only" htmlFor="health-topic-search">Search health topics</label><input id="health-topic-search" name="q" type="search" placeholder="Search health topics, conditions and wellness advice"/></form></div>
   <section className="library-top viewport-section" aria-label="Health topics"><div className="container"><div className="topic-grid">{healthTopics.map((topic)=><article key={topic.title}><Icon name={topic.icon}/><h3>{topic.title}</h3><p>{topic.description}</p><Link href="#articles" aria-label={`Explore ${topic.title}`}><Icon name="arrow"/></Link></article>)}</div></div></section>

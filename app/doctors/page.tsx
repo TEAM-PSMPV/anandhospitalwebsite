@@ -1,9 +1,14 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Assistance, Icon, SiteShell } from "../site-shell";
 import { DoctorCards } from "../doctor-cards";
 import { PatientTestimonials } from "../patient-testimonials";
+import { Breadcrumbs, createPageMetadata, surgeryKeywords, womensHealthKeywords } from "../seo";
+
+export const metadata: Metadata = createPageMetadata({ title: "Doctors at Anand Hospital Moradabad | Book an Appointment", description: "Meet Anand Hospital doctors in Moradabad, including specialists in laparoscopic surgery, obstetrics, gynaecology, urology and paediatrics. Open 24 hours.", path: "/doctors", keywords: [...surgeryKeywords, ...womensHealthKeywords] });
 
 export default function Doctors() { return <SiteShell>
+  <Breadcrumbs items={[{ name: "Doctors", href: "/doctors" }]} />
   <section className="medical-hero"><div className="container medical-hero-grid"><div>
     <p className="kicker">Expert care, close to home</p><h1>Doctors, Departments<br/>&amp; Services</h1><p>Experienced specialists delivering quality healthcare with compassion and care.</p>
     <div className="trust-row dark"><span><Icon name="doctors"/>Experienced<br/>Specialists</span><span><Icon name="pulse"/>Advanced<br/>Technology</span><span><Icon name="heart"/>Patient First<br/>Approach</span><span><Icon name="shield"/>24×7 Emergency<br/>Care</span></div>

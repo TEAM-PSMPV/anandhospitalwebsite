@@ -4,18 +4,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Assistance, Icon, SiteShell } from "../../site-shell";
 import { getHealthArticle, healthArticles } from "@/app/health-library/articles";
+import { Breadcrumbs, createPageMetadata } from "../../seo";
 
 type Props = { params: Promise<{ slug: string }> };
 export const generateStaticParams = () => healthArticles.map(({ slug }) => ({ slug }));
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = getHealthArticle((await params).slug);
-  return article ? {
-    title: article.title,
-    description: article.summary,
-    keywords: article.keywords,
-    alternates: { canonical: `/health-library/${article.slug}` },
-    openGraph: { title: article.title, description: article.summary, images: [{ url: article.image, alt: article.imageAlt }] },
-  } : {};
+  return article ? createPageMetadata({ title: `${article.title} | Anand Hospital Moradabad`, description: article.summary, path: `/health-library/${article.slug}`, keywords: article.keywords, image: article.image }) : {};
 }
 
 export default async function HealthArticlePage({ params }: Props) {
@@ -24,6 +19,7 @@ export default async function HealthArticlePage({ params }: Props) {
   const index = healthArticles.findIndex(({ slug }) => slug === article.slug);
   const related = Array.from({ length: 3 }, (_, offset) => healthArticles[(index + offset + 1) % healthArticles.length]);
   return <SiteShell>
+    <Breadcrumbs items={[{ name: "Health Library", href: "/health-library" }, { name: article.title, href: `/health-library/${article.slug}` }]} />
     <article className="health-article-page">
       <header className="health-article-hero"><div className="container health-article-hero-grid"><div className="health-article-hero-copy">
         <Link className="health-article-back" href="/health-library"><span aria-hidden="true">←</span> Health Library</Link>

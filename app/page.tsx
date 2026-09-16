@@ -1,6 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Assistance, Icon, SiteShell, type IconName } from "./site-shell";
 import { HomeHero } from "./home-hero";
+import { createPageMetadata, hospitalKeywords } from "./seo";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Anand Hospital Moradabad | Surgery, Gynaecology & 24×7 Care",
+  description: "Anand Hospital provides surgery, maternity, gynaecology, ICU and 24×7 emergency care near Rampur Road, Moradabad.",
+  path: "/",
+  keywords: hospitalKeywords,
+});
 
 const topActions: ReadonlyArray<{
   icon: IconName;

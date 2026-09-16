@@ -8,6 +8,55 @@
   font-weight: 400 700;
 }
 
+/* Search-friendly, visible breadcrumb trail shared by indexable pages. */
+.seo-breadcrumb {
+  background: #f5f9fd;
+  border-bottom: 1px solid #dce9f5;
+  color: #49647b;
+  font-size: .84rem;
+  padding: 10px max(20px, calc((100vw - 1180px) / 2));
+}
+
+.seo-breadcrumb ol { display: flex; flex-wrap: wrap; gap: 7px; list-style: none; margin: 0; padding: 0; }
+.seo-breadcrumb li:not(:last-child)::after { color: #8aa0b3; content: "/"; margin-left: 7px; }
+.seo-breadcrumb a { color: #045aa7; text-decoration: none; }
+.seo-breadcrumb a:hover { text-decoration: underline; }
+
+.doctor-card-copy h3 a,
+.doctor-profile-card h3 a { color: inherit; text-decoration: none; }
+.doctor-card-copy h3 a:hover,
+.doctor-profile-card h3 a:hover { color: #045aa7; text-decoration: underline; }
+
+.doctor-detail-page { background: #fff; }
+.doctor-detail-hero { background: linear-gradient(135deg, #edf7ff, #fff); padding: clamp(44px, 7vw, 88px) 0; }
+.doctor-detail-hero-grid { align-items: center; display: grid; gap: clamp(32px, 6vw, 76px); grid-template-columns: minmax(240px, 360px) 1fr; }
+.doctor-detail-hero-grid > img { background: #dcecf8; border-radius: 22px; height: auto; max-height: 470px; object-fit: cover; object-position: center top; width: 100%; }
+.doctor-detail-hero h1 { color: #023767; font-size: clamp(2.2rem, 5vw, 4.4rem); margin: 8px 0 6px; }
+.doctor-detail-role { color: #0577ba; font-size: 1.15rem; font-weight: 600; }
+.doctor-detail-hero dl { display: grid; gap: 12px; margin: 24px 0; }
+.doctor-detail-hero dl div { border-left: 3px solid #08a6c5; padding-left: 14px; }
+.doctor-detail-hero dt { color: #49647b; font-size: .8rem; font-weight: 600; text-transform: uppercase; }
+.doctor-detail-hero dd { margin: 3px 0 0; }
+.doctor-detail-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.doctor-detail-content, .doctor-detail-hospital { padding: clamp(44px, 6vw, 74px) 0; }
+.doctor-detail-columns { display: grid; gap: 52px; grid-template-columns: 1fr 1fr; }
+.doctor-detail-columns ul { display: grid; gap: 13px; list-style: none; padding: 0; }
+.doctor-detail-columns li { align-items: center; display: flex; gap: 10px; }
+.doctor-detail-columns li svg { color: #08a6c5; height: 24px; width: 24px; }
+.doctor-detail-columns nav { display: grid; gap: 10px; }
+.doctor-detail-columns nav a { align-items: center; border-bottom: 1px solid #dce9f5; color: #045aa7; display: flex; justify-content: space-between; padding: 10px 0; text-decoration: none; }
+.doctor-detail-columns nav svg { height: 18px; width: 18px; }
+.doctor-detail-hospital { background: #f5f9fd; }
+.not-found-page { padding: clamp(70px, 10vw, 130px) 0; text-align: center; }
+.not-found-page h1 { color: #023767; font-size: clamp(2.2rem, 6vw, 4.5rem); margin: 10px 0 16px; }
+.not-found-page p { margin-inline: auto; max-width: 650px; }
+.not-found-page > .container > div { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px; }
+
+@media (max-width: 760px) {
+  .doctor-detail-hero-grid, .doctor-detail-columns { grid-template-columns: 1fr; }
+  .doctor-detail-hero-grid > img { max-height: 390px; max-width: 300px; }
+}
+
 :root {
   --blue: #023767;
   --blue-dark: #023767;

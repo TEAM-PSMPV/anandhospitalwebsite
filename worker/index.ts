@@ -1,6 +1,8 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
+import { doctors, services } from "../app/data";
+import { healthArticles } from "../app/health-library/articles";
 
 interface Env {
   ASSETS: Fetcher;
@@ -87,6 +89,29 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
   }
 }
 
+const webVitalNames = new Set(["CLS", "FCP", "INP", "LCP", "TTFB"]);
+
+async function handleWebVitals(request: Request): Promise<Response> {
+  if (request.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
+  try {
+    const metric = await request.json() as { name?: unknown; value?: unknown; rating?: unknown; id?: unknown; navigationType?: unknown; path?: unknown };
+    if (typeof metric.name !== "string" || !webVitalNames.has(metric.name) || typeof metric.value !== "number" || !Number.isFinite(metric.value)) {
+      return jsonResponse({ error: "Invalid metric." }, 400);
+    }
+    console.log("web-vital", JSON.stringify({
+      name: metric.name,
+      value: metric.value,
+      rating: typeof metric.rating === "string" ? metric.rating : undefined,
+      id: typeof metric.id === "string" ? metric.id.slice(0, 100) : undefined,
+      navigationType: typeof metric.navigationType === "string" ? metric.navigationType : undefined,
+      path: typeof metric.path === "string" ? metric.path.slice(0, 300) : undefined,
+    }));
+    return new Response(null, { status: 204, headers: { "cache-control": "no-store" } });
+  } catch {
+    return jsonResponse({ error: "Invalid request." }, 400);
+  }
+}
+
 interface ExecutionContext {
   waitUntil(promise: Promise<unknown>): void;
   passThroughOnException(): void;
@@ -116,6 +141,21 @@ const securityHeaders = {
   "X-Frame-Options": "DENY",
 } as const;
 
+const publicSiteUrl = "https://www.anandhospitalmbd.org";
+const sitemapPaths = [
+  "", "/about", "/doctors", "/services", "/appointment", "/health-library", "/testimonials",
+  ...doctors.map(({ name }) => `/doctors/${name.toLowerCase().replace(/^dr\s+/, "dr-").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`),
+  ...services.map(({ slug }) => `/services/${slug}`),
+  ...healthArticles.map(({ slug }) => `/health-library/${slug}`),
+];
+
+function sitemapResponse(): Response {
+  const urls = sitemapPaths.map((path) => `<url><loc>${publicSiteUrl}${path}</loc><lastmod>2026-09-16</lastmod></url>`).join("");
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`, {
+    headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" },
+  });
+}
+
 function withSecurityHeaders(response: Response): Response {
   const headers = new Headers(response.headers);
   for (const [name, value] of Object.entries(securityHeaders)) headers.set(name, value);
@@ -136,8 +176,44 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    const redirectAliases: Record<string, string> = {
+      "/book-appointment": "/appointment",
+      "/appointments": "/appointment",
+      "/our-doctors": "/doctors",
+      "/doctor": "/doctors",
+      "/our-services": "/services",
+      "/departments": "/services",
+      "/health-tips": "/health-library",
+      "/blog": "/health-library",
+      "/dr-subhash-singh": "/doctors/dr-subhash-singh",
+      "/dr-nidhi-thakur": "/doctors/dr-nidhi-thakur",
+      "/gallbladder-surgery": "/health-library/gallbladder-stone-surgery",
+      "/hernia-surgery": "/health-library/hernia-surgery",
+      "/appendix-surgery": "/health-library/appendix-surgery",
+      "/pcos-treatment": "/health-library/pcos-treatment",
+    };
+    const canonicalHost = "www.anandhospitalmbd.org";
+    let redirectPath = redirectAliases[url.pathname];
+    if (!redirectPath && url.pathname.length > 1 && url.pathname.endsWith("/")) redirectPath = url.pathname.replace(/\/+$/, "");
+    if (redirectPath || url.hostname === "anandhospitalmbd.org" || (url.hostname === canonicalHost && url.protocol !== "https:")) {
+      url.protocol = "https:";
+      url.hostname = canonicalHost;
+      if (redirectPath) url.pathname = redirectPath;
+      return withSecurityHeaders(Response.redirect(url.toString(), 301));
+    }
+
     if (url.pathname === "/api/chat") {
       return withSecurityHeaders(await handleChat(request, env));
+    }
+
+    if (url.pathname === "/robots.txt") {
+      return withSecurityHeaders(new Response(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /search\nSitemap: ${publicSiteUrl}/sitemap.xml\nHost: ${publicSiteUrl}\n`, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } }));
+    }
+
+    if (url.pathname === "/sitemap.xml") return withSecurityHeaders(sitemapResponse());
+
+    if (url.pathname === "/api/web-vitals") {
+      return withSecurityHeaders(await handleWebVitals(request));
     }
 
     if (url.pathname === "/_vinext/image") {

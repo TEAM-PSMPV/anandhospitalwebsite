@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { services } from "../../data";
 import { Assistance, Icon, SiteShell } from "../../site-shell";
 import Image from "next/image";
+import { Breadcrumbs, createPageMetadata, hospitalKeywords, surgeryKeywords, womensHealthKeywords } from "../../seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -15,11 +16,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = services.find((item) => item.slug === slug);
   if (!service) return {};
-  return {
-    title: `${service.name} in Moradabad`,
-    description: `${service.description} Learn about ${service.name.toLowerCase()} at Anand Hospital, Near Miglani Cinema, Rampur Road, Moradabad 244001.`,
-    alternates: { canonical: `/services/${service.slug}` },
-  };
+  const keywords = service.slug === "general-surgery" ? surgeryKeywords : service.slug === "obstetrics-gynaecology" ? womensHealthKeywords : hospitalKeywords;
+  return createPageMetadata({ title: `${service.name} in Moradabad | Anand Hospital`, description: `${service.description} Learn about ${service.name.toLowerCase()} at Anand Hospital, Near Miglani Cinema, Rampur Road, Moradabad 244001.`, path: `/services/${service.slug}`, keywords, image: service.heroImage });
 }
 
 const supportingIcons = ["a-female-doctor", "alcohol-disinfection", "doctor-set-3", "hospital-set-3", "male-doctor", "medical-examination-female", "medical-examination-male", "thermometer", "trusted-community", "holding-hands"] as const;
@@ -41,10 +39,10 @@ export default async function ServicePage({ params }: Props) {
   };
 
   return <SiteShell>
+    <Breadcrumbs items={[{ name: "Services", href: "/services" }, { name: service.name, href: `/services/${service.slug}` }]} />
     <article className="service-detail-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="service-detail-hero"><div className="container service-detail-hero-grid"><div>
-        <Link className="service-breadcrumb" href="/services">Services</Link>
         <h1>{service.name}</h1><p>{service.description}</p>
         <div className="service-detail-actions"><Link className="button button-white" href="/appointment">Book Appointment</Link><a className="button button-outline" href="tel:+917351028221">Call Hospital</a></div>
       </div><div className="service-detail-hero-photo"><Image src={service.heroImage} alt={`${service.name} facility at Anand Hospital`} width={1448} height={1086} /></div></div></section>

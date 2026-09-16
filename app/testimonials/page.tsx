@@ -1,5 +1,9 @@
 import { Assistance, SiteShell } from "../site-shell";
+import type { Metadata } from "next";
 import { patientTestimonials } from "../testimonials-data";
+import { Breadcrumbs, createPageMetadata } from "../seo";
+
+export const metadata: Metadata = createPageMetadata({ title: "Patient Testimonials | Anand Hospital Moradabad", description: "Read patient experiences and testimonials about care at Anand Hospital in Moradabad.", path: "/testimonials" });
 
 const instagramPosts = [
   { id: "Dbpg4yMtPXu", url: "https://www.instagram.com/p/Dbpg4yMtPXu/" },
@@ -10,6 +14,7 @@ const instagramPosts = [
 
 export default function TestimonialsPage() {
   return <SiteShell>
+    <Breadcrumbs items={[{ name: "Testimonials", href: "/testimonials" }]} />
     <section className="testimonials-page" aria-labelledby="testimonials-page-title">
       <div className="container">
         <header className="testimonials-page-heading">

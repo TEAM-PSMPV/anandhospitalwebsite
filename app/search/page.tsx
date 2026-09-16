@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { departments, doctors } from "../data";
 import { Assistance, Icon, SiteShell } from "../site-shell";
+import { Breadcrumbs, doctorSlug } from "../seo";
 
 export default function Search() {
   const searchParams = useSearchParams();
@@ -12,7 +13,7 @@ export default function Search() {
 
   const destinations = [
     ...departments.map((department) => ({ title: department.name, detail: department.description, href: "/doctors", searchText: "department service specialty" })),
-    ...doctors.map((doctor) => ({ title: doctor.name, detail: `${doctor.department} · ${doctor.qualification}`, href: "/doctors#medical-team", searchText: "doctor doctors specialist" })),
+    ...doctors.map((doctor) => ({ title: doctor.name, detail: `${doctor.department} · ${doctor.qualification}`, href: `/doctors/${doctorSlug(doctor.name)}`, searchText: "doctor doctors specialist" })),
     { title: "Book an Appointment", detail: "Request a consultation at Anand Hospital", href: "/appointment", searchText: "book appointment visit" },
     { title: "About Anand Hospital", detail: "Our story, values and facilities", href: "/about", searchText: "about hospital story" },
     { title: "Health Library", detail: "Helpful health information", href: "/health-library", searchText: "health library wellness" },
@@ -23,6 +24,7 @@ export default function Search() {
     : [];
 
   return <SiteShell>
+    <Breadcrumbs items={[{ name: "Search", href: "/search" }]} />
     <section className="search-section" aria-labelledby="search-page-title"><div className="container search-page">
       <h1 id="search-page-title">Search Anand Hospital</h1>
       <label className="search-box"><Icon name="search"/><span className="sr-only">Search doctors, departments and services</span><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="What can we help you find?"/>{query && <button onClick={() => setQuery("")} type="button">Clear</button>}</label>

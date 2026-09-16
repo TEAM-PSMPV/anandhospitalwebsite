@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Assistance, Icon, SiteShell } from "../site-shell";
 import { CountingStat } from "./counting-stat";
 import { DoctorCards } from "../doctor-cards";
+import { Breadcrumbs, createPageMetadata, hospitalKeywords } from "../seo";
+
+export const metadata: Metadata = createPageMetadata({ title: "About Anand Hospital Moradabad | Established 2007", description: "Learn about Anand Hospital, an established multispeciality hospital serving Moradabad since 2007 with patient-centred care.", path: "/about", keywords: hospitalKeywords });
 
 type CoreValueIconName = "compassion" | "patient-first" | "integrity" | "excellence" | "learning" | "community";
 
@@ -37,6 +41,7 @@ function CoreValueIcon({ name }: { name: CoreValueIconName }) {
 }
 
 export default function About() { return <SiteShell>
+  <Breadcrumbs items={[{ name: "About", href: "/about" }]} />
   <section className="about-hero"><div className="container about-hero-grid"><div>
     <p className="kicker light">About Anand Hospital</p><h1>Trusted healthcare in Moradabad.</h1><p>Affordable, ethical and patient-centered care for every family.</p>
     <div className="trust-row"><span><Icon name="heart" />Patient<br/>Centered Care</span><span><Icon name="pulse" />Advanced<br/>Technology</span><span><Icon name="doctors" />Experienced<br/>Doctors</span><span><Icon name="shield" />24×7 Emergency<br/>Care</span></div>
