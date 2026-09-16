@@ -77,7 +77,11 @@ test("renders the requested appointment and facility content", async () => {
   assert.match(servicesHtml, /Critical Care High Tech ICU/);
   assert.doesNotMatch(servicesHtml, />Blood Bank</);
   assert.match(servicesHtml, /\/images\/facilities\/imaging-services\.png/);
-  assert.match(servicesHtml, /\/images\/facilities\/nicu\.png/);
+  assert.match(servicesHtml, /\/images\/facilities\/critical-care-icu\.png/);
+  assert.match(servicesHtml, /\/images\/facilities\/health-checkups-ot\.png/);
+  assert.match(servicesHtml, /\/images\/facilities\/deluxe-room\.png/);
+  assert.match(servicesHtml, /\/images\/facilities\/home-care\.png/);
+  assert.doesNotMatch(servicesHtml, /class="cta-photo"/);
 });
 
 test("adds the public-site security baseline", async () => {
@@ -90,4 +94,33 @@ test("adds the public-site security baseline", async () => {
   assert.match(contentSecurityPolicy, /frame-ancestors 'none'/);
   assert.match(contentSecurityPolicy, /script-src[^;]*https:\/\/static\.cloudflareinsights\.com/);
   assert.match(contentSecurityPolicy, /connect-src[^;]*https:\/\/cloudflareinsights\.com/);
+});
+
+test("answers chatbot questions through the grounded Llama endpoint", async () => {
+  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+  workerUrl.searchParams.set("chat-test", `${process.pid}-${Date.now()}`);
+  const { default: worker } = await import(workerUrl.href);
+  let invocation;
+
+  const response = await worker.fetch(
+    new Request("http://localhost/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ message: "Doctors ke baare mein bataiye", history: [] }),
+    }),
+    {
+      AI: {
+        run: async (model, input) => {
+          invocation = { model, input };
+          return { response: "Anand Hospital mein chhe listed doctors hain." };
+        },
+      },
+    },
+    { waitUntil() {}, passThroughOnException() {} },
+  );
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { answer: "Anand Hospital mein chhe listed doctors hain." });
+  assert.equal(invocation.model, "@cf/meta/llama-3.1-8b-instruct-fp8");
+  assert.match(invocation.input.messages[0].content, /Use ONLY the ANAND HOSPITAL WEBSITE KNOWLEDGE/);
 });

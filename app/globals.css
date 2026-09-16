@@ -2500,13 +2500,6 @@ a[href]:focus-visible {
   align-items: center;
   gap: 35px;
 }
-.cta-photo {
-  width: 180px;
-  align-self: stretch;
-  background:
-    linear-gradient(90deg, transparent, var(--blue-dark)),
-    url("/images/medical-team.webp") 65% center/cover;
-}
 .cta h2 {
   margin: 0;
   font-size: clamp(1.7rem, 3vw, 3rem);
@@ -2960,9 +2953,6 @@ main > section,
     align-items: flex-start;
     flex-direction: column;
     padding: 30px;
-  }
-  .cta-photo {
-    display: none;
   }
   .cta-actions {
     width: 100%;
@@ -6094,10 +6084,7 @@ main .cta {
 
 main .cta-copy {
   gap: 31px;
-}
-
-main .cta-photo {
-  width: 160px;
+  margin-left: 40px;
 }
 
 main .cta h2 {
@@ -6113,6 +6100,10 @@ main .cta .button {
 @media (max-width: 760px) {
   main .cta {
     padding: 27px 30px;
+  }
+
+  main .cta-copy {
+    margin-left: 0;
   }
 }
 
@@ -6456,6 +6447,12 @@ main > section.faq {
   overflow-y: auto;
   padding: 16px;
   background: #ffffff;
+  scrollbar-width: none;
+}
+
+.chatbot-messages::-webkit-scrollbar,
+.chatbot-options::-webkit-scrollbar {
+  display: none;
 }
 
 .chatbot-message {
@@ -6503,7 +6500,7 @@ main > section.faq {
   overflow-x: auto;
   padding: 11px 12px;
   background: #ffffff;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
 
 .chatbot-options button {
@@ -6523,6 +6520,36 @@ main > section.faq {
 .chatbot-options button:hover,
 .chatbot-options button:focus-visible {
   background: #e6f3ff;
+}
+
+.chatbot-options button:disabled,
+.chatbot-form :is(input, button):disabled,
+.chatbot-header-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.chatbot-message--thinking {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 5px;
+}
+
+.chatbot-message--thinking span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7890a4;
+  animation: chatbot-thinking 1s ease-in-out infinite;
+}
+
+.chatbot-message--thinking span:nth-child(2) { animation-delay: 0.14s; }
+.chatbot-message--thinking span:nth-child(3) { animation-delay: 0.28s; }
+
+@keyframes chatbot-thinking {
+  0%, 60%, 100% { translate: 0 0; opacity: 0.48; }
+  30% { translate: 0 -3px; opacity: 1; }
 }
 
 .chatbot-form {
@@ -7953,8 +7980,15 @@ main > section.search-section {
 
 .appointment-page-hero-image {
   position: relative;
+  width: calc(100% + max(32px, calc((100vw - 1320px) / 2)));
   min-width: 0;
-  background: url("/images/medical-team.webp") 68% center / cover no-repeat;
+  margin-right: calc(-1 * max(32px, calc((100vw - 1320px) / 2)));
+  background: #dceefc;
+}
+
+.appointment-page-hero-image > img {
+  object-fit: cover;
+  object-position: 78% center;
 }
 
 .appointment-page-hero-image::before {
@@ -7996,7 +8030,6 @@ main > section.search-section {
 
   .appointment-page-hero-image {
     min-height: 240px;
-    background-position: 65% center;
   }
 }
 

@@ -203,7 +203,7 @@ export function InteriorHero({ title, text, className = "" }: { title: string; t
 
 export function Assistance() {
   return <section className="cta-wrap"><div className="container cta">
-    <div className="cta-copy"><span className="cta-photo" aria-hidden="true" /><div><h2>Need Medical Assistance?</h2><p>Book an Appointment Today</p></div></div>
+    <div className="cta-copy"><div><h2>Need Medical Assistance?</h2><p>Book an Appointment Today</p></div></div>
     <div className="cta-actions"><Link className="button button-white" href="/appointment">Book Appointment</Link><a className="button button-outline" href="tel:+917351028221">Call Hospital <Icon name="phone" /></a></div>
   </div></section>;
 }

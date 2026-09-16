@@ -5,6 +5,9 @@ import handler from "vinext/server/app-router-entry";
 interface Env {
   ASSETS: Fetcher;
   DB: D1Database;
+  AI: {
+    run(model: string, input: Record<string, unknown>): Promise<{ response?: string }>;
+  };
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -12,6 +15,76 @@ interface Env {
       };
     };
   };
+}
+
+type ChatTurn = { role: "assistant" | "user"; content: string };
+
+const hospitalKnowledge = `
+ANAND HOSPITAL WEBSITE KNOWLEDGE
+Identity: Anand Hospital is a multispecialty hospital established in 2007. It provides affordable, ethical, patient-centred healthcare in Moradabad and is open 24 hours every day.
+Address: Near Miglani Cinema, Rampur Road, Moradabad [244001].
+Appointment and emergency phone: +91 7351028221. Follow-up patient help: +91 9528261199. Email: info@anandhospitalmbd.org.
+Appointments: Patients can submit the appointment form with their name, phone, doctor, department, preferred date and a short message. The reception team then calls to confirm doctor availability and appointment details. No account is required. For rescheduling, cancellation, consultation fees or required documents, contact reception. The website lists OPD timings as Monday-Saturday 9:00 AM-6:00 PM and Sunday 9:00 AM-1:00 PM; a contact strip also lists 10:15 AM-3:00 PM, so advise the patient to call and confirm current doctor availability.
+Emergency: Emergency and critical-care support is available 24x7. For a medical emergency, visit the hospital immediately or call +91 7351028221.
+Doctors: Dr Subhash Singh — Consultant General Surgeon; MBBS, MS; former Lecturer at PGIMS Rohtak; general and laparoscopic surgery. Dr Nidhi Thakur — Consultant Obstetrician & Gynaecologist; MBBS (KGMU), DGO (LLRM Medical College); 20+ years in high-risk obstetrics, gynaecology, laparoscopy, hysteroscopy and infertility care; former Senior Resident at PGIMS Rohtak. Dr Bhoopendra Kumar Sharma — Consultant Urologist & Assistant Professor; MBBS, MS (General Surgery), MCh (Urology). Dr Rajiv Kumar — Consultant Paediatrician & Neonatologist; MBBS, MD Paediatrics; 12 years in paediatrics, neonatology, NICU, PICU and paediatric emergency care. Dr Garima Singh — Consultant Anaesthesiologist; MBBS, MD (Anaesthesiology); 18 years in perioperative anaesthesia, regional blocks and labour analgesia. Dr Rangit Pandey — Consultant Anaesthesiologist; MBBS (KGMC Lucknow), MD (Anaesthesia & Critical Care); former senior resident at UCMS & GTB Hospital, former consultant at Kailash Hospital, and former senior faculty and ICU in-charge at SRMS.
+Medical services: Emergency Care (rapid assessment, stabilisation, critical-care coordination and admission support); General Medicine (fever and infections, diabetes, hypertension and general consultations); General Surgery (general and laparoscopic procedures, cancer surgery and post-operative care); Paediatrics (child consultations, newborn and infant care, vaccinations and preventive care); Obstetrics & Gynaecology (obstetric, gynaecology, women's health and maternity care); Urology (consultation, surgical urology, stone management and follow-up); Anaesthesiology (pre-anaesthetic assessment, planning, perioperative monitoring and pain management); RMO/Critical Care (continuous monitoring, critical support, post-operative observation and emergency coordination).
+Facilities and patient care: pathology lab, X-ray and ultrasound imaging, pharmacy, high-tech ICU, health checkups, diet and nutrition guidance, deluxe rooms, home care, reception support, Ayushman Bharat card support for eligible patients, operation theatre, NICU, wards, waiting area and parking.
+Health Library topics: heart-health habits; type 2 diabetes symptoms and management; balanced nutrition and immune health; PCOS causes, symptoms and treatment; childhood vaccination; and stress management. These articles are general education and not a diagnosis or substitute for a clinician.
+Hospital values: compassion, patient first, integrity, excellence, learning and community. Mission: accessible, ethical, quality healthcare with compassion and respect. Vision: to become the most trusted healthcare institution in Western Uttar Pradesh.
+`;
+
+const chatbotSystemPrompt = `You are Anand Hospital Assistant, powered by Llama 3.1. Answer entirely inside the chat.
+Use ONLY the ANAND HOSPITAL WEBSITE KNOWLEDGE below. Never invent hospital facts, prices, availability, diagnoses, medicines, or treatment advice. If the answer is not present, say you do not have that information and offer the hospital phone number when useful. Do not tell the user to browse or visit a webpage and do not include website links.
+Default to friendly, natural Hinglish written in Latin script. If the user writes in another language or explicitly requests one, answer in that language. Keep answers concise and directly useful. For emergencies, clearly advise immediate in-person emergency care and provide +91 7351028221. For symptoms or medical decisions, give only general website information and advise consultation with a qualified clinician.
+
+${hospitalKnowledge}`;
+
+function jsonResponse(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+  });
+}
+
+async function handleChat(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") return jsonResponse({ error: "Method not allowed." }, 405);
+
+  let payload: { message?: unknown; history?: unknown };
+  try {
+    payload = await request.json();
+  } catch {
+    return jsonResponse({ error: "Invalid request." }, 400);
+  }
+
+  const message = typeof payload.message === "string" ? payload.message.trim().slice(0, 1000) : "";
+  if (!message) return jsonResponse({ error: "Please enter a question." }, 400);
+
+  const history: ChatTurn[] = Array.isArray(payload.history)
+    ? payload.history.slice(-8).flatMap((turn): ChatTurn[] => {
+        if (!turn || typeof turn !== "object") return [];
+        const role = "role" in turn && (turn.role === "assistant" || turn.role === "user") ? turn.role : null;
+        const content = "content" in turn && typeof turn.content === "string" ? turn.content.trim().slice(0, 1000) : "";
+        return role && content ? [{ role, content }] : [];
+      })
+    : [];
+
+  try {
+    const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fp8", {
+      messages: [
+        { role: "system", content: chatbotSystemPrompt },
+        ...history,
+        { role: "user", content: message },
+      ],
+      max_tokens: 320,
+      temperature: 0.2,
+    });
+    const answer = result.response?.trim();
+    if (!answer) throw new Error("Empty model response");
+    return jsonResponse({ answer });
+  } catch (error) {
+    console.error("Anand Hospital chatbot error", error);
+    return jsonResponse({ error: "Assistant abhi available nahi hai. Kripya thodi der baad dobara try karein." }, 503);
+  }
 }
 
 interface ExecutionContext {
@@ -62,6 +135,10 @@ function withSecurityHeaders(response: Response): Response {
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/chat") {
+      return withSecurityHeaders(await handleChat(request, env));
+    }
 
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
