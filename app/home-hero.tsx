@@ -26,29 +26,14 @@ export function HomeHero() {
       </div>
       <div className="container">
         <div className="hero-content">
-          <p className="hero-eyebrow">Anand Hospital · Moradabad</p>
-          <h1>Laparoscopic Surgery and Women’s Healthcare in Moradabad</h1>
-          <p className="hero-summary">Experienced surgical, maternity and emergency care at Anand Hospital, Rampur Road <span aria-hidden="true">|</span> Open 24×7.</p>
+          <h1><span>Personalized</span><span>Expert</span><span>care.</span></h1>
           <div className="hero-actions">
-            <Link className="button button-white" href="/appointment">
-              Book an Appointment
+            <Link className="button button-white" href="/doctors">
+              Find a Doctor
             </Link>
-            <a className="button button-emergency" href="tel:+917351028221">Call Emergency</a>
-            <a className="button button-outline" href="https://maps.google.com/?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001" target="_blank" rel="noreferrer">Get Directions</a>
-          </div>
-          <div className="hero-proof" aria-label="Why patients choose Anand Hospital">
-            <ul>
-              <li>Established in 2007</li>
-              <li>24×7 emergency care</li>
-              <li>Ayushman Bharat facility</li>
-              <li>Dr Subhash Singh <span>|</span> General and Laparoscopic Surgery</li>
-              <li>Dr Nidhi Thakur <span>|</span> 20+ years in Obstetrics and Gynaecology</li>
-            </ul>
-            <a className="hero-rating" href="https://share.google/iSBgE0dQM37FTrLed" target="_blank" rel="noreferrer" aria-label="View Anand Hospital's verified 4.6 rating from 229 Google reviews">
-              <span className="hero-rating-stars" aria-hidden="true">★★★★★</span>
-              <strong>4.6</strong>
-              <span>Verified Google rating · 229 reviews</span>
-            </a>
+            <Link className="button button-outline" href="/appointment">
+              Book Appointment
+            </Link>
           </div>
         </div>
       </div>
