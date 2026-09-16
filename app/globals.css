@@ -5379,6 +5379,122 @@ body :is(svg, .site-icon) {
 @media(max-width:960px){.health-article-hero-grid{grid-template-columns:minmax(0,1fr) minmax(280px,.8fr);gap:30px}.health-related-grid{grid-template-columns:minmax(0,1fr)}.health-related-grid>article{grid-template-columns:210px minmax(0,1fr)}}
 @media(max-width:640px){.health-article-hero-grid{grid-template-columns:minmax(0,1fr)}.health-article-back{margin-bottom:22px}.health-article-hero-image{aspect-ratio:16/10}.health-article-body{width:calc(100% - 32px)}.health-article-lead{margin-bottom:34px}.health-article-callout{grid-template-columns:30px minmax(0,1fr);gap:12px;padding:18px}.health-article-callout>:is(svg,.site-icon){width:28px;height:28px}.health-related-grid>article{grid-template-columns:minmax(0,1fr)}.health-related-grid img{height:auto;min-height:0;aspect-ratio:16/8}}
 
+.health-article-doctor {
+  border: 1px solid #cddfed;
+  border-radius: 14px;
+  padding: 24px;
+  background: #f5faff;
+}
+
+.health-article-doctor h3 {
+  margin: 0 0 6px;
+  color: #023767;
+  font-size: 1.12rem;
+}
+
+.health-article-doctor a,
+.health-article-sources a {
+  color: #045aa7;
+  font-weight: 600;
+}
+
+.health-article-doctor a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  text-decoration: none;
+}
+
+.health-article-doctor a :is(svg, .site-icon) {
+  width: 17px;
+  height: 17px;
+}
+
+.health-article-faq details {
+  overflow: hidden;
+  margin-top: 10px;
+  border: 1px solid #d9e3ec;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.health-article-faq summary {
+  padding: 14px 42px 14px 16px;
+  color: #163b5a;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.health-article-faq details p {
+  border-top: 1px solid #edf2f6;
+  padding: 14px 16px;
+}
+
+.health-article-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-radius: 16px;
+  padding: 26px;
+  background: #045aa7;
+  color: #ffffff;
+}
+
+.health-article-cta h2,
+.health-article-cta p {
+  color: #ffffff;
+}
+
+.health-article-cta p {
+  margin: 5px 0 0 !important;
+  line-height: 1.5;
+}
+
+.health-article-cta > div:last-child {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.health-article-cta .button {
+  min-height: 44px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+}
+
+.health-article-cta .button-outline {
+  border: 1px solid #ffffff;
+  color: #ffffff;
+}
+
+.health-article-sources {
+  border-top: 1px solid #dce5ec;
+  padding-top: 26px;
+}
+
+.health-article-sources ul {
+  gap: 5px;
+}
+
+.health-article-sources a {
+  font-size: 0.82rem;
+}
+
+@media (max-width: 700px) {
+  .health-article-cta,
+  .health-article-cta > div:last-child {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .health-article-cta .button {
+    width: 100%;
+  }
+}
+
 .site-footer .footer-phone-numbers > span {
   display: grid;
   gap: 3px;

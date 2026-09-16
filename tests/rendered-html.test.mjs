@@ -84,6 +84,40 @@ test("renders the requested appointment and facility content", async () => {
   assert.doesNotMatch(servicesHtml, /class="cta-photo"/);
 });
 
+test("renders complete Health Library procedure guides", async () => {
+  const slugs = [
+    "gallbladder-stone-surgery",
+    "laparoscopic-cholecystectomy",
+    "hernia-surgery",
+    "appendix-surgery",
+    "piles-fissure-fistula-treatment",
+    "breast-cancer-surgery",
+    "hysterectomy",
+    "ovarian-cyst-treatment",
+    "pcos-treatment",
+    "high-risk-pregnancy-care",
+    "normal-delivery",
+    "caesarean-delivery",
+    "infertility-evaluation",
+    "hysteroscopy",
+  ];
+
+  const responses = await Promise.all(slugs.map((slug) => fetchPath(`/health-library/${slug}`)));
+  const pages = await Promise.all(responses.map((response) => response.text()));
+
+  responses.forEach((response) => assert.equal(response.status, 200));
+  pages.forEach((html, index) => {
+    assert.match(html, new RegExp(`/images/health-library/${slugs[index]}\\.webp`));
+    assert.match(html, /Treating doctor/);
+    assert.match(html, /Hospital facilities/);
+    assert.match(html, /Frequently asked questions/);
+    assert.match(html, /When Should You Consult a Doctor/);
+    assert.match(html, /Book an Appointment/);
+    assert.match(html, /Call \+91 73510 28221/);
+    assert.match(html, /Medical information sources/);
+  });
+});
+
 test("adds the public-site security baseline", async () => {
   const response = await fetchPath();
 

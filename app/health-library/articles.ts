@@ -1,4 +1,21 @@
-export type HealthArticle = { slug:string; category:string; title:string; summary:string; image:string; imageAlt:string; readingTime:string; intro:string; sections:{heading:string; paragraphs?:string[]; points?:string[]}[]; doctorAdvice:string[] };
+import { procedureArticles } from "./procedure-articles";
+
+export type HealthArticle = {
+  slug:string;
+  category:string;
+  title:string;
+  summary:string;
+  image:string;
+  imageAlt:string;
+  readingTime:string;
+  intro:string;
+  sections:{heading:string; paragraphs?:string[]; points?:string[]}[];
+  doctorAdvice:string[];
+  keywords?:string[];
+  treatingDoctor?:{name:string; role:string; href:string};
+  faqs?:{question:string; answer:string}[];
+  sources?:{title:string; url:string}[];
+};
 
 export const healthArticles: HealthArticle[] = [
   { slug:"heart-health", category:"HEART HEALTH", title:"10 Simple Steps to Keep Your Heart Healthy", summary:"Small daily habits can make a big difference in your heart health.", readingTime:"6 min read", image:"/images/health-library/heart-health-cover.png", imageAlt:"Heart model, blood pressure monitor, berries, oats and walking shoes representing heart-healthy habits", intro:"Heart health is shaped by everyday choices as well as age, family history and medical conditions. These practical steps can support your heart and overall wellbeing.", sections:[
@@ -47,7 +64,8 @@ export const healthArticles: HealthArticle[] = [
     {heading:"Support the Basics",points:["Keep a regular sleep and wake time","Eat regular meals and stay hydrated","Include movement you enjoy","Limit excess caffeine, alcohol and tobacco","Schedule short breaks"]},
     {heading:"Make Problems More Manageable",paragraphs:["Write down what is within your control, choose one small next action and set realistic priorities. It is reasonable to ask for help."]},
     {heading:"Stay Connected",paragraphs:["Talk with someone you trust. A counsellor or mental-health professional can teach additional coping strategies when self-help is not enough."]}
-  ], doctorAdvice:["Seek professional support when stress disrupts work or relationships, causes panic, or accompanies ongoing low mood or sleep difficulty.","If you may harm yourself or someone else, seek emergency help immediately and stay with a trusted person."] }
+  ], doctorAdvice:["Seek professional support when stress disrupts work or relationships, causes panic, or accompanies ongoing low mood or sleep difficulty.","If you may harm yourself or someone else, seek emergency help immediately and stay with a trusted person."] },
+  ...procedureArticles,
 ];
 
 export const getHealthArticle = (slug:string) => healthArticles.find((article)=>article.slug===slug);
