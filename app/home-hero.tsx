@@ -26,11 +26,7 @@ export function HomeHero() {
       </div>
       <div className="container">
         <div className="hero-content">
-          <h1>
-            <span>Laparoscopic Surgery</span>
-            <span>and Women’s Healthcare</span>
-            <span>in Moradabad</span>
-          </h1>
+          <h1><span>Personalized</span><span>Expert</span><span>care.</span></h1>
           <div className="hero-actions">
             <Link className="button button-white" href="/doctors">
               Find a Doctor

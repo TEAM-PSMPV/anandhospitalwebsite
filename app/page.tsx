@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Assistance, Icon, SiteShell, type IconName } from "./site-shell";
 import { HomeHero } from "./home-hero";
-import { CountingStat } from "./about/counting-stat";
 
 const topActions: ReadonlyArray<{
   icon: IconName;
@@ -133,34 +132,6 @@ export default function Home() {
                 <Icon name="arrow" />
               </Link>
             ))}
-          </div>
-        </section>
-
-        <section className="glance viewport-section home-glance" aria-labelledby="home-glance-title">
-          <div className="container">
-            <h2 className="kicker" id="home-glance-title">Anand Hospital at a glance</h2>
-            <div className="stats home-glance-stats">
-              <div>
-                <CountingStat value={2007} />
-                <span>Established</span>
-              </div>
-              <div>
-                <CountingStat value={24} suffix="×7" />
-                <span>Emergency care</span>
-              </div>
-              <div>
-                <strong className="home-glance-symbol" aria-label="Available">✓</strong>
-                <span>Ayushman Bharat facility available</span>
-              </div>
-              <div className="home-glance-doctor">
-                <strong>Dr Subhash Singh</strong>
-                <span>General and Laparoscopic Surgery</span>
-              </div>
-              <div className="home-glance-doctor">
-                <strong>Dr Nidhi Thakur</strong>
-                <span><b>20+ years</b> in Obstetrics and Gynaecology</span>
-              </div>
-            </div>
           </div>
         </section>
 
