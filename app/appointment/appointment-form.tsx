@@ -53,9 +53,9 @@ export function AppointmentForm({ requestedDoctor = "", requestedDepartment = ""
   }
 
   return sent ? <div className="form-success" role="status">
-    <h2>Request received.</h2>
-    <p>Thank you for booking up the Appointment - Our Internal Staff will call and confirm in a while.</p>
-    <p>After verifying your details, our staff will add you to the queue and share your token number with you by phone.</p>
+    <h2>Your request has been received</h2>
+    <p>Thank you for choosing Anand Hospital. Our team will call you shortly to confirm your appointment details.</p>
+    <p>Once everything is confirmed, we will add you to the queue and share your token number by phone.</p>
     <button className="button button-blue" onClick={() => { submission.current = null; setSent(false); }}>Make another request</button>
   </div> : <form id="appointment-form" onSubmit={submit} aria-busy={busy}>
     <label>Patient name<input required name="name" maxLength={100} autoComplete="name" placeholder="Enter patient name" /></label>
