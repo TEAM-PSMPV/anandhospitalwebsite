@@ -44,7 +44,11 @@ test("appointment intake validates, forwards once with a stable ID, and handles 
     globalThis.fetch = async () => Response.json({ error: "sensitive upstream details" }, { status: 401 });
     const rejected = await worker.fetch(request(), env, {});
     assert.equal(rejected.status, 502);
+    assert.equal((await rejected.clone().json()).code, "APPOINTFLOW_HTTP_401");
     assert.doesNotMatch(await rejected.text(), /sensitive|test-server-secret/);
+    globalThis.fetch = async () => new Response("error code: 1042", { status: 403 });
+    const blocked = await worker.fetch(request(), env, {});
+    assert.equal((await blocked.json()).code, "APPOINTFLOW_HTTP_403_CF_1042");
     globalThis.fetch = async () => Response.json({ request: null }, { status: 202 });
     assert.equal((await worker.fetch(request(), env, {})).status, 502);
     globalThis.fetch = async () => { throw new Error("Network timeout"); };
