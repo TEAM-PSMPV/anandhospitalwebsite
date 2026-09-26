@@ -14,7 +14,7 @@ test("appointment intake validates, forwards once with a stable ID, and handles 
     globalThis.fetch = async (url, options) => {
       assert.equal(url.href, "https://appointflow.example/api/intake");
       assert.equal(options.headers.authorization, "Bearer test-server-secret");
-      assert.equal(options.redirect, "error");
+      assert.equal(options.redirect, "manual");
       const forwarded = JSON.parse(options.body);
       assert.equal(forwarded.patientName, payload.name);
       assert.equal(forwarded.phone, "+919876543210");
@@ -49,6 +49,10 @@ test("appointment intake validates, forwards once with a stable ID, and handles 
     globalThis.fetch = async () => new Response("error code: 1042", { status: 403 });
     const blocked = await worker.fetch(request(), env, {});
     assert.equal((await blocked.json()).code, "APPOINTFLOW_HTTP_403_CF_1042");
+    globalThis.fetch = async () => new Response(null, { status: 302, headers: { location: "https://another.example" } });
+    const redirected = await worker.fetch(request(), env, {});
+    assert.equal(redirected.status, 502);
+    assert.equal((await redirected.json()).code, "APPOINTFLOW_HTTP_302");
     globalThis.fetch = async () => Response.json({ request: null }, { status: 202 });
     assert.equal((await worker.fetch(request(), env, {})).status, 502);
     globalThis.fetch = async () => { throw new Error("Network timeout"); };

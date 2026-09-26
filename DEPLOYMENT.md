@@ -19,6 +19,8 @@ The appointment intake integration also requires production secrets `APPOINTFLOW
 
 The website posts to its own `/api/appointments` endpoint, which validates the form and forwards it to AppointFlow `/api/intake`. Only an accepted intake receipt triggers the thank-you screen. Retries of the unchanged form reuse the external ID so AppointFlow creates one request. Staff handle verification, appointment creation, queue assignment and communicating the token in AppointFlow's External requests console. The website does not automatically create patients or appointments or send token messages.
 
+The intake fetch must use `redirect: "manual"`; Cloudflare Workers rejects `redirect: "error"` before making the request. Redirect responses are treated as intake failures to keep the authorization header on the configured endpoint. Failures return a safe `code` and emit `appointment-intake-failed` in Worker logs without patient details or credentials.
+
 ## First deployment checks
 
 1. Confirm `anandhospitalmbd.org` is an active proxied zone in the account identified by the secret.

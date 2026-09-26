@@ -53,7 +53,9 @@ export async function handleAppointment(request: Request, env: AppointmentEnv): 
     if (endpoint.protocol !== "https:") return fail("APPOINTFLOW_INVALID_URL", 503);
     const response = await fetch(endpoint, {
       method: "POST",
-      redirect: "error",
+      // Workers supports only follow/manual. Reject non-202 responses below
+      // instead of following redirects and forwarding the authorization header.
+      redirect: "manual",
       headers: { "content-type": "application/json", authorization: `Bearer ${env.APPOINTFLOW_API_KEY}` },
       body: JSON.stringify({ externalId, patientName, phone, address, source: "website", message: `Doctor: ${doctor}\nDepartment: ${department}\nPreferred date: ${date}\n${message}` }),
       signal: AbortSignal.timeout(15000),
