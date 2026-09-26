@@ -3,8 +3,9 @@ import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } fr
 import handler from "vinext/server/app-router-entry";
 import { doctors, services } from "../app/data";
 import { healthArticles } from "../app/health-library/articles";
+import { handleAppointment, type AppointmentEnv } from "./appointment";
 
-interface Env {
+interface Env extends AppointmentEnv {
   ASSETS: Fetcher;
   DB: D1Database;
   AI: {
@@ -213,6 +214,10 @@ const worker = {
       url.hostname = canonicalHost;
       if (redirectPath) url.pathname = redirectPath;
       return withSecurityHeaders(Response.redirect(url.toString(), 301));
+    }
+
+    if (url.pathname === "/api/appointments") {
+      return withSecurityHeaders(await handleAppointment(request, env));
     }
 
     if (url.pathname === "/api/chat") {

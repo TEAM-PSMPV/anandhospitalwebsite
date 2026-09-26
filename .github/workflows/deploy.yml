@@ -40,6 +40,25 @@ jobs:
         run: |
           npm run lint
           npm test
+      - name: Configure AppointFlow server secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          APPOINTFLOW_URL: ${{ secrets.APPOINTFLOW_URL }}
+          APPOINTFLOW_API_KEY: ${{ secrets.APPOINTFLOW_API_KEY }}
+        run: |
+          node --input-type=module -e '
+            import { spawnSync } from "node:child_process";
+            const { APPOINTFLOW_URL, APPOINTFLOW_API_KEY } = process.env;
+            if (!APPOINTFLOW_URL || !APPOINTFLOW_API_KEY) throw new Error("AppointFlow production secrets are required.");
+            if (new URL(APPOINTFLOW_URL).protocol !== "https:") throw new Error("AppointFlow requires HTTPS.");
+            const result = spawnSync("node_modules/.bin/wrangler", ["secret", "bulk"], {
+              input: JSON.stringify({ APPOINTFLOW_URL, APPOINTFLOW_API_KEY }),
+              stdio: ["pipe", "inherit", "inherit"],
+            });
+            if (result.error) throw result.error;
+            process.exit(result.status ?? 1);
+          '
       - name: Deploy to Cloudflare
         run: npm run deploy
         env:

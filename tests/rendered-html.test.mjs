@@ -1,6 +1,59 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+test("appointment intake validates, forwards once with a stable ID, and handles failures", async () => {
+  const { default: worker } = await import(new URL("../dist/server/index.js", import.meta.url));
+  const env = { APPOINTFLOW_URL: "https://appointflow.example", APPOINTFLOW_API_KEY: "test-server-secret" };
+  const payload = { externalId: "website-12345678-1234-1234-1234-123456789abc", name: "Test Patient", phone: "9876543210", doctor: "Dr Subhash Singh", department: "General Surgery", date: "2026-10-01", address: "Test address", message: "Morning preferred" };
+  const request = (body = payload, origin = "https://www.anandhospitalmbd.org") => new Request("https://www.anandhospitalmbd.org/api/appointments", {
+    method: "POST", headers: { origin, "content-type": "application/json" }, body: JSON.stringify(body),
+  });
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  try {
+    globalThis.fetch = async (url, options) => {
+      assert.equal(url.href, "https://appointflow.example/api/intake");
+      assert.equal(options.headers.authorization, "Bearer test-server-secret");
+      assert.equal(options.redirect, "error");
+      const forwarded = JSON.parse(options.body);
+      assert.equal(forwarded.patientName, payload.name);
+      assert.equal(forwarded.phone, "+919876543210");
+      assert.equal(forwarded.address, payload.address);
+      assert.equal(forwarded.source, "website");
+      assert.match(forwarded.message, /Dr Subhash Singh/);
+      assert.match(forwarded.message, /General Surgery/);
+      assert.match(forwarded.message, /2026-10-01/);
+      assert.match(forwarded.message, /Morning preferred/);
+      calls.push(forwarded.externalId);
+      return Response.json({ request: { id: "req_test", status: "new" } }, { status: 202 });
+    };
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const response = await worker.fetch(request(), env, {});
+      assert.equal(response.status, 202);
+      assert.equal(response.headers.get("cache-control"), "no-store");
+      assert.deepEqual(await response.json(), { received: true });
+    }
+    assert.deepEqual(calls, [payload.externalId, payload.externalId]);
+    assert.equal((await worker.fetch(request({ ...payload, phone: "bad" }), env, {})).status, 422);
+    assert.equal((await worker.fetch(request({ ...payload, date: "2026-02-30" }), env, {})).status, 422);
+    assert.equal((await worker.fetch(request({ ...payload, name: " " }), env, {})).status, 422);
+    assert.equal((await worker.fetch(request(payload, "https://another.example"), env, {})).status, 403);
+    assert.equal((await worker.fetch(request(), {}, {})).status, 503);
+    assert.equal((await worker.fetch(new Request("https://www.anandhospitalmbd.org/api/appointments"), env, {})).status, 405);
+    assert.equal(calls.length, 2);
+    globalThis.fetch = async () => Response.json({ error: "sensitive upstream details" }, { status: 401 });
+    const rejected = await worker.fetch(request(), env, {});
+    assert.equal(rejected.status, 502);
+    assert.doesNotMatch(await rejected.text(), /sensitive|test-server-secret/);
+    globalThis.fetch = async () => Response.json({ request: null }, { status: 202 });
+    assert.equal((await worker.fetch(request(), env, {})).status, 502);
+    globalThis.fetch = async () => { throw new Error("Network timeout"); };
+    assert.equal((await worker.fetch(request(), env, {})).status, 502);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 const developmentPreviewMeta =
   /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
 

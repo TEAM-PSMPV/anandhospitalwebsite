@@ -15,6 +15,10 @@ Add production-environment Actions secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLAR
 
 Create a GitHub environment named `production`, restrict it to `main`, optionally add required reviewers, and place the secrets there (repository secrets also work).
 
+The appointment intake integration also requires production secrets `APPOINTFLOW_URL` (https://appointflow.teampsmpv.com/) and `APPOINTFLOW_API_KEY` (the Anand Hospital website integration key). The deployment workflow passes these to Cloudflare Worker secret bindings before deploying. Never use `NEXT_PUBLIC_` variables for these credentials. For local development, use an ignored `.dev.vars` file with these same binding names.
+
+The website posts to its own `/api/appointments` endpoint, which validates the form and forwards it to AppointFlow `/api/intake`. Only an accepted intake receipt triggers the thank-you screen. Retries of the unchanged form reuse the external ID so AppointFlow creates one request. Staff handle verification, appointment creation, queue assignment and communicating the token in AppointFlow's External requests console. The website does not automatically create patients or appointments or send token messages.
+
 ## First deployment checks
 
 1. Confirm `anandhospitalmbd.org` is an active proxied zone in the account identified by the secret.
