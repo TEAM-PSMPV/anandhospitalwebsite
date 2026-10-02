@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { setTimeout } from "node:timers/promises";
 const origin = "https://www.anandhospitalmbd.org";
+async function verifyProduction() {
 for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/doctors/dr-subhash-singh"]) {
   const response = await fetch(`${origin}${path}`);
   assert.equal(response.status, 200, path);
@@ -23,3 +25,18 @@ const redirect = await fetch(`${origin}/our-doctors/`, { redirect: "manual" });
 assert.equal(redirect.status, 301);
 assert.equal(redirect.headers.get("location"), `${origin}/doctors`);
 console.log("Production awards, canonicals, sitemap, robots, redirect and custom 404 checks passed.");
+
+}
+
+// Custom-domain edges can briefly serve the previous Worker after deployment.
+// Retry the complete assertions; persistent content failures still fail the job.
+for (let attempt = 1; attempt <= 6; attempt++) {
+  try {
+    await verifyProduction();
+    break;
+  } catch (error) {
+    if (attempt === 6) throw error;
+    console.log(`Production propagation check ${attempt}/6 failed: ${error.message}. Retrying in 10 seconds.`);
+    await setTimeout(10_000);
+  }
+}
