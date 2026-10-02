@@ -1,7 +1,7 @@
 import type { HealthArticle } from "./articles";
 
-const surgeon = { name: "Dr Subhash Singh", role: "Consultant General Surgeon (MBBS, MS), experienced in general and laparoscopic surgery", href: "/doctors" };
-const gynaecologist = { name: "Dr Nidhi Thakur", role: "Consultant Obstetrician & Gynaecologist with 20+ years in obstetrics, gynaecology, laparoscopy, hysteroscopy and infertility care", href: "/doctors" };
+const surgeon = { name: "Dr Subhash Singh", role: "Consultant General Surgeon (MBBS, MS), experienced in general and laparoscopic surgery", href: "/doctors/dr-subhash-singh" };
+const gynaecologist = { name: "Dr Nidhi Thakur", role: "Consultant Obstetrician & Gynaecologist with 20+ years in obstetrics, gynaecology, laparoscopy, hysteroscopy and infertility care", href: "/doctors/dr-nidhi-thakur" };
 
 const generalFacilities = [
   "Anand Hospital provides surgical consultation, an operating theatre, anaesthesia support, inpatient rooms, critical-care coordination and 24×7 emergency care.",

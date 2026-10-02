@@ -1,8 +1,7 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
-import { doctors, services } from "../app/data";
-import { healthArticles } from "../app/health-library/articles";
+import sitemap from "../app/sitemap";
 import { handleAppointment, type AppointmentEnv } from "./appointment";
 
 interface Env extends AppointmentEnv {
@@ -143,15 +142,8 @@ const securityHeaders = {
 } as const;
 
 const publicSiteUrl = "https://www.anandhospitalmbd.org";
-const sitemapPaths = [
-  "", "/about", "/doctors", "/services", "/appointment", "/health-library", "/testimonials",
-  ...doctors.map(({ name }) => `/doctors/${name.toLowerCase().replace(/^dr\s+/, "dr-").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`),
-  ...services.map(({ slug }) => `/services/${slug}`),
-  ...healthArticles.map(({ slug }) => `/health-library/${slug}`),
-];
-
 function sitemapResponse(): Response {
-  const urls = sitemapPaths.map((path) => `<url><loc>${publicSiteUrl}${path}</loc><lastmod>2026-09-16</lastmod></url>`).join("");
+  const urls = sitemap().map((entry) => `<url><loc>${entry.url}</loc>${entry.lastModified ? `<lastmod>${new Date(entry.lastModified).toISOString().slice(0, 10)}</lastmod>` : ""}</url>`).join("");
   return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`, {
     headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" },
   });
@@ -191,6 +183,8 @@ const worker = {
     const url = new URL(request.url);
 
     const redirectAliases: Record<string, string> = {
+      "/awards-and-felicitations": "/awards",
+      "/awards-certifications": "/awards",
       "/book-appointment": "/appointment",
       "/appointments": "/appointment",
       "/our-doctors": "/doctors",
@@ -207,8 +201,11 @@ const worker = {
       "/pcos-treatment": "/health-library/pcos-treatment",
     };
     const canonicalHost = "www.anandhospitalmbd.org";
-    let redirectPath = redirectAliases[url.pathname];
-    if (!redirectPath && url.pathname.length > 1 && url.pathname.endsWith("/")) redirectPath = url.pathname.replace(/\/+$/, "");
+    const cleanPath = url.pathname.replace(/\/+$/, "") || "/";
+    const htmlPath = cleanPath.replace(/\.html$/, "");
+    const knownPaths = new Set(sitemap().map((entry) => new URL(entry.url).pathname));
+    const resolvedPath = redirectAliases[htmlPath] ?? (knownPaths.has(htmlPath) ? htmlPath : cleanPath);
+    const redirectPath = resolvedPath !== url.pathname ? resolvedPath : undefined;
     if (redirectPath || url.hostname === "anandhospitalmbd.org" || (url.hostname === canonicalHost && url.protocol !== "https:")) {
       url.protocol = "https:";
       url.hostname = canonicalHost;

@@ -170,7 +170,7 @@ function Footer() {
     { title: "Actions", links: [["Home", "/"], ["About Us", "/about"], ["Doctors & Departments", "/doctors"], ["Health Library", "/health-library"], ["Book Appointment", "/appointment"], ["Contact Us", "mailto:info@anandhospitalmbd.org"]] },
     { title: "Doctors & Departments", links: [["General Medicine", "/services#general-medicine"], ["General surgery", "/services#general-surgery"], ["Pediatrics", "/services#pediatrics"], ["RMO", "/doctors"], ["Anesthesiology", "/services#anesthesiology"], ["Urology", "/services#urology"], ["Obs & Gynaecology", "/services#obstetrics-gynaecology"]] },
     { title: "Health Library", links: [["Health Tips", "/health-library"], ["Disease Guide", "/health-library"], ["Nutrition", "/health-library"], ["Wellness", "/health-library"]] },
-    { title: "Patient Information", links: [["Insurance", "/about"], ["Health Packages", "/services"], ["Patient Testimonials", "/about"], ["FAQs", "/about#faq"], ["Privacy Policy", "/about"], ["Terms & Conditions", "/about"]] },
+    { title: "Patient Information", links: [["Insurance", "/about"], ["Health Packages", "/services"], ["Awards & Felicitations", "/awards"], ["Patient Testimonials", "/testimonials"], ["FAQs", "/about#faq"], ["Privacy Policy", "/about"], ["Terms & Conditions", "/about"]] },
   ] as const;
 
   return <footer className="site-footer">

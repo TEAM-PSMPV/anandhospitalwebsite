@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     title: "Anand Hospital Moradabad | Surgery, Gynaecology & 24×7 Care",
     description:
       "Specialist surgical and women's healthcare near Miglani Cinema, Rampur Road, Moradabad. Open 24 hours.",
-    images: [{ url: "/brand/anand-hospital-logo.webp", alt: "Anand Hospital logo" }],
+    images: [{ url: "/brand/anand-hospital-social.webp", alt: "Anand Hospital Moradabad", width: 1200, height: 630 }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Anand Hospital | Healthcare in Moradabad",
     description: "Specialist surgical and women's healthcare. Open 24 hours.",
-    images: ["/brand/anand-hospital-logo.webp"],
+    images: ["/brand/anand-hospital-social.webp"],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: siteUrl },
