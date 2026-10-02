@@ -22,7 +22,7 @@ function StandardDoctorCard({ doctor, index }: { doctor: (typeof doctors)[number
 
 function CompactDoctorCard({ doctor }: { doctor: (typeof doctors)[number] }) {
   return <article className="doctor-profile-card">
-    <Image unoptimized src={doctor.photo} alt={doctor.name} width={120} height={120} sizes="120px" style={{ width: 120, height: 120, minWidth: 120, maxWidth: 120, minHeight: 120, maxHeight: 120, borderRadius: "50%", objectFit: "cover", objectPosition: "center top" }} />
+    <Image src={doctor.photo} alt={doctor.name} width={120} height={120} sizes="120px" style={{ width: 120, height: 120, minWidth: 120, maxWidth: 120, minHeight: 120, maxHeight: 120, borderRadius: "50%", objectFit: "cover", objectPosition: "center top" }} />
     <h3><Link href={`/doctors/${doctorSlug(doctor.name)}`}>{doctor.name}</Link></h3><small>{doctor.department}</small>
     <div className="doctor-profile-details"><p><b>Qualifications:</b> {doctor.qualification}</p><p><b>Experience:</b> {doctor.experience}</p></div>
     <div className="doctor-profile-stars" aria-hidden="true">★★★★★</div>

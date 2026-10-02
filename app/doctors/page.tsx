@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Assistance, Icon, SiteShell } from "../site-shell";
 import { DoctorCards } from "../doctor-cards";
+import { AwardsCarousel } from "../awards-carousel";
 import { PatientTestimonials } from "../patient-testimonials";
 import { Breadcrumbs, createPageMetadata, surgeryKeywords, womensHealthKeywords } from "../seo";
 
@@ -18,7 +19,7 @@ export default function Doctors() { return <SiteShell>
   <section className="doctor-section viewport-section" id="medical-team"><div className="container"><p className="kicker">Meet Our Doctors</p><h2>Specialists committed to your health.</h2><DoctorCards compactRemainder /></div></section>
 
   <section className="recognition"><div className="container recognition-grid">
-    <article className="recognition-awards"><h2>Awards, Certifications &amp; Fellowships</h2><div className="award-row" aria-label="Awards, certifications and fellowships">{[1,2,3,4].map(i=><span key={i} aria-hidden="true" />)}</div></article>
+    <AwardsCarousel />
     <PatientTestimonials />
   </div></section>
   <Assistance />

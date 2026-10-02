@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const siteUrl = "https://www.anandhospitalmbd.org";
-export const defaultSocialImage = "/brand/anand-hospital-logo.webp";
+export const defaultSocialImage = "/brand/anand-hospital-social.webp";
 
 export const surgeryKeywords = [
   "Dr Subhash Singh",
@@ -79,7 +79,7 @@ export function createPageMetadata({ title, description, path, keywords = [], im
       title,
       description,
       url: canonical,
-      images: [{ url: image, alt: imageAlt }],
+      images: [{ url: image, alt: imageAlt, ...(image === defaultSocialImage ? { width: 1200, height: 630 } : {}) }],
     },
     twitter: {
       card: "summary_large_image",

@@ -7,20 +7,22 @@ export function HomeHero() {
       <div className="hero-media">
         <Image
           className="hero-image-desktop"
-          src="/images/herobanner.jpg"
+          src="/images/herobanner.webp"
+          width={1910}
+          height={681}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
           alt="Anand Hospital medical team"
-          fill
           priority
-          unoptimized
           sizes="100vw"
         />
         <Image
           className="hero-image-mobile"
-          src="/images/mobileherobanner.jpg"
+          src="/images/mobileherobanner.webp"
+          width={716}
+          height={1114}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
           alt="Dr Subhash and Dr Nidhi of Anand Hospital"
-          fill
           priority
-          unoptimized
           sizes="100vw"
         />
       </div>

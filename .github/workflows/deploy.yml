@@ -69,6 +69,8 @@ jobs:
           curl --fail --show-error --silent --retry 6 --retry-all-errors --retry-delay 10 https://www.anandhospitalmbd.org/ > /dev/null
           curl --fail --show-error --silent https://www.anandhospitalmbd.org/sitemap.xml > /dev/null
           curl --fail --show-error --silent https://www.anandhospitalmbd.org/robots.txt | grep -F "Sitemap: https://www.anandhospitalmbd.org/sitemap.xml"
+      - name: Verify awards and production SEO
+        run: node scripts/smoke-production.mjs
       - name: Notify Bing and participating search engines through IndexNow
         if: ${{ env.INDEXNOW_KEY != '' }}
         continue-on-error: true

@@ -265,3 +265,65 @@ test("answers chatbot questions through the grounded Llama endpoint", async () =
   assert.equal(invocation.model, "@cf/meta/llama-3.1-8b-instruct-fp8");
   assert.match(invocation.input.messages[0].content, /Use ONLY the ANAND HOSPITAL WEBSITE KNOWLEDGE/);
 });
+
+test("awards gallery renders all distinct recognitions, segregated recipients, photographic views and metadata", async () => {
+  const response = await fetchPath("/awards");
+  const html = await response.text();
+  assert.equal(response.status, 200);
+  assert.match(html, /rel="canonical" href="https:\/\/www\.anandhospitalmbd\.org\/awards"/);
+  assert.match(html, /"@type":"BreadcrumbList"/);
+  assert.match(html, /"@type":"CollectionPage"/);
+  assert.match(html, /id="nidhi"/);
+  assert.match(html, /id="subhash"/);
+  assert.match(html, /id="other"/);
+  assert.equal((html.match(/class="award-card"/g) ?? []).length, 21);
+  assert.equal((html.match(/type="image\/avif"/g) ?? []).length, 21);
+  assert.equal((html.match(/class="award-views"/g) ?? []).length, 21);
+  assert.equal((html.match(/class="award-card-photo"/g) ?? []).length, 21);
+  assert.match(html, /Certificate Course in Hysteroscopy/);
+  assert.match(html, /Fellowship in GI Endoscopy/);
+  assert.match(html, /These photographs do not identify a recipient/);
+  assert.match(html, /width="\d+" height="\d+"[^>]*loading="lazy"/);
+  const doctors = await (await fetchPath("/doctors")).text();
+  assert.match(doctors, /class="award-cascade"/);
+  assert.match(doctors, /aria-label="Next award"/);
+  assert.match(doctors, /href="\/awards"/);
+  const sitemap = await (await fetchPath("/sitemap.xml")).text();
+  assert.match(sitemap, /<loc>https:\/\/www\.anandhospitalmbd\.org\/awards<\/loc>/);
+});
+
+test("all sitemap pages serve self-canonical, social metadata and indexable HTML", async () => {
+  const sitemap = await (await fetchPath("/sitemap.xml")).text();
+  const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  assert.equal(urls.length, new Set(urls).size);
+  for (const url of urls) {
+    const response = await fetchPath(new URL(url).pathname);
+    assert.equal(response.status, 200, url);
+    const html = await response.text();
+    assert.ok(html.includes(`rel="canonical" href="${url}"`), url);
+    assert.match(html, /property="og:title"/, url);
+    assert.match(html, /name="twitter:card"/, url);
+    assert.match(html, /<h1[ >]/, url);
+    if (new URL(url).pathname !== "/") assert.match(html, /"@type":"BreadcrumbList"/, url);
+  }
+});
+
+test("legacy paths, trailing slashes and HTTP apex normalize in a single 301", async () => {
+  const { default: worker } = await import(new URL("../dist/server/index.js", import.meta.url));
+  for (const path of ["/our-doctors/", "/our-doctors.html", "/doctors.html", "/doctors/"]) {
+    const response = await worker.fetch(new Request(`http://anandhospitalmbd.org${path}?source=legacy`), {}, {});
+    assert.equal(response.status, 301);
+    assert.equal(response.headers.get("location"), "https://www.anandhospitalmbd.org/doctors?source=legacy");
+  }
+  const awards = await worker.fetch(new Request("https://www.anandhospitalmbd.org/awards-and-felicitations/"), {}, {});
+  assert.equal(awards.status, 301);
+  assert.equal(awards.headers.get("location"), "https://www.anandhospitalmbd.org/awards");
+});
+
+test("Core Web Vitals endpoint accepts finite metrics and rejects invalid events", async () => {
+  const { default: worker } = await import(new URL("../dist/server/index.js", import.meta.url));
+  const request = (body) => new Request("http://localhost/api/web-vitals", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  assert.equal((await worker.fetch(request({ name: "LCP", value: 1250, path: "/awards" }), {}, {})).status, 204);
+  assert.equal((await worker.fetch(request({ name: "invalid", value: 1 }), {}, {})).status, 400);
+  assert.equal((await worker.fetch(new Request("http://localhost/api/web-vitals"), {}, {})).status, 405);
+});
