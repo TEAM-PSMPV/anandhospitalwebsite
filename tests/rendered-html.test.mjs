@@ -128,7 +128,7 @@ test("renders the requested appointment and facility content", async () => {
   const servicesHtml = await servicesResponse.text();
 
   assert.equal(appointmentResponse.status, 200);
-  assert.match(appointmentHtml, /\/images\/group-photo\.png/);
+  assert.match(appointmentHtml, /\/images\/group-photo\.webp/);
   assert.match(appointmentHtml, /<label>Doctor<select/);
   assert.match(appointmentHtml, /<label>Department<select/);
   assert.match(prefilledAppointmentHtml, /<option value="Dr Subhash Singh" selected="">/);
@@ -137,11 +137,11 @@ test("renders the requested appointment and facility content", async () => {
   assert.equal(servicesResponse.status, 200);
   assert.match(servicesHtml, /Critical Care High Tech ICU/);
   assert.doesNotMatch(servicesHtml, />Blood Bank</);
-  assert.match(servicesHtml, /\/images\/facilities\/imaging-services\.png/);
-  assert.match(servicesHtml, /\/images\/facilities\/critical-care-icu\.png/);
-  assert.match(servicesHtml, /\/images\/facilities\/health-checkups-ot\.png/);
-  assert.match(servicesHtml, /\/images\/facilities\/deluxe-room\.png/);
-  assert.match(servicesHtml, /\/images\/facilities\/home-care\.png/);
+  assert.match(servicesHtml, /\/images\/facilities\/imaging-services\.webp/);
+  assert.match(servicesHtml, /href="\/gallery#icu"/);
+  assert.match(servicesHtml, /\/images\/facilities\/health-checkups-ot\.webp/);
+  assert.match(servicesHtml, /href="\/gallery#deluxe"/);
+  assert.match(servicesHtml, /\/images\/facilities\/home-care\.webp/);
   assert.doesNotMatch(servicesHtml, /class="cta-photo"/);
 });
 
@@ -277,7 +277,7 @@ test("awards gallery renders all distinct recognitions, segregated recipients, p
   assert.match(html, /id="subhash"/);
   assert.match(html, /id="other"/);
   assert.equal((html.match(/class="award-card"/g) ?? []).length, 21);
-  assert.equal((html.match(/type="image\/avif"/g) ?? []).length, 21);
+  assert.equal((html.match(/type="image\/avif"/g) ?? []).length, 23); // 21 award covers plus two footer logos.
   assert.equal((html.match(/class="award-views"/g) ?? []).length, 21);
   assert.equal((html.match(/class="award-card-photo"/g) ?? []).length, 21);
   assert.match(html, /Certificate Course in Hysteroscopy/);
@@ -326,4 +326,44 @@ test("Core Web Vitals endpoint accepts finite metrics and rejects invalid events
   assert.equal((await worker.fetch(request({ name: "LCP", value: 1250, path: "/awards" }), {}, {})).status, 204);
   assert.equal((await worker.fetch(request({ name: "invalid", value: 1 }), {}, {})).status, 400);
   assert.equal((await worker.fetch(new Request("http://localhost/api/web-vitals"), {}, {})).status, 405);
+});
+
+test("gallery, patient policies, feedback and complete HTML sitemap render without JavaScript", async () => {
+  const gallery = await (await fetchPath('/gallery')).text();
+  assert.equal((gallery.match(/<figure>/g) ?? []).length, 102);
+  for (const group of ['icu', 'deluxe', 'facilities', 'team', 'awards']) assert.ok(gallery.includes(`id="${group}"`));
+  assert.match(gallery, /25,000\+/);
+  assert.match(gallery, /"@type":"ImageObject"/);
+  assert.match(gallery, /type="image\/avif"/);
+  const services = await (await fetchPath('/services')).text();
+  assert.match(services, /aria-label="Next ICU photograph"/);
+  assert.match(services, /aria-label="Next deluxe room photograph"/);
+  assert.doesNotMatch(services, /Estb\. in 2007/);
+  assert.match(services, /href="https:\/\/www\.teampsmpv\.com\/"/);
+  assert.match(services, /teampsmpv-monogram-white\.webp/);
+  assert.match(services, /teampsmpv-wordmark-white\.webp/);
+  const feedback = await (await fetchPath('/feedback')).text();
+  for (const field of ['name', 'email', 'message']) assert.ok(feedback.includes(`name="${field}"`));
+  assert.doesNotMatch(feedback, /name="phone"/);
+  assert.match(feedback, /sent only when you choose Send/);
+  const htmlSitemap = await (await fetchPath('/sitemap')).text();
+  const xmlSitemap = await (await fetchPath('/sitemap.xml')).text();
+  for (const [,url] of xmlSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) assert.ok(htmlSitemap.includes(`href="${new URL(url).pathname}"`), url);
+  const missingPolicy = await fetchPath('/site-information/nonexistent-policy');
+  assert.equal(missingPolicy.status, 404);
+});
+
+test("doctor image service accepts the requested 120px width and still rejects invalid widths", async () => {
+  const { default: worker } = await import(new URL('../dist/server/index.js', import.meta.url));
+  let transformedWidth;
+  const env = {
+    ASSETS: { fetch: async () => new Response(new Uint8Array([1,2,3]), {headers:{'content-type':'image/webp'}}) },
+    IMAGES: { input: () => ({ transform: ({width}) => { transformedWidth = width; return { output: async () => ({response: () => new Response(new Uint8Array([1]), {headers:{'content-type':'image/avif'}})}) }; } }) },
+  };
+  const response = await worker.fetch(new Request('http://localhost/_vinext/image?url=%2Fimages%2Fdoctors%2Fdrgarima.webp&w=120&q=75', {headers:{accept:'image/avif,image/webp'}}), env, {});
+  assert.equal(response.status, 200);
+  assert.equal(transformedWidth, 120);
+  assert.equal(response.headers.get('content-type'), 'image/avif');
+  const invalid = await worker.fetch(new Request('http://localhost/_vinext/image?url=%2Fimages%2Fdoctors%2Fdrgarima.webp&w=117&q=75'), env, {});
+  assert.equal(invalid.status, 400);
 });

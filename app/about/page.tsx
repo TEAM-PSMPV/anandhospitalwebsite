@@ -51,7 +51,7 @@ export default function About() { return <SiteShell>
   <section className="about-story viewport-section"><div className="container story-grid">
     <div><p className="kicker">Our Story</p><h2>Care built on trust, compassion and clinical excellence.</h2><p>Anand Hospital was founded with the vision of providing affordable, ethical and patient-centered healthcare to families in Moradabad. We have grown into a trusted multispecialty hospital while staying close to the community we serve.</p>
       <ul className="check-list"><li>Open 24 hours, every day</li><li>Specialist care under one roof</li></ul>
-    </div><Image src="/images/hospital-reception.jpg" alt="Anand Hospital reception area" width={1280} height={960} />
+    </div><Image src="/images/hospital-reception.webp" alt="Anand Hospital reception area" width={1280} height={960} />
     <div className="purpose-values"><div className="mission-vision-group">
       <article className="mission-card"><Icon name="target" /><div><h3>Our Mission</h3><p>To deliver accessible, ethical and quality healthcare with compassion and respect.</p></div></article>
       <article className="vision-card"><Icon name="eye" /><div><h3>Our Vision</h3><p>To become the most trusted healthcare institution in Western Uttar Pradesh.</p></div></article>

@@ -3,25 +3,27 @@ import type { Metadata } from "next";
 import { services } from "../data";
 import { Assistance, Icon, type IconName, SiteShell } from "../site-shell";
 import Image from "next/image";
+import { FacilityCascade } from "../facility-cascade";
+import { CareConfidence } from "../care-confidence";
 import { FacilitySlideshow } from "../facility-slideshow";
 import { Breadcrumbs, createPageMetadata, hospitalKeywords, surgeryKeywords, womensHealthKeywords } from "../seo";
 
 export const metadata: Metadata = createPageMetadata({ title: "Hospital Services in Moradabad | Anand Hospital", description: "Explore surgery, maternity, emergency, ICU, paediatrics, urology and other hospital services at Anand Hospital in Moradabad.", path: "/services", keywords: [...hospitalKeywords, ...surgeryKeywords, ...womensHealthKeywords] });
 
-const facilityGroups: ReadonlyArray<{ title: string; tone: "blue" | "green"; items: ReadonlyArray<{ title: string; description: string; icon: IconName; image: string; imageAlt: string; imageKind?: "icon" }> }> = [
+const facilityGroups: ReadonlyArray<{ title: string; tone: "blue" | "green"; items: ReadonlyArray<{ title: string; description: string; icon: IconName; image: string; imageAlt: string; imageKind?: "icon"; galleryGroup?: "icu" | "deluxe" }> }> = [
   { title: "Diagnostics & Facilities", tone: "blue", items: [
     { title: "Pathology Lab", description: "Accurate and timely lab testing with advanced equipment.", icon: "path-lab", image: "/icons/set-2/path-lab.svg", imageAlt: "Pathology laboratory", imageKind: "icon" },
-    { title: "Imaging Services", description: "X-Ray and ultrasound imaging for precise diagnosis.", icon: "ultrasound", image: "/images/facilities/imaging-services.png", imageAlt: "Anand Hospital imaging services" },
+    { title: "Imaging Services", description: "X-Ray and ultrasound imaging for precise diagnosis.", icon: "ultrasound", image: "/images/facilities/imaging-services.webp", imageAlt: "Anand Hospital imaging services" },
     { title: "Pharmacy", description: "Well-stocked pharmacy with genuine medicines and expert guidance.", icon: "pharmacy", image: "/icons/set-2/pharmacy.svg", imageAlt: "Hospital pharmacy", imageKind: "icon" },
-    { title: "Critical Care High Tech ICU", description: "Advanced critical care with continuous monitoring and round-the-clock clinical support.", icon: "critical-care", image: "/images/facilities/critical-care-icu.png", imageAlt: "Anand Hospital critical care team in the high-tech ICU" },
+    { title: "Critical Care High Tech ICU", description: "Advanced critical care with continuous monitoring and round-the-clock clinical support.", galleryGroup: "icu", icon: "critical-care", image: "/images/facilities/critical-care-icu.webp", imageAlt: "Anand Hospital critical care team in the high-tech ICU" },
   ] },
   { title: "Patient Care Services", tone: "green", items: [
-    { title: "Health Checkups", description: "Preventive health packages tailored for individuals and families.", icon: "health-checkup", image: "/images/facilities/health-checkups-ot.png", imageAlt: "Anand Hospital operation theatre" },
+    { title: "Health Checkups", description: "Preventive health packages tailored for individuals and families.", icon: "health-checkup", image: "/images/facilities/health-checkups-ot.webp", imageAlt: "Anand Hospital operation theatre" },
     { title: "Diet & Nutrition", description: "Personalized diet plans for better health and wellness.", icon: "diet-and-nutrition", image: "/icons/set-2/diet-and-nutrition.svg", imageAlt: "Diet and nutrition guidance", imageKind: "icon" },
-    { title: "Deluxe Room", description: "Comfortable private rooms designed for a restful recovery.", icon: "deluxe-beds", image: "/images/facilities/deluxe-room.png", imageAlt: "Anand Hospital deluxe patient room" },
-    { title: "Home Care", description: "Professional medical care in the comfort of your home.", icon: "home-care", image: "/images/facilities/home-care.png", imageAlt: "Anand Hospital patient care room" },
-    { title: "Reception Area", description: "A welcoming reception team to guide patients and families.", icon: "hospital-set-3", image: "/images/facilities/reception-area.png", imageAlt: "Anand Hospital reception area" },
-    { title: "Ayushman Card Facility Available", description: "Ayushman Bharat card support is available for eligible patients.", icon: "ayushman", image: "/images/facilities/ayushman-card-facility.png", imageAlt: "Ayushman Card facility at Anand Hospital" },
+    { title: "Deluxe Room", description: "Comfortable private rooms designed for a restful recovery.", galleryGroup: "deluxe", icon: "deluxe-beds", image: "/images/facilities/deluxe-room.webp", imageAlt: "Anand Hospital deluxe patient room" },
+    { title: "Home Care", description: "Professional medical care in the comfort of your home.", icon: "home-care", image: "/images/facilities/home-care.webp", imageAlt: "Anand Hospital patient care room" },
+    { title: "Reception Area", description: "A welcoming reception team to guide patients and families.", icon: "hospital-set-3", image: "/images/facilities/reception-area.webp", imageAlt: "Anand Hospital reception area" },
+    { title: "Ayushman Card Facility Available", description: "Ayushman Bharat card support is available for eligible patients.", icon: "ayushman", image: "/images/facilities/ayushman-card-facility.webp", imageAlt: "Ayushman Card facility at Anand Hospital" },
   ] },
 ];
 
@@ -83,14 +85,15 @@ export default function Services() {
           {facilityGroups.map((group) => <div className={`services-facility-group ${group.tone}`} key={group.title}>
             <h2>{group.title}</h2>
             <div>{group.items.map((item) => <article key={item.title}>
-              <div className={`services-facility-image${item.imageKind === "icon" ? " services-facility-image--icon" : ""}`}><Image src={item.image} alt={item.imageAlt} width={1448} height={1086} /><Icon name={item.icon} /></div>
+              {item.galleryGroup ? <FacilityCascade group={item.galleryGroup} /> : <div className={`services-facility-image${item.imageKind === "icon" ? " services-facility-image--icon" : ""}`}><Image src={item.image} alt={item.imageAlt} width={1448} height={1086} /><Icon name={item.icon} /></div>}
               <div className="services-facility-copy"><h3>{item.title}</h3>
               <p>{item.description}</p>
-              <Link href="/appointment">Learn More <Icon name="arrow" /></Link></div>
+              <Link href={item.galleryGroup ? `/gallery#${item.galleryGroup}` : "/appointment"}>{item.galleryGroup ? "View Gallery" : "Learn More"} <Icon name="arrow" /></Link></div>
             </article>)}</div>
           </div>)}
         </div>
       </section>
+      <CareConfidence />
       <FacilitySlideshow />
     </div>
     <Assistance />

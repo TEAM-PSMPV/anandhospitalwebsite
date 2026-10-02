@@ -107,7 +107,7 @@ export function Breadcrumbs({ items }: { items: readonly BreadcrumbItem[] }) {
 
   return <>
     <nav className="seo-breadcrumb" aria-label="Breadcrumb">
-      <ol>{allItems.map((item, index) => <li key={item.href}>{index < allItems.length - 1 ? <Link href={item.href}>{item.name}</Link> : <span aria-current="page">{item.name}</span>}</li>)}</ol>
+      <ol>{allItems.map((item, index) => <li key={item.href}>{index < allItems.length - 1 ? <Link href={item.href}>{index === 0 && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3V10Z"/><path d="M9 20v-7h6v7"/></svg>}{item.name}</Link> : <span aria-current="page">{item.name}</span>}</li>)}</ol>
     </nav>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
   </>;

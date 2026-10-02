@@ -51,7 +51,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const hospitalStructuredData = {
     "@context": "https://schema.org", "@type": "Hospital", "@id": `${siteUrl}/#hospital`, name: "Anand Hospital", url: siteUrl,
-    logo: `${siteUrl}/brand/anand-hospital-logo.webp`, image: `${siteUrl}/images/anand-hospital-hero-1910x681.png`, telephone: "+91-7351028221", email: "info@anandhospitalmbd.org", openingHours: "Mo-Su 00:00-23:59",
+    logo: `${siteUrl}/brand/anand-hospital-logo.webp`, image: `${siteUrl}/images/anand-hospital-hero-1910x681.webp`, telephone: "+91-7351028221", email: "info@anandhospitalmbd.org", openingHours: "Mo-Su 00:00-23:59",
     address: { "@type": "PostalAddress", streetAddress: "Near Miglani Cinema, Rampur Road", addressLocality: "Moradabad", addressRegion: "Uttar Pradesh", postalCode: "244001", addressCountry: "IN" },
     medicalSpecialty: ["GeneralSurgery", "Obstetric", "Gynecologic", "Pediatric", "Urologic", "Emergency"],
   };
