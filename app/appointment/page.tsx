@@ -15,7 +15,7 @@ export default async function Appointment({ searchParams }: AppointmentPageProps
   return <SiteShell><Breadcrumbs items={[{ name: "Book Appointment", href: "/appointment" }]} /><section className="appointment-page-hero"><div className="container appointment-page-hero-grid"><div className="appointment-page-hero-copy">
     <h1>Book an Appointment</h1><p>Schedule your visit with our experienced doctors.</p>
     <div className="appointment-page-hero-features"><span><Icon name="heart"/>Patient<br/>Centered Care</span><span><Icon name="pulse"/>Advanced<br/>Technology</span><span><Icon name="doctors"/>Experienced<br/>Doctors</span><span><Icon name="shield"/>24×7 Emergency<br/>Care</span></div>
-  </div><div className="appointment-page-hero-image"><Image src="/images/group-photo.png" alt="Anand Hospital medical team" width={1672} height={941} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} priority sizes="(max-width: 640px) 100vw, 48vw" /></div></div></section>
+  </div><div className="appointment-page-hero-image"><Image src="/images/group-photo.webp" alt="Anand Hospital medical team" width={1672} height={941} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} priority sizes="(max-width: 640px) 100vw, 48vw" /></div></div></section>
   <section className="appointment viewport-section"><div className="container appointment-grid">
     <div className="appointment-form-card"><h2>Schedule Your Appointment</h2>
       <AppointmentForm requestedDoctor={requested.doctor} requestedDepartment={requested.department} />

@@ -142,7 +142,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <nav className={`${open ? "nav is-open" : "nav"}${servicesOpen ? " services-view" : ""}`} aria-label="Main navigation">
           {nav.map(([icon, label, href]) => label === "Services" ? <div ref={servicesRef} className={servicesOpen ? "nav-services is-open" : "nav-services"} key={label}>
             <button className={pathname.startsWith("/services") ? "active" : ""} type="button" aria-expanded={servicesOpen} aria-controls="services-navigation-menu" onClick={() => setServicesOpen((current) => !current)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><Image className="nav-dropdown-arrow" src="/icons/set-3/dropdown-arrow.svg" width={16} height={16} alt="" /></span></button>
-            <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list"><p>Services &amp; Specialty Areas</p>{hospitalServices.map((service) => <Link href={`/services/${service.slug}`} key={service.slug} onClick={closeNavigation}>{service.shortName}</Link>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div><div className="services-menu-art"><Image src="/images/facilities/reception-area.png" width={1448} height={1086} alt="Anand Hospital reception area" /></div></div>
+            <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list"><p>Services &amp; Specialty Areas</p>{hospitalServices.map((service) => <Link href={`/services/${service.slug}`} key={service.slug} onClick={closeNavigation}>{service.shortName}</Link>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div><div className="services-menu-art"><Image src="/images/facilities/reception-area.webp" width={1448} height={1086} alt="Anand Hospital reception area" /></div></div>
           </div> : <Link className={pathname === href ? "active" : ""} href={href} key={label} onClick={closeNavigation}><Icon name={icon} /><span>{label}</span></Link>)}
         </nav>
         <button className={open ? "menu-button is-open" : "menu-button"} type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => { setOpen((current) => !current); setServicesOpen(false); }}>{open ? <svg className="menu-close-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" /></svg> : <Icon name="menu" />}</button>
@@ -167,14 +167,15 @@ function SocialStrip() {
 
 function Footer() {
   const footerGroups = [
-    { title: "Actions", links: [["Home", "/"], ["About Us", "/about"], ["Doctors & Departments", "/doctors"], ["Health Library", "/health-library"], ["Book Appointment", "/appointment"], ["Contact Us", "mailto:info@anandhospitalmbd.org"]] },
-    { title: "Doctors & Departments", links: [["General Medicine", "/services#general-medicine"], ["General surgery", "/services#general-surgery"], ["Pediatrics", "/services#pediatrics"], ["RMO", "/doctors"], ["Anesthesiology", "/services#anesthesiology"], ["Urology", "/services#urology"], ["Obs & Gynaecology", "/services#obstetrics-gynaecology"]] },
-    { title: "Health Library", links: [["Health Tips", "/health-library"], ["Disease Guide", "/health-library"], ["Nutrition", "/health-library"], ["Wellness", "/health-library"]] },
-    { title: "Patient Information", links: [["Insurance", "/about"], ["Health Packages", "/services"], ["Awards & Felicitations", "/awards"], ["Patient Testimonials", "/testimonials"], ["FAQs", "/about#faq"], ["Privacy Policy", "/about"], ["Terms & Conditions", "/about"]] },
+    { title: "Explore Anand Hospital", links: [["Home", "/"], ["About Us", "/about"], ["Doctors", "/doctors"], ["Services", "/services"], ["Hospital Gallery", "/gallery"], ["Awards & Felicitations", "/awards"], ["Book Appointment", "/appointment"]] },
+    { title: "Care & Health Guides", links: [["General & Laparoscopic Surgery", "/services/general-surgery"], ["Obstetrics & Gynaecology", "/services/obstetrics-gynaecology"], ["Emergency Care", "/services/emergency-care"], ["ICU & Critical Care", "/services/critical-care"], ["Paediatrics", "/services/pediatrics"], ["Urology", "/services/urology"], ["Health Library", "/health-library"]] },
+    { title: "Patient Support", links: [["Ayushman & Payment Information", "/site-information/ayushman-and-payments"], ["Patient Testimonials", "/testimonials"], ["FAQs", "/about#faq"], ["Contact Hospital", "mailto:info@anandhospitalmbd.org"], ["Send Us Feedback", "/feedback"], ["Website Sitemap", "/sitemap"]] },
+    { title: "Site Information & Policies", links: [["All Site Information", "/site-information"], ["About This Website", "/site-information/about-this-website"], ["Privacy Policy", "/site-information/privacy-policy"], ["Website Terms of Use", "/site-information/terms-of-use"], ["Medical Information", "/site-information/medical-information"], ["Accessibility", "/site-information/accessibility"], ["Cookies & Browser Settings", "/site-information/cookies-and-browser-settings"], ["Social Media Policy", "/site-information/social-media-policy"], ["Advertising & Editorial Policy", "/site-information/advertising-and-editorial-policy"], ["Copyright & Licensing", "/site-information/copyright-and-licensing"]] },
   ] as const;
 
   return <footer className="site-footer">
     <div className="footer-main">
+      <div className="container-wide footer-intro"><div><p>Here for you, around the clock.</p><h2>Apni care ka agla kadam lein.</h2></div><div><Link className="button button-white" href="/appointment">Request Appointment →</Link><a href="tel:+917351028221">Call +91 73510 28221</a></div></div>
       <div className="container-wide footer-grid">
         <div className="footer-brand">
           <Link className="footer-logo" href="/" aria-label="Anand Hospital home">
@@ -193,7 +194,7 @@ function Footer() {
         <div><Icon name="clock" /><span>Open 24x7</span></div>
       </div>
     </div>
-    <div className="footer-copyright">Estb. in 2007 · Copyright © 2007-2026 Anand Hospital. All rights reserved.</div>
+    <div className="footer-copyright"><div className="container-wide footer-legal-row"><span>Copyright © {new Date().getFullYear()} Anand Hospital. All rights reserved.</span><a className="developer-credit" href="https://www.teampsmpv.com/" target="_blank" rel="noreferrer" aria-label="Developed by TEAM PSMPV, opens in a new tab"><span>Developed by</span><picture><source type="image/avif" srcSet="/brand/teampsmpv-monogram-white.avif" /><img className="developer-monogram" src="/brand/teampsmpv-monogram-white.webp" width={48} height={48} alt="" loading="lazy" decoding="async" /></picture><picture><source type="image/avif" srcSet="/brand/teampsmpv-wordmark-white.avif" /><img className="developer-wordmark" src="/brand/teampsmpv-wordmark-white.webp" width={190} height={35} alt="TEAM PSMPV" loading="lazy" decoding="async" /></picture></a></div></div>
   </footer>;
 }
 

@@ -28,7 +28,7 @@ Address: Near Miglani Cinema, Rampur Road, Moradabad [244001].
 Appointment and emergency phone: +91 7351028221. Follow-up patient help: +91 9528261199. Email: info@anandhospitalmbd.org.
 Appointments: Patients can submit the appointment form with their name, phone, doctor, department, preferred date and a short message. The reception team then calls to confirm doctor availability and appointment details. No account is required. For rescheduling, cancellation, consultation fees or required documents, contact reception. The website lists OPD timings as Monday-Saturday 9:00 AM-6:00 PM and Sunday 9:00 AM-1:00 PM; a contact strip also lists 10:15 AM-3:00 PM, so advise the patient to call and confirm current doctor availability.
 Emergency: Emergency and critical-care support is available 24x7. For a medical emergency, visit the hospital immediately or call +91 7351028221.
-Doctors: Dr Subhash Singh — Consultant General Surgeon; MBBS, MS; former Lecturer at PGIMS Rohtak; general and laparoscopic surgery. Dr Nidhi Thakur — Consultant Obstetrician & Gynaecologist; MBBS (KGMU), DGO (LLRM Medical College); 20+ years in high-risk obstetrics, gynaecology, laparoscopy, hysteroscopy and infertility care; former Senior Resident at PGIMS Rohtak. Dr Bhoopendra Kumar Sharma — Consultant Urologist & Assistant Professor; MBBS, MS (General Surgery), MCh (Urology). Dr Rajiv Kumar — Consultant Paediatrician & Neonatologist; MBBS, MD Paediatrics; 12 years in paediatrics, neonatology, NICU, PICU and paediatric emergency care. Dr Garima Singh — Consultant Anaesthesiologist; MBBS, MD (Anaesthesiology); 18 years in perioperative anaesthesia, regional blocks and labour analgesia. Dr Rangit Pandey — Consultant Anaesthesiologist; MBBS (KGMC Lucknow), MD (Anaesthesia & Critical Care); former senior resident at UCMS & GTB Hospital, former consultant at Kailash Hospital, and former senior faculty and ICU in-charge at SRMS.
+Doctors: Dr Subhash Singh — Consultant General Surgeon; MBBS, MS; former Lecturer at PGIMS Rohtak; general and laparoscopic surgery. Dr Nidhi Thakur — Consultant Obstetrician & Gynaecologist; MBBS (KGMU), DGO (LLRM Medical College); 20+ years in high-risk obstetrics, gynaecology, laparoscopy, hysteroscopy and infertility care, with experience in 25,000+ high-risk surgical cases; former Senior Resident at PGIMS Rohtak. Dr Bhoopendra Kumar Sharma — Consultant Urologist & Assistant Professor; MBBS, MS (General Surgery), MCh (Urology). Dr Rajiv Kumar — Consultant Paediatrician & Neonatologist; MBBS, MD Paediatrics; 12 years in paediatrics, neonatology, NICU, PICU and paediatric emergency care. Dr Garima Singh — Consultant Anaesthesiologist; MBBS, MD (Anaesthesiology); 18 years in perioperative anaesthesia, regional blocks and labour analgesia. Dr Rangit Pandey — Consultant Anaesthesiologist; MBBS (KGMC Lucknow), MD (Anaesthesia & Critical Care); former senior resident at UCMS & GTB Hospital, former consultant at Kailash Hospital, and former senior faculty and ICU in-charge at SRMS.
 Medical services: Emergency Care (rapid assessment, stabilisation, critical-care coordination and admission support); General Medicine (fever and infections, diabetes, hypertension and general consultations); General Surgery (general and laparoscopic procedures, cancer surgery and post-operative care); Paediatrics (child consultations, newborn and infant care, vaccinations and preventive care); Obstetrics & Gynaecology (obstetric, gynaecology, women's health and maternity care); Urology (consultation, surgical urology, stone management and follow-up); Anaesthesiology (pre-anaesthetic assessment, planning, perioperative monitoring and pain management); RMO/Critical Care (continuous monitoring, critical support, post-operative observation and emergency coordination).
 Facilities and patient care: pathology lab, X-ray and ultrasound imaging, pharmacy, high-tech ICU, health checkups, diet and nutrition guidance, deluxe rooms, home care, reception support, Ayushman Bharat card support for eligible patients, operation theatre, NICU, wards, waiting area and parking.
 Health Library topics: heart-health habits; type 2 diabetes symptoms and management; balanced nutrition and immune health; PCOS causes, symptoms and treatment; childhood vaccination; and stress management. These articles are general education and not a diagnosis or substitute for a clinician.
@@ -183,6 +183,11 @@ const worker = {
     const url = new URL(request.url);
 
     const redirectAliases: Record<string, string> = {
+      "/privacy-policy": "/site-information/privacy-policy",
+      "/terms-and-conditions": "/site-information/terms-of-use",
+      "/terms-of-use": "/site-information/terms-of-use",
+      "/hospital-gallery": "/gallery",
+      "/feedback-form": "/feedback",
       "/awards-and-felicitations": "/awards",
       "/awards-certifications": "/awards",
       "/book-appointment": "/appointment",
@@ -232,7 +237,7 @@ const worker = {
     }
 
     if (url.pathname === "/_vinext/image") {
-      const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
+      const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES, 120];
       const imageResponse = await handleImageOptimization(request, {
         fetchAsset: (path) => env.ASSETS.fetch(new Request(new URL(path, request.url))),
         transformImage: async (body, { width, format, quality }) => {

@@ -61,3 +61,15 @@ Common failures: check secret names/token scope for authentication, DNS/Worker r
 - Production checks in `scripts/smoke-production.mjs` require the awards content, canonical URLs, sitemap, robots sitemap reference, 301 normalization and a true custom 404 response before a deployment reports success.
 
 Metadata titles and descriptions remain based on the existing website content; the separately referenced metadata screenshot was not present in the supplied archive.
+
+## Gallery, policies and website feedback
+
+`/gallery` contains 102 photographs across ICU/wards, deluxe rooms, hospital facilities, the team and awards. Exact duplicate archive files are shown once. Services uses the shared gallery catalogue for keyboard-operated ICU and room cascades. The gallery viewer supports arrow keys, Escape and native modal focus handling.
+
+`/site-information` links to ten individual information and policy pages. `/sitemap` lists every public XML sitemap route by category and also links to website search. The footer includes these destinations, both supplied TEAM PSMPV logos and a full desktop viewport layout.
+
+`/feedback` prepares name, email and message in a `mailto:` draft addressed to `support@teampsmpv.com`. The visitor reviews and sends through their own email service. There is no feedback backend, automatic email delivery or provider secret. A copy option and manual-copy fallback are available when an email app is not configured.
+
+Photographic page sources use WebP with AVIF variants; gallery images have smaller versions and native dimensions. Legacy PNG/JPEG paths remain available for old links. Both the image configuration and Worker allow the compact doctor-card width of 120px; this must remain aligned to prevent HTTP 400 image failures. Regression tests cover that width and reject unsupported values.
+
+The 25,000+ high-risk surgical-case figure and Ayushman availability are hospital-supplied statements. Coverage copy directs visitors to confirm eligibility, covered packages, authorisation and applicable charges with reception.

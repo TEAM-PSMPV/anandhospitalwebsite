@@ -16,6 +16,9 @@ export default function Search() {
     ...doctors.map((doctor) => ({ title: doctor.name, detail: `${doctor.department} · ${doctor.qualification}`, href: `/doctors/${doctorSlug(doctor.name)}`, searchText: "doctor doctors specialist" })),
     { title: "Book an Appointment", detail: "Request a consultation at Anand Hospital", href: "/appointment", searchText: "book appointment visit" },
     { title: "About Anand Hospital", detail: "Our story, values and facilities", href: "/about", searchText: "about hospital story" },
+    { title: "Hospital Gallery", detail: "ICU, deluxe rooms and hospital photographs", href: "/gallery", searchText: "gallery photos rooms facilities" },
+    { title: "Website Feedback", detail: "Share a website issue with TEAM PSMPV", href: "/feedback", searchText: "feedback help website support" },
+    { title: "Site Information & Policies", detail: "Privacy, terms, accessibility and Ayushman information", href: "/site-information", searchText: "privacy policies terms sitemap" },
     { title: "Awards & Felicitations", detail: "Recognition of Dr Nidhi Thakur and Dr Subhash Singh", href: "/awards", searchText: "awards certificates fellowships felicitations" },
     { title: "Health Library", detail: "Helpful health information", href: "/health-library", searchText: "health library wellness" },
   ];
