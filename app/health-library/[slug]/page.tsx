@@ -1,3 +1,4 @@
+import { ArrowIcon } from "../../arrow-icon";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,12 +20,13 @@ export default async function HealthArticlePage({ params }: Props) {
   const index = healthArticles.findIndex(({ slug }) => slug === article.slug);
   const related = Array.from({ length: 3 }, (_, offset) => healthArticles[(index + offset + 1) % healthArticles.length]);
   return <SiteShell>
-    <Breadcrumbs items={[{ name: "Health Library", href: "/health-library" }, { name: article.title, href: `/health-library/${article.slug}` }]} />
+
     <article className="health-article-page">
       <header className="health-article-hero"><div className="container health-article-hero-grid"><div className="health-article-hero-copy">
-        <Link className="health-article-back" href="/health-library"><span aria-hidden="true">←</span> Health Library</Link>
+        <Link className="health-article-back" href="/health-library"><span aria-hidden="true"><ArrowIcon direction="back" /></span> Health Library</Link>
         <span className="health-article-category">{article.category}</span><h1>{article.title}</h1><p>{article.summary}</p><span className="health-article-time">{article.readingTime}</span>
       </div><Image className="health-article-hero-image" src={article.image} alt={article.imageAlt} width={1536} height={1024} priority /></div></header>
+<Breadcrumbs items={[{ name: "Health Library", href: "/health-library" }, { name: article.title, href: `/health-library/${article.slug}` }]} />
       <div className="container health-article-body"><div className="health-article-prose">
         <p className="health-article-lead">{article.intro}</p>
         {article.sections.map((section) => <section key={section.heading}><h2>{section.heading}</h2>{section.paragraphs?.map((text) => <p key={text}>{text}</p>)}{section.points && <ul>{section.points.map((point) => <li key={point}>{point}</li>)}</ul>}</section>)}

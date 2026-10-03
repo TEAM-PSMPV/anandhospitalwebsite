@@ -39,13 +39,14 @@ export default async function ServicePage({ params }: Props) {
   };
 
   return <SiteShell>
-    <Breadcrumbs items={[{ name: "Services", href: "/services" }, { name: service.name, href: `/services/${service.slug}` }]} />
+
     <article className="service-detail-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="service-detail-hero"><div className="container service-detail-hero-grid"><div>
         <h1>{service.name}</h1><p>{service.description}</p>
         <div className="service-detail-actions"><Link className="button button-white" href="/appointment">Book Appointment</Link><a className="button button-outline" href="tel:+917351028221">Call Hospital</a></div>
       </div><div className="service-detail-hero-photo"><Image src={service.heroImage} alt={`${service.name} facility at Anand Hospital`} width={1448} height={1086} /></div></div></section>
+<Breadcrumbs items={[{ name: "Services", href: "/services" }, { name: service.name, href: `/services/${service.slug}` }]} />
 
       <nav className="service-local-nav" aria-label={`${service.name} page sections`}><div className="container"><a href="#care">Care We Provide</a><a href="#why-anand">Why Anand Hospital</a><a href="#visit">Plan Your Visit</a></div></nav>
 

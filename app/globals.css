@@ -8937,3 +8937,49 @@ main > section.information-hub, main > section.html-sitemap, main > section.feed
 @media (min-width: 761px) {
   .footer-legal-row { padding-right: 76px; }
 }
+
+/* Supplied directional SVGs share predictable sizing in links and controls. */
+.arrow-icon { display: inline-block; width: 1.25em; height: 1.25em; min-width: 1.25em; object-fit: contain; vertical-align: middle; flex-shrink: 0; }
+.button .arrow-icon, .footer-links .arrow-icon { width: 20px; height: 20px; min-width: 20px; }
+.button-blue .arrow-icon, .services-book .arrow-icon, .footer-links .arrow-icon { filter: invert(1); }
+.award-arrow .arrow-icon, .doctor-carousel-arrow .arrow-icon, .testimonial-stage button .arrow-icon { width: 28px; height: 28px; }
+.nav-dropdown-arrow { transform: rotate(90deg); }
+.nav-services.is-open .nav-dropdown-arrow { transform: rotate(-90deg); }
+.seo-breadcrumb li:not(:last-child)::after { content: ""; width: 14px; height: 14px; margin: 0 2px; background: #7e95a7; mask: url("/icons/set-5/right-arrow.svg") center / contain no-repeat; }
+
+/* Each desktop gallery collection follows the supplied full-viewport references. */
+main > section.professional-gallery-section { min-height: 100svh; display: flex; align-items: center; background: #fff; scroll-margin-top: 110px; padding: clamp(32px, 6vh, 80px) 0; }
+.professional-gallery-layout { width: 83.1%; max-width: 1680px; margin: 0 auto; display: grid; grid-template-columns: 35% 57.5%; gap: 7.5%; align-items: center; }
+.professional-gallery-copy h2 { margin: 0; color: #333; font-size: clamp(30px, 2.65vw, 52px); font-weight: 700; line-height: 1.13; letter-spacing: -.02em; }
+.professional-gallery-rule { display: block; width: 50px; height: 6px; background: #009cf5; margin: 24px 0; }
+.professional-gallery-copy p { margin: 0 0 52px; color: #555; font-size: clamp(16px, 1.3vw, 24px); line-height: 1.8; }
+.professional-gallery-copy .button { padding: 13px 25px; border-radius: 6px; font-size: clamp(15px, 1.15vw, 22px); min-height: 50px; }
+.professional-gallery-section.image-first .professional-gallery-layout { grid-template-columns: 57.5% 35%; }
+.professional-gallery-section.image-first .professional-gallery-copy { grid-column: 2; grid-row: 1; }
+.professional-gallery-section.image-first .professional-cascade { grid-column: 1; grid-row: 1; }
+.professional-cascade { min-width: 0; padding: 18px 18px 0 0; }
+.professional-cascade-stack { position: relative; height: min(76vh, 730px); }
+.professional-cascade-back, .professional-cascade-front { position: absolute; inset: 0; margin: 0; padding: 0; border: 0; background: #f3f8fc; width: 100%; height: 100%; }
+.professional-cascade-back.layer-2 { transform: translate(18px, -18px); opacity: .35; }
+.professional-cascade-back.layer-1 { transform: translate(9px, -9px); opacity: .65; }
+.professional-cascade-front { cursor: zoom-in; overflow: hidden; }
+.professional-cascade picture, .professional-cascade-stack img { display: block; width: 100%; height: 100%; }
+.professional-cascade-stack img { object-fit: contain; }
+.professional-photo-caption { position: absolute; bottom: 0; left: 0; padding: 9px 16px; background: #fff; color: #334d62; font-size: 13px; }
+.professional-cascade-controls { display: flex; gap: 24px; justify-content: center; align-items: center; margin-top: 16px; color: #405c72; font-size: 14px; }
+.professional-cascade-controls button { display: grid; place-items: center; border: 1px solid #e5edf3; border-radius: 50%; background: #fff; width: 44px; height: 44px; cursor: pointer; }
+.professional-cascade-controls button:hover { background: #edf5fa; }
+.professional-cascade button:focus-visible { outline: 3px solid #007fc4; outline-offset: 4px; }
+.professional-cascade .gallery-dialog picture { width: auto; height: auto; }
+@media (max-width: 760px) {
+  main > section.professional-gallery-section { min-height: auto; padding: 52px 0; }
+  .professional-gallery-layout, .professional-gallery-section.image-first .professional-gallery-layout { width: calc(100% - 40px); grid-template-columns: 1fr; gap: 32px; }
+  .professional-gallery-section.image-first .professional-gallery-copy, .professional-gallery-section.image-first .professional-cascade { grid-column: auto; grid-row: auto; }
+  .professional-gallery-copy p { margin-bottom: 24px; }
+  .professional-cascade-stack { height: clamp(280px, 65vw, 480px); }
+}
+main > section.testimonials-introduction, main > section.feedback-introduction, main > section.search-introduction { min-height: 0; display: block; padding: 60px 0 36px; background: #f3f8fc; }
+.testimonials-introduction .testimonials-page-heading { margin-bottom: 0; }
+.feedback-introduction h1, .search-introduction h1 { color: #023767; font-size: clamp(30px, 4vw, 48px); line-height: 1.2; margin: 10px 0 20px; }
+.feedback-introduction p { max-width: 760px; color: #405c72; line-height: 1.8; }
+main > section.information-hub, main > section.html-sitemap { min-height: 0; display: block; padding-block: 48px; }

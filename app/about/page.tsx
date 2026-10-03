@@ -1,3 +1,4 @@
+import { ArrowIcon } from "../arrow-icon";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -41,12 +42,13 @@ function CoreValueIcon({ name }: { name: CoreValueIconName }) {
 }
 
 export default function About() { return <SiteShell>
-  <Breadcrumbs items={[{ name: "About", href: "/about" }]} />
+
   <section className="about-hero"><div className="container about-hero-grid"><div>
     <p className="kicker light">About Anand Hospital</p><h1>Trusted healthcare in Moradabad.</h1><p>Affordable, ethical and patient-centered care for every family.</p>
     <div className="trust-row"><span><Icon name="heart" />Patient<br/>Centered Care</span><span><Icon name="pulse" />Advanced<br/>Technology</span><span><Icon name="doctors" />Experienced<br/>Doctors</span><span><Icon name="shield" />24×7 Emergency<br/>Care</span></div>
     <Link className="button button-white" href="/appointment">Book Appointment <Icon name="arrow" /></Link>
   </div><div className="about-hero-photo" /></div></section>
+<Breadcrumbs items={[{ name: "About", href: "/about" }]} />
 
   <section className="about-story viewport-section"><div className="container story-grid">
     <div><p className="kicker">Our Story</p><h2>Care built on trust, compassion and clinical excellence.</h2><p>Anand Hospital was founded with the vision of providing affordable, ethical and patient-centered healthcare to families in Moradabad. We have grown into a trusted multispecialty hospital while staying close to the community we serve.</p>
@@ -58,7 +60,7 @@ export default function About() { return <SiteShell>
     </div><div className="values"><h2>Our Core Values</h2><div>{values.map(([icon,label])=><span key={label}><CoreValueIcon name={icon}/><b>{label}</b></span>)}</div></div></div>
   </div></section>
 
-  <section className="leadership doctor-section viewport-section"><div className="container"><div className="leadership-heading"><div><p className="kicker">Our Medical Team</p><h2>Experienced people. Shared purpose.</h2></div><Link href="/doctors">View All Doctors <span aria-hidden="true">→</span></Link></div><DoctorCards carousel /></div></section>
+  <section className="leadership doctor-section viewport-section"><div className="container"><div className="leadership-heading"><div><p className="kicker">Our Medical Team</p><h2>Experienced people. Shared purpose.</h2></div><Link href="/doctors">View All Doctors <span aria-hidden="true"><ArrowIcon direction="right" /></span></Link></div><DoctorCards carousel /></div></section>
 
   <section className="glance viewport-section"><div className="container"><p className="kicker">Anand Hospital at a Glance</p><div className="stats">{[[19,"+","Years of experience"],[100,"+","Team members"],[8,"","Core services"],[24,"×7","Emergency care"],[2007,"","Established"]].map(([value,suffix,label])=><div key={label}><CountingStat value={value as number} suffix={suffix as string}/><span>{label}</span></div>)}</div></div></section>
 

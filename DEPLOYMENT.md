@@ -64,7 +64,7 @@ Metadata titles and descriptions remain based on the existing website content; t
 
 ## Gallery, policies and website feedback
 
-`/gallery` contains 102 photographs across ICU/wards, deluxe rooms, hospital facilities, the team and awards. Exact duplicate archive files are shown once. Services uses the shared gallery catalogue for keyboard-operated ICU and room cascades. The gallery viewer supports arrow keys, Escape and native modal focus handling.
+`/gallery` contains only the 24 photographs from `Professional-Gallery-WebP-AVIF.zip`, across ICU/wards, deluxe rooms, hospital facilities and the team. Four alternating desktop viewport sections provide cascading slides and a modal viewer. Awards remain on `/awards`. Services uses the shared gallery catalogue for keyboard-operated ICU and room cascades. The gallery viewer supports arrow keys, Escape and native modal focus handling. Breadcrumbs follow the hero on every page. Directional links and controls use the supplied set-5 SVGs.
 
 `/site-information` links to ten individual information and policy pages. `/sitemap` lists every public XML sitemap route by category and also links to website search. The footer includes these destinations, both supplied TEAM PSMPV logos and a full desktop viewport layout.
 

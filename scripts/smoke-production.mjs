@@ -14,7 +14,11 @@ for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/do
   }
   if (path === "/doctors") assert.ok(html.includes('class="award-cascade"'));
   if (path === "/services") assert.ok(html.includes('aria-label="Next ICU photograph"') && html.includes('aria-label="Next deluxe room photograph"'));
-  if (path === "/gallery") assert.equal((html.match(/<figure>/g) ?? []).length, 102);
+  if (path === "/gallery") {
+    assert.equal((html.match(/"@type":"ImageObject"/g) ?? []).length, 24);
+    assert.equal((html.match(/aria-roledescription="carousel"/g) ?? []).length, 4);
+    assert.ok(!html.includes("/images/awards/"));
+  }
   if (path === "/feedback") assert.ok(html.includes('sent only when you choose Send'));
   assert.ok(html.includes('teampsmpv-wordmark-white.webp'), `Developer logo missing on ${path}`);
   assert.ok(!html.includes('Estb. in 2007'));

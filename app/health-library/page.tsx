@@ -17,8 +17,9 @@ const healthTopics: { title: string; description: string; icon: IconName }[] = [
 ];
 
 export default function HealthLibrary(){return <SiteShell>
-  <Breadcrumbs items={[{ name: "Health Library", href: "/health-library" }]} />
+
   <InteriorHero className="health-library-hero" title="Live Healthy" text="Practical, clinician-guided information for healthier everyday decisions."/>
+<Breadcrumbs items={[{ name: "Health Library", href: "/health-library" }]} />
   <div className="health-library-search-wrap"><form className="health-library-search" action="/search" method="get"><button type="submit" aria-label="Search health topics"><Icon name="search"/></button><label className="sr-only" htmlFor="health-topic-search">Search health topics</label><input id="health-topic-search" name="q" type="search" placeholder="Search health topics, conditions and wellness advice"/></form></div>
   <section className="library-top viewport-section" aria-label="Health topics"><div className="container"><div className="topic-grid">{healthTopics.map((topic)=><article key={topic.title}><Icon name={topic.icon}/><h3>{topic.title}</h3><p>{topic.description}</p><Link href="#articles" aria-label={`Explore ${topic.title}`}><Icon name="arrow"/></Link></article>)}</div></div></section>
   <section className="articles health-featured-articles" id="articles"><div className="container"><header className="health-featured-heading"><h2>Featured Health Articles</h2><Link href="#articles">View All Articles <Icon name="arrow"/></Link></header><div className="featured-article-grid">{healthArticles.map((article)=><article className="health-feature-card" key={article.title}><Image className="health-article-image" src={article.image} alt={article.imageAlt} width={1536} height={1024}/><span>{article.category}</span><h3>{article.title}</h3><p>{article.summary}</p><Link href={`/health-library/${article.slug}`}>Read Article <Icon name="arrow"/></Link></article>)}</div></div></section>

@@ -39,7 +39,7 @@ const specialtyCardIcons: Partial<Record<(typeof services)[number]["slug"], Icon
 
 export default function Services() {
   return <SiteShell>
-    <Breadcrumbs items={[{ name: "Services", href: "/services" }]} />
+
     <div className="services-page">
       <section className="services-hero">
         <div className="container services-hero-grid">
@@ -57,6 +57,7 @@ export default function Services() {
           <div className="services-hero-image" role="img" aria-label="Anand Hospital NICU" />
         </div>
       </section>
+<Breadcrumbs items={[{ name: "Services", href: "/services" }]} />
 
       <section className="services-specialties" aria-label="Medical specialties">
         <div className="container services-specialty-grid">
