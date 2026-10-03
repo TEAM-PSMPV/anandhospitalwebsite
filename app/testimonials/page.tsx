@@ -1,3 +1,4 @@
+import { ArrowIcon } from "../arrow-icon";
 import { Assistance, SiteShell } from "../site-shell";
 import type { Metadata } from "next";
 import { patientTestimonials } from "../testimonials-data";
@@ -14,14 +15,16 @@ const instagramPosts = [
 
 export default function TestimonialsPage() {
   return <SiteShell>
-    <Breadcrumbs items={[{ name: "Testimonials", href: "/testimonials" }]} />
-    <section className="testimonials-page" aria-labelledby="testimonials-page-title">
-      <div className="container">
-        <header className="testimonials-page-heading">
+    <section className="testimonials-introduction"><div className="container">        <header className="testimonials-page-heading">
           <p className="kicker">View Testimonials</p>
           <h1 id="testimonials-page-title">Your Trust, Your Words.</h1>
           <p>Read what patients and their families have shared about their experience at Anand Hospital.</p>
-        </header>
+        </header></div></section>
+<Breadcrumbs items={[{ name: "Testimonials", href: "/testimonials" }]} />
+
+    <section className="testimonials-page" aria-labelledby="testimonials-page-title">
+      <div className="container">
+
         <section className="testimonials-instagram-grid" aria-label="Anand Hospital on Instagram">
           {instagramPosts.map((post) => <div className="testimonials-instagram-card" key={post.id}>
             <iframe
@@ -31,7 +34,7 @@ export default function TestimonialsPage() {
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
               allowFullScreen
             />
-            <a href={post.url} target="_blank" rel="noreferrer">Open this post on Instagram <span aria-hidden="true">↗</span></a>
+            <a href={post.url} target="_blank" rel="noreferrer">Open this post on Instagram <span aria-hidden="true"><ArrowIcon direction="right" /></span></a>
           </div>)}
         </section>
         <div className="testimonials-page-grid">

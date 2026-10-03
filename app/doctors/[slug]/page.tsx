@@ -46,10 +46,11 @@ export default async function DoctorProfilePage({ params }: Props) {
   };
 
   return <SiteShell>
-    <Breadcrumbs items={[{ name: "Doctors", href: "/doctors" }, { name: doctor.name, href: `/doctors/${slug}` }]} />
+
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
     <main className="doctor-detail-page">
       <section className="doctor-detail-hero"><div className="container doctor-detail-hero-grid"><Image src={doctor.photo} alt={doctor.name} width={1122} height={1402} priority sizes="(max-width: 760px) 70vw, 360px"/><div><p className="kicker">{doctor.department}</p><h1>{doctor.name}</h1><p className="doctor-detail-role">{doctor.role}</p><p>{details.intro}</p><dl><div><dt>Qualifications</dt><dd>{doctor.qualification}</dd></div><div><dt>Experience</dt><dd>{doctor.experience}</dd></div></dl><div className="doctor-detail-actions"><Link className="button button-blue" href={appointment}>Book an Appointment</Link><a className="button button-outline" href="tel:+917351028221">Call Hospital</a></div></div></div></section>
+<Breadcrumbs items={[{ name: "Doctors", href: "/doctors" }, { name: doctor.name, href: `/doctors/${slug}` }]} />
       <section className="doctor-detail-content"><div className="container doctor-detail-columns"><div><h2>Clinical focus</h2><ul>{details.focus.map((item) => <li key={item}><Icon name="shield" />{item}</li>)}</ul></div><div><h2>Related patient guides</h2>{details.links.length ? <nav>{details.links.map(([label, href]) => <Link href={href} key={href}>{label}<Icon name="arrow" /></Link>)}</nav> : <p>Contact the hospital to discuss the most appropriate consultation for your needs.</p>}</div></div></section>
       {(slug === "dr-nidhi-thakur" || slug === "dr-subhash-singh") && <section className="doctor-detail-hospital"><div className="container"><h2>Awards &amp; Felicitations</h2><p>Explore professional recognition and continued medical learning.</p><Link className="button button-outline" href={`/awards#${slug === "dr-nidhi-thakur" ? "nidhi" : "subhash"}`}>View Awards &amp; Certificates</Link></div></section>}
       <section className="doctor-detail-hospital"><div className="container"><h2>Care at Anand Hospital</h2><p>Consultations are supported by hospital diagnostics, operation theatre and anaesthesia services, inpatient facilities, critical-care coordination and 24×7 emergency care. Treatment suitability and referrals are decided after individual assessment.</p></div></section>

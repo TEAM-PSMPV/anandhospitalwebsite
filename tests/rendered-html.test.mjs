@@ -304,7 +304,8 @@ test("all sitemap pages serve self-canonical, social metadata and indexable HTML
     assert.match(html, /property="og:title"/, url);
     assert.match(html, /name="twitter:card"/, url);
     assert.match(html, /<h1[ >]/, url);
-    if (new URL(url).pathname !== "/") assert.match(html, /"@type":"BreadcrumbList"/, url);
+    assert.match(html, /"@type":"BreadcrumbList"/, url);
+    assert.ok(html.indexOf('<h1') < html.indexOf('aria-label="Breadcrumb"'), `Breadcrumb must follow the page introduction: ${url}`);
   }
 });
 
@@ -330,9 +331,11 @@ test("Core Web Vitals endpoint accepts finite metrics and rejects invalid events
 
 test("gallery, patient policies, feedback and complete HTML sitemap render without JavaScript", async () => {
   const gallery = await (await fetchPath('/gallery')).text();
-  assert.equal((gallery.match(/<figure>/g) ?? []).length, 102);
-  for (const group of ['icu', 'deluxe', 'facilities', 'team', 'awards']) assert.ok(gallery.includes(`id="${group}"`));
-  assert.match(gallery, /25,000\+/);
+  assert.equal((gallery.match(/"@type":"ImageObject"/g) ?? []).length, 24);
+  assert.equal((gallery.match(/aria-roledescription="carousel"/g) ?? []).length, 4);
+  assert.doesNotMatch(gallery, /images\/awards\//);
+  for (const group of ['icu', 'deluxe', 'facilities', 'team']) assert.ok(gallery.includes(`id="${group}"`));
+  assert.doesNotMatch(gallery, /id="awards"/);
   assert.match(gallery, /"@type":"ImageObject"/);
   assert.match(gallery, /type="image\/avif"/);
   const services = await (await fetchPath('/services')).text();

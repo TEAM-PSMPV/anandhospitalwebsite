@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "./seo";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Assistance, Icon, SiteShell, type IconName } from "./site-shell";
@@ -124,6 +125,7 @@ export default function Home() {
     <SiteShell>
       <div className="home-page">
         <HomeHero />
+      <Breadcrumbs items={[]} />
 
         <section className="home-services" aria-label="Hospital actions">
           <div className="container service-tiles">

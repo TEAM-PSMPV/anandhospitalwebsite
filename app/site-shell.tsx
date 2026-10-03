@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowIcon } from "./arrow-icon";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,6 +22,7 @@ export type IconName =
   | "service-baby" | "service-woman";
 
 export function Icon({ name, ...props }: { name: IconName } & SVGProps<SVGSVGElement>) {
+  if (name === "arrow") return <ArrowIcon direction="right" className={props.className} />;
   const suppliedIcons: Partial<Record<IconName, string>> = {
     home: "home.svg", info: "about-us.svg", services: "services.svg", doctors: "doctor.svg",
     library: "health-library.svg", calendar: "calendar.svg", search: "search.svg",
@@ -141,7 +143,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         </Link>
         <nav className={`${open ? "nav is-open" : "nav"}${servicesOpen ? " services-view" : ""}`} aria-label="Main navigation">
           {nav.map(([icon, label, href]) => label === "Services" ? <div ref={servicesRef} className={servicesOpen ? "nav-services is-open" : "nav-services"} key={label}>
-            <button className={pathname.startsWith("/services") ? "active" : ""} type="button" aria-expanded={servicesOpen} aria-controls="services-navigation-menu" onClick={() => setServicesOpen((current) => !current)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><Image className="nav-dropdown-arrow" src="/icons/set-3/dropdown-arrow.svg" width={16} height={16} alt="" /></span></button>
+            <button className={pathname.startsWith("/services") ? "active" : ""} type="button" aria-expanded={servicesOpen} aria-controls="services-navigation-menu" onClick={() => setServicesOpen((current) => !current)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><Image className="nav-dropdown-arrow" src="/icons/set-5/right-arrow-next.svg" width={16} height={16} alt="" /></span></button>
             <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list"><p>Services &amp; Specialty Areas</p>{hospitalServices.map((service) => <Link href={`/services/${service.slug}`} key={service.slug} onClick={closeNavigation}>{service.shortName}</Link>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div><div className="services-menu-art"><Image src="/images/facilities/reception-area.webp" width={1448} height={1086} alt="Anand Hospital reception area" /></div></div>
           </div> : <Link className={pathname === href ? "active" : ""} href={href} key={label} onClick={closeNavigation}><Icon name={icon} /><span>{label}</span></Link>)}
         </nav>
@@ -175,7 +177,7 @@ function Footer() {
 
   return <footer className="site-footer">
     <div className="footer-main">
-      <div className="container-wide footer-intro"><div><p>Here for you, around the clock.</p><h2>Apni care ka agla kadam lein.</h2></div><div><Link className="button button-white" href="/appointment">Request Appointment →</Link><a href="tel:+917351028221">Call +91 73510 28221</a></div></div>
+      <div className="container-wide footer-intro"><div><p>Here for you, around the clock.</p><h2>Apni care ka agla kadam lein.</h2></div><div><Link className="button button-white" href="/appointment">Request Appointment <ArrowIcon direction="right" /></Link><a href="tel:+917351028221">Call +91 73510 28221</a></div></div>
       <div className="container-wide footer-grid">
         <div className="footer-brand">
           <Link className="footer-logo" href="/" aria-label="Anand Hospital home">
@@ -183,7 +185,7 @@ function Footer() {
           </Link>
           <p>Providing compassionate, affordable and quality healthcare for families in Moradabad. Your health and well-being are our top priority.</p>
         </div>
-        {footerGroups.map((group) => <nav className="footer-links" aria-label={group.title} key={group.title}><h2>{group.title}</h2>{group.links.map(([label, href]) => <Link href={href} key={label}><span aria-hidden="true">›</span>{label}</Link>)}</nav>)}
+        {footerGroups.map((group) => <nav className="footer-links" aria-label={group.title} key={group.title}><h2>{group.title}</h2>{group.links.map(([label, href]) => <Link href={href} key={label}><ArrowIcon direction="next" />{label}</Link>)}</nav>)}
       </div>
     </div>
     <div className="footer-contact">

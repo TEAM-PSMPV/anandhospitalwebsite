@@ -27,10 +27,10 @@ export default function Search() {
     ? destinations.filter((item) => `${item.title} ${item.detail} ${item.searchText}`.toLowerCase().includes(normalizedQuery))
     : [];
 
-  return <SiteShell>
-    <Breadcrumbs items={[{ name: "Search", href: "/search" }]} />
+  return <SiteShell><section className="search-introduction"><div className="container"><h1 id="search-page-title">Search Anand Hospital</h1></div></section><Breadcrumbs items={[{ name: "Search", href: "/search" }]} />
+
     <section className="search-section" aria-labelledby="search-page-title"><div className="container search-page">
-      <h1 id="search-page-title">Search Anand Hospital</h1>
+
       <label className="search-box"><Icon name="search"/><span className="sr-only">Search doctors, departments and services</span><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="What can we help you find?"/>{query && <button onClick={() => setQuery("")} type="button">Clear</button>}</label>
       {normalizedQuery && <><p className="search-count">{results.length} results for “{query.trim()}”</p><div className="search-list">{results.map((item) => <Link href={item.href} key={`${item.title}-${item.detail}`}><span><strong>{item.title}</strong><small>{item.detail}</small></span><Icon name="arrow"/></Link>)}{!results.length && <div className="empty"><h2>No matching results</h2><p>Try a doctor name, department or service.</p></div>}</div></>}
     </div></section>

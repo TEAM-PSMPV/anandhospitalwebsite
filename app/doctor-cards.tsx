@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowIcon } from "./arrow-icon";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -44,11 +46,11 @@ export function DoctorCards({ compactRemainder = false, compactAll = false, caro
   };
 
   if (carousel) return <div className="doctor-collection doctor-collection--profiles doctor-carousel">
-    <button className="doctor-carousel-arrow doctor-carousel-arrow--previous" type="button" aria-label="Show previous doctors" onClick={() => slideDoctors(-1)}>‹</button>
+    <button className="doctor-carousel-arrow doctor-carousel-arrow--previous" type="button" aria-label="Show previous doctors" onClick={() => slideDoctors(-1)}><ArrowIcon direction="previous" /></button>
     <div className="doctor-carousel-viewport" ref={carouselRef} tabIndex={0} aria-label="Anand Hospital doctors">
       <div className="doctor-compact-grid doctor-carousel-track">{doctors.map((doctor) => <CompactDoctorCard doctor={doctor} key={doctor.name} />)}</div>
     </div>
-    <button className="doctor-carousel-arrow doctor-carousel-arrow--next" type="button" aria-label="Show next doctors" onClick={() => slideDoctors(1)}>›</button>
+    <button className="doctor-carousel-arrow doctor-carousel-arrow--next" type="button" aria-label="Show next doctors" onClick={() => slideDoctors(1)}><ArrowIcon direction="next" /></button>
   </div>;
   if (compactAll) return <div className="doctor-collection doctor-collection--profiles"><div className="doctor-compact-grid">{doctors.map((doctor) => <CompactDoctorCard doctor={doctor} key={doctor.name} />)}</div></div>;
   if (!compactRemainder) return <div className="doctor-grid">{doctors.map((doctor, index) => <StandardDoctorCard doctor={doctor} index={index} key={doctor.name} />)}</div>;
