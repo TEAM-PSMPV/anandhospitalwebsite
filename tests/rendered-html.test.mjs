@@ -304,8 +304,14 @@ test("all sitemap pages serve self-canonical, social metadata and indexable HTML
     assert.match(html, /property="og:title"/, url);
     assert.match(html, /name="twitter:card"/, url);
     assert.match(html, /<h1[ >]/, url);
-    assert.match(html, /"@type":"BreadcrumbList"/, url);
-    assert.ok(html.indexOf('<h1') < html.indexOf('aria-label="Breadcrumb"'), `Breadcrumb must follow the page introduction: ${url}`);
+    if (new URL(url).pathname === "/") {
+      assert.doesNotMatch(html, /aria-label="Breadcrumb"|"@type":"BreadcrumbList"/);
+      for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609"]) assert.ok(html.includes(profile), profile);
+      assert.match(html, /<picture>.*hero-mobile-360\.avif/s);
+    } else {
+      assert.match(html, /"@type":"BreadcrumbList"/, url);
+      assert.ok(html.indexOf('<h1') < html.indexOf('aria-label="Breadcrumb"'), `Breadcrumb must follow the page introduction: ${url}`);
+    }
   }
 });
 

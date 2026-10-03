@@ -1,5 +1,7 @@
 "use client";
 
+import "./chatbot-panel.css";
+
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 type ChatMessage = {
@@ -24,11 +26,11 @@ const initialMessages: ChatMessage[] = [
   { id: 1, role: "assistant", text: "Namaste! Main Anand Hospital ka AI assistant hoon. Hospital, doctors, services ya appointment ke baare mein mujhse yahin poochhiye." },
 ];
 
-export function SiteChatbot() {
+export function SiteChatbot({ initiallyOpen = false }: { initiallyOpen?: boolean }) {
   const chatbotRef = useRef<HTMLElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const nextMessageId = useRef(2);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(initiallyOpen);
   const [isLoading, setIsLoading] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
