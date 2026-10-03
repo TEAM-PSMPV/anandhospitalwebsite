@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type SVGProps } from "react";
 import { services as hospitalServices } from "./data";
-import { SiteChatbot } from "./site-chatbot";
+import { DeferredChatbot } from "./deferred-chatbot";
 
 export type IconName =
   | "home" | "info" | "services" | "doctors" | "library" | "calendar" | "search"
@@ -153,18 +153,18 @@ export function SiteShell({ children }: { children: ReactNode }) {
     <main id="main">{children}</main>
     <SocialStrip />
     <Footer />
-    <SiteChatbot />
+    <DeferredChatbot />
   </>;
 }
 
 function SocialStrip() {
   const links = [
-    ["LinkedIn", "https://www.linkedin.com/search/results/companies/?keywords=Anand%20Hospital%20Moradabad", "/icons/set-4/linkedin.svg"],
-    ["Instagram", "https://www.instagram.com/anandhospital.mbd/", "/icons/set-4/instagram.svg"],
-    ["Facebook", "https://www.facebook.com/search/top?q=anand%20hospital%20moradabad", "/icons/set-4/facebook.svg"],
-    ["YouTube", "https://www.youtube.com/results?search_query=Anand+Hospital+Moradabad", "/icons/set-4/youtube.svg"],
+    ["LinkedIn", "https://linkedin.com/company/anand-hospital-moradabad", "/icons/set-4/linkedin.svg"],
+    ["Instagram", "https://instagram.com/anandhospital.mbd", "/icons/set-4/instagram.svg"],
+    ["Facebook", "https://facebook.com/profile.php?id=61595003672609", "/icons/set-4/facebook.svg"],
+    ["X", "https://x.com/anandhospitalmb", "/icons/social/x.svg"],
   ] as const;
-  return <aside className="social-strip" aria-label="Anand Hospital social media"><div className="container"><nav>{links.map(([name, href, icon]) => <a href={href} target="_blank" rel="noreferrer" aria-label={`Anand Hospital on ${name}`} key={name}><Image src={icon} width={36} height={36} alt="" /></a>)}</nav></div></aside>;
+  return <aside className="social-strip" aria-label="Anand Hospital social media"><div className="container"><nav>{links.map(([name, href, icon]) => <a href={href} target="_blank" rel="noreferrer" aria-label={`Anand Hospital on ${name}`} key={name}><Image src={icon} width={32} height={32} alt="" unoptimized /></a>)}</nav></div></aside>;
 }
 
 function Footer() {
@@ -181,7 +181,7 @@ function Footer() {
       <div className="container-wide footer-grid">
         <div className="footer-brand">
           <Link className="footer-logo" href="/" aria-label="Anand Hospital home">
-            <Image src="/brand/anand-hospital-footer-logo.webp" width={320} height={320} alt="Anand Hospital" />
+            <Image src="/brand/anand-hospital-footer-logo.webp" width={320} height={320} sizes="108px" alt="Anand Hospital" />
           </Link>
           <p>Providing compassionate, affordable and quality healthcare for families in Moradabad. Your health and well-being are our top priority.</p>
         </div>

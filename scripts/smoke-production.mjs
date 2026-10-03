@@ -8,6 +8,11 @@ for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/do
   const html = await response.text();
   const canonical = path === "/" ? origin : `${origin}${path}`;
   assert.ok(html.includes(`rel="canonical" href="${canonical}"`), `Canonical missing on ${path}`);
+  if (path === "/") {
+    assert.ok(!html.includes('aria-label="Breadcrumb"') && !html.includes('"@type":"BreadcrumbList"'));
+    for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609"]) assert.ok(html.includes(profile), profile);
+    assert.ok(html.includes("hero-responsive-image") && html.includes('fetchPriority="high"'));
+  }
   if (path === "/awards") {
     assert.equal((html.match(/class="award-card"/g) ?? []).length, 21);
     assert.ok(html.includes('id="nidhi"') && html.includes('id="subhash"'));

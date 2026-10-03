@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
 @font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/montserrat-latin-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/montserrat-latin-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/montserrat-latin-600.woff2") format("woff2");
+}
+
+
+@font-face {
   font-family: "Times Sans Serif";
-  src: url("/fonts/times-sans-serif.ttf") format("truetype");
+  src: url("/fonts/times-sans-serif.woff2") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 400 700;
@@ -399,7 +424,7 @@ h3 {
 .care-image {
   min-height: 470px;
   border-radius: 20px;
-  background: #d0e8fc url("/images/hospital-reception-optimized.webp") center / contain
+  background: #d0e8fc image-set(url("/images/optimized/reception-1448.avif") type("image/avif"), url("/images/optimized/reception-1448.webp") type("image/webp")) center / contain
     no-repeat;
 }
 .care-grid h2 {
@@ -565,7 +590,7 @@ h3 {
   min-height: 560px;
   background:
     linear-gradient(90deg, var(--blue), transparent 50%),
-    url("/images/facilities/waiting-area-optimized.webp") center / contain no-repeat;
+    image-set(url("/images/optimized/waiting-1448.avif") type("image/avif"), url("/images/optimized/waiting-1448.webp") type("image/webp")) center / contain no-repeat;
 }
 .trust-row {
   display: grid;
@@ -1750,7 +1775,7 @@ body :is(svg, .site-icon) {
 }
 .home-page .care-image {
   min-height: 390px;
-  background-image: url("/images/facilities/waiting-area-optimized.webp");
+  background-image: image-set(url("/images/optimized/waiting-1448.avif") type("image/avif"), url("/images/optimized/waiting-1448.webp") type("image/webp"));
   background-size: cover;
 }
 .home-page .why {
@@ -2125,7 +2150,7 @@ body :is(svg, .site-icon) {
   color: #ffffff;
   background:
     linear-gradient(90deg, #023767, #023767),
-    url("/images/hospital-reception-optimized.webp") center / contain no-repeat;
+    image-set(url("/images/optimized/reception-1448.avif") type("image/avif"), url("/images/optimized/reception-1448.webp") type("image/webp")) center / contain no-repeat;
 }
 .interior-hero h1 {
   max-width: 900px;
@@ -3079,7 +3104,7 @@ main > section,
 }
 .home-page .care-image {
   min-height: 390px;
-  background: #fff url("/images/facilities/waiting-area-optimized.webp") center / cover
+  background: #fff image-set(url("/images/optimized/waiting-1448.avif") type("image/avif"), url("/images/optimized/waiting-1448.webp") type("image/webp")) center / cover
     no-repeat;
 }
 .home-page .why {
@@ -3271,7 +3296,7 @@ main > section,
 .home-page .care-image {
   min-height: 292px;
   border-radius: 15px;
-  background: #ffffff url("/images/hospital-reception-optimized.webp") center / cover
+  background: #ffffff image-set(url("/images/optimized/reception-1448.avif") type("image/avif"), url("/images/optimized/reception-1448.webp") type("image/webp")) center / cover
     no-repeat;
 }
 .home-page .care-grid > div:last-child {
@@ -5084,7 +5109,7 @@ body :is(svg, .site-icon) {
     width: 100%;
     min-height: 0;
     aspect-ratio: 4 / 3;
-    background-image: url("/images/facilities/waiting-area-optimized.webp");
+    background-image: image-set(url("/images/optimized/waiting-1448.avif") type("image/avif"), url("/images/optimized/waiting-1448.webp") type("image/webp"));
     background-position: center;
     background-size: cover;
   }
@@ -6513,263 +6538,6 @@ main > section.faq {
   line-height: 1;
 }
 
-.chatbot-panel {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: min(390px, calc(100vw - 32px));
-  max-height: min(620px, calc(100vh - 112px));
-  grid-template-rows: auto minmax(150px, 1fr) auto auto;
-  overflow: hidden;
-  margin-bottom: 12px;
-  border: 1px solid #b8d8f4;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 16px 48px rgba(2, 55, 103, 0.24);
-}
-
-.chatbot-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 18px;
-  background: #023767;
-  color: #ffffff;
-}
-
-.chatbot-header > div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.chatbot-status {
-  width: 10px;
-  height: 10px;
-  flex: 0 0 10px;
-  border: 2px solid rgba(255, 255, 255, 0.72);
-  border-radius: 50%;
-  background: #62d27c;
-}
-
-.chatbot-header h2 {
-  margin: 0;
-  color: #ffffff;
-  font-size: 0.98rem;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.chatbot-header p {
-  margin: 3px 0 0;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 0.72rem;
-  line-height: 1.3;
-}
-
-.chatbot-header-actions {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 4px;
-}
-
-.chatbot-header-actions button {
-  display: grid;
-  height: 34px;
-  place-items: center;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: #ffffff;
-  font: inherit;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.chatbot-header-actions button:hover,
-.chatbot-header-actions button:focus-visible {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.chatbot-reset {
-  padding: 0 10px;
-  font-size: 0.72rem !important;
-  font-weight: 500 !important;
-}
-
-.chatbot-close {
-  width: 34px;
-  border-radius: 50% !important;
-  font-size: 1.7rem !important;
-}
-
-.chatbot-messages {
-  display: flex;
-  min-height: 190px;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
-  padding: 16px;
-  background: #ffffff;
-  scrollbar-width: none;
-}
-
-.chatbot-messages::-webkit-scrollbar,
-.chatbot-options::-webkit-scrollbar {
-  display: none;
-}
-
-.chatbot-message {
-  width: fit-content;
-  max-width: 86%;
-  border-radius: 12px 12px 12px 3px;
-  padding: 10px 12px;
-  background: #f7f9fb;
-  color: #17212b;
-  box-shadow: 0 2px 8px rgba(2, 55, 103, 0.08);
-}
-
-.chatbot-message--user {
-  align-self: flex-end;
-  border-radius: 12px 12px 3px 12px;
-  background: #045aa7;
-  color: #ffffff;
-}
-
-.chatbot-message p {
-  margin: 0;
-  color: inherit;
-  font-size: 0.82rem;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-.chatbot-message a {
-  display: inline-flex;
-  margin-top: 8px;
-  color: #045aa7;
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.chatbot-message a:hover,
-.chatbot-message a:focus-visible {
-  text-decoration: underline;
-}
-
-.chatbot-options {
-  display: flex;
-  gap: 7px;
-  overflow-x: auto;
-  padding: 11px 12px;
-  background: #ffffff;
-  scrollbar-width: none;
-}
-
-.chatbot-options button {
-  min-height: 34px;
-  flex: 0 0 auto;
-  border: 1px solid #1b8cff;
-  border-radius: 999px;
-  padding: 7px 11px;
-  background: #ffffff;
-  color: #045aa7;
-  font: inherit;
-  font-size: 0.7rem;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.chatbot-options button:hover,
-.chatbot-options button:focus-visible {
-  background: #e6f3ff;
-}
-
-.chatbot-options button:disabled,
-.chatbot-form :is(input, button):disabled,
-.chatbot-header-actions button:disabled {
-  cursor: not-allowed;
-  opacity: 0.58;
-}
-
-.chatbot-message--thinking {
-  display: flex;
-  min-height: 38px;
-  align-items: center;
-  gap: 5px;
-}
-
-.chatbot-message--thinking span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #7890a4;
-  animation: chatbot-thinking 1s ease-in-out infinite;
-}
-
-.chatbot-message--thinking span:nth-child(2) { animation-delay: 0.14s; }
-.chatbot-message--thinking span:nth-child(3) { animation-delay: 0.28s; }
-
-@keyframes chatbot-thinking {
-  0%, 60%, 100% { translate: 0 0; opacity: 0.48; }
-  30% { translate: 0 -3px; opacity: 1; }
-}
-
-.chatbot-form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 42px;
-  gap: 8px;
-  border-top: 1px solid #d9e3ec;
-  padding: 12px;
-  background: #ffffff;
-}
-
-.chatbot-form input {
-  width: 100%;
-  min-width: 0;
-  min-height: 42px;
-  border: 1px solid #b8c9d8;
-  border-radius: 10px;
-  padding: 10px 12px;
-  color: #17212b;
-  font: inherit;
-  font-size: 0.8rem;
-  outline: none;
-}
-
-.chatbot-form input:focus {
-  border-color: #045aa7;
-  box-shadow: 0 0 0 3px rgba(27, 140, 255, 0.14);
-}
-
-.chatbot-form > button {
-  display: grid;
-  min-height: 42px;
-  place-items: center;
-  border: 0;
-  border-radius: 10px;
-  background: #045aa7;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.chatbot-form > button:hover,
-.chatbot-form > button:focus-visible {
-  background: #023767;
-}
-
-.chatbot-form svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-}
-
 @media (max-width: 640px) {
   .site-chatbot {
     right: 14px;
@@ -6781,16 +6549,7 @@ main > section.faq {
     height: 54px;
   }
 
-  .chatbot-panel {
-    width: calc(100vw - 28px);
-    max-height: calc(100dvh - 88px);
-    margin-bottom: 8px;
-    border-radius: 15px;
-  }
 
-  .chatbot-messages {
-    min-height: 160px;
-  }
 }
 
 /* Landing hero: match the supplied desktop team-banner composition. */
@@ -8983,3 +8742,26 @@ main > section.testimonials-introduction, main > section.feedback-introduction, 
 .feedback-introduction h1, .search-introduction h1 { color: #023767; font-size: clamp(30px, 4vw, 48px); line-height: 1.2; margin: 10px 0 20px; }
 .feedback-introduction p { max-width: 760px; color: #405c72; line-height: 1.8; }
 main > section.information-hub, main > section.html-sitemap { min-height: 0; display: block; padding-block: 48px; }
+
+/* Report fixes: keep the established layout, colors and vector artwork. */
+.home-page .home-hero .hero-media img.hero-responsive-image { display: block; }
+.home-page .care-feature .button-blue { background: #045aa7; }
+.home-page .pathway-grid .pathway-links a { min-height: 44px; }
+.site-footer .footer-phone-numbers a { display: inline-flex; align-items: center; min-height: 44px; }
+.social-strip a { display: grid; place-items: center; width: 44px; height: 44px; flex-basis: 44px; padding: 6px; }
+.social-strip a img { display: block; width: 32px; height: 32px; object-fit: contain; }
+.services-menu { min-height: 0; }
+.services-menu-list { gap: 4px 32px; padding-block: 24px; }
+.services-menu-list a { display: flex; align-items: center; min-height: 44px; padding-block: 8px; }
+.service-detail-page .service-detail-section { min-height: 0; padding-block: clamp(32px, 4vw, 56px); }
+.service-detail-page :is(.service-care-grid, .service-reason-grid) { margin-top: 28px; }
+.service-detail-page :is(.service-care-grid, .service-reason-grid) article { min-height: 0; }
+main > .services-page > section:is(.services-specialties, .services-facilities) { min-height: 0; padding-block: clamp(32px, 4vw, 56px); }
+main > .services-page > section.services-emergency { min-height: 0; padding-block: 28px; }
+.services-page .services-specialty-grid article { min-height: 0; }
+@media (min-width: 992px) {
+  .home-page > .care-feature .care-image { background-image: image-set(url("/images/optimized/waiting-960.avif") type("image/avif") 1x, url("/images/optimized/waiting-1448.avif") type("image/avif") 2x, url("/images/optimized/waiting-960.webp") type("image/webp") 1x, url("/images/optimized/waiting-1448.webp") type("image/webp") 2x); }
+}
+@media (max-width: 760px) {
+  .home-page .care-feature .care-image { background-image: image-set(url("/images/optimized/reception-640.avif") type("image/avif"), url("/images/optimized/reception-640.webp") type("image/webp")); }
+}
