@@ -3183,7 +3183,7 @@ main > section,
   }
 }
 
-/* Home page — scoped to preserve the rest of the site. */
+/* Home page – scoped to preserve the rest of the site. */
 .home-page {
   background: #ffffff;
 }
@@ -8815,4 +8815,46 @@ main > .services-page > section.services-emergency { min-height: 0; padding-bloc
   .procedure-page .service-local-nav .container { gap: 24px; }
   .procedure-section p, .procedure-section li { font-size: .95rem; }
   .procedure-map iframe { height: 280px; }
+}
+
+/* Full clinician profiles share the existing doctor hero and service styles. */
+.full-doctor-profile .button-outline { color: var(--blue); border-color: var(--blue); }
+.doctor-profile-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, .8fr); gap: clamp(28px, 5vw, 72px); padding-block: 44px; align-items: start; }
+.doctor-profile-section { padding-block: 28px; border-bottom: 1px solid var(--line); scroll-margin-top: 32px; }
+.doctor-profile-section:first-child { padding-top: 0; }
+.doctor-profile-section h2, .doctor-recognition h2 { color: var(--blue); font-size: clamp(1.5rem, 2.7vw, 2.3rem); line-height: 1.25; margin: 0 0 20px; }
+.doctor-profile-section h3 { color: var(--blue); font-size: 1.12rem; margin: 28px 0 12px; }
+.doctor-profile-section p, .doctor-profile-section li { line-height: 1.85; font-size: 1rem; }
+.doctor-profile-section ul { padding-left: 22px; }
+.doctor-profile-section li + li { margin-top: 10px; }
+.doctor-profile-section a, .doctor-profile-sidebar a, .doctor-recognition a { color: var(--blue); }
+.full-doctor-profile .button-blue { color: #fff; }
+.doctor-profile-note { color: #51677c; }
+.doctor-profile-section .doctor-detail-actions { margin-block: 24px; }
+.doctor-profile-sidebar { display: grid; gap: 24px; }
+.doctor-profile-sidebar section { border: 1px solid var(--line); border-radius: 12px; padding: 24px; background: var(--blue-pale); }
+.doctor-profile-sidebar h2 { font-size: 1.15rem; line-height: 1.5; color: var(--blue); margin-top: 0; }
+.doctor-profile-sidebar > section:first-child > a { display: inline-block; margin-top: 12px; }
+.doctor-profile-sidebar p { font-size: .9rem; line-height: 1.7; }
+.doctor-profile-links { display: grid; gap: 0; }
+.doctor-profile-links a { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--blue); text-decoration: none; font-size: .92rem; line-height: 1.6; }
+.doctor-consultation-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; background: var(--blue-pale); padding: 24px; border-radius: 12px; }
+.doctor-consultation-details dt { font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+.doctor-consultation-details dd { margin: 0; font-size: .95rem; line-height: 1.7; }
+.doctor-recognition-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-block: 28px; }
+.doctor-recognition-grid article { overflow: hidden; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
+.doctor-recognition-grid article > a { display: block; background: #e8eff5; }
+.doctor-recognition-grid picture { display: block; }
+.doctor-recognition-grid img { width: 100%; height: 240px; object-fit: contain; display: block; }
+.doctor-recognition-grid article > div { padding: 20px; }
+.doctor-recognition-grid span { color: #526c83; font-size: .72rem; text-transform: uppercase; }
+.doctor-recognition-grid h3 { color: var(--blue); font-size: 1rem; line-height: 1.5; }
+.doctor-recognition-grid h3 a { text-decoration: none; }
+.doctor-recognition-grid p { font-size: .85rem; line-height: 1.6; }
+@media (max-width: 760px) {
+ .doctor-profile-layout { grid-template-columns: minmax(0, 1fr); padding-block: 28px; }
+ .doctor-profile-sidebar { grid-row: 1; }
+ .doctor-consultation-details, .doctor-recognition-grid { grid-template-columns: minmax(0, 1fr); }
+ .doctor-recognition-grid img { height: 280px; }
+ .doctor-profile-section p, .doctor-profile-section li { font-size: .95rem; }
 }

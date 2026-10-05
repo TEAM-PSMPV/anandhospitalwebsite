@@ -163,6 +163,7 @@ function SocialStrip() {
     ["Instagram", "https://instagram.com/anandhospital.mbd", "/icons/set-4/instagram.svg"],
     ["Facebook", "https://facebook.com/profile.php?id=61595003672609", "/icons/set-4/facebook.svg"],
     ["X", "https://x.com/anandhospitalmb", "/icons/social/x.svg"],
+    ["YouTube", "https://www.youtube.com/@anandhospitalmbd", "/icons/set-4/youtube.svg"],
   ] as const;
   return <aside className="social-strip" aria-label="Anand Hospital social media"><div className="container"><nav>{links.map(([name, href, icon]) => <a href={href} target="_blank" rel="noreferrer" aria-label={`Anand Hospital on ${name}`} key={name}><Image src={icon} width={32} height={32} alt="" unoptimized /></a>)}</nav></div></aside>;
 }

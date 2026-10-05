@@ -9,7 +9,7 @@ export const patientTestimonials = [
   },
   {
     name: "Sita",
-    text: "I was admitted for a rasoli operation performed by Dr. Subhash, and my operation was successful. My family has trusted Anand Hospital for years—my children were delivered here, and my husband and mother-in-law were also treated here. I strongly recommend Dr. Subhash and Anand Hospital.",
+    text: "I was admitted for a rasoli operation performed by Dr. Subhash, and my operation was successful. My family has trusted Anand Hospital for years–my children were delivered here, and my husband and mother-in-law were also treated here. I strongly recommend Dr. Subhash and Anand Hospital.",
   },
   {
     name: "Lakshmi",

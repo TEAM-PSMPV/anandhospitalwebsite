@@ -16,7 +16,7 @@ export function PatientTestimonials() {
     <header><h2>Patient Testimonials</h2><Link href="/testimonials">View All Testimonials <b aria-hidden="true"><ArrowIcon direction="right" /></b></Link></header>
     <div className="testimonial-stage">
       <button type="button" aria-label="Previous testimonial" onClick={showPrevious}><ArrowIcon direction="previous" /></button>
-      <blockquote aria-live="polite">“{testimonial.text}”<cite>— {testimonial.name}</cite></blockquote>
+      <blockquote aria-live="polite">“{testimonial.text}”<cite>– {testimonial.name}</cite></blockquote>
       <button type="button" aria-label="Next testimonial" onClick={showNext}><ArrowIcon direction="next" /></button>
     </div>
     <div className="testimonial-dots" aria-label={`Testimonial ${activeIndex + 1} of ${testimonials.length}`}>

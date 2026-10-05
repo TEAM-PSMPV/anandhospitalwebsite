@@ -1,60 +1,67 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { doctors } from "../../data";
-import { Assistance, Icon, SiteShell } from "../../site-shell";
-import { Breadcrumbs, createPageMetadata, doctorSlug, siteUrl, surgeryKeywords, womensHealthKeywords } from "../../seo";
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { doctors, services } from '../../data';
+import { doctorProfiles } from '../../doctor-profile-data';
+import { articleClinician } from '../../article-clinicians';
+import { healthArticles } from '../../health-library/articles';
+import { procedures } from '../../procedure-data';
+import { awards } from '../../awards-data';
+import { AwardPhoto } from '../../award-image';
+import { Assistance, SiteShell } from '../../site-shell';
+import { Breadcrumbs, createPageMetadata, doctorSlug, siteUrl, surgeryKeywords, womensHealthKeywords } from '../../seo';
 
 type Props = { params: Promise<{ slug: string }> };
-
-const profileDetails: Record<string, { intro: string; focus: string[]; links: [string, string][] }> = {
-  "dr-subhash-singh": {
-    intro: "Dr Subhash Singh provides consultation and surgical planning for general and laparoscopic conditions at Anand Hospital, near Miglani Cinema on Rampur Road, Moradabad.",
-    focus: ["General and laparoscopic surgery", "Gallbladder and gallstone surgery", "Open and laparoscopic hernia repair", "Appendix and emergency surgical assessment", "Piles, fissure and fistula evaluation", "Breast and cancer surgery where clinically suitable"],
-    links: [["Gallbladder stone surgery", "/health-library/gallbladder-stone-surgery"], ["Laparoscopic cholecystectomy", "/health-library/laparoscopic-cholecystectomy"], ["Hernia surgery", "/health-library/hernia-surgery"], ["Appendix surgery", "/health-library/appendix-surgery"], ["Piles, fissure and fistula treatment", "/health-library/piles-fissure-fistula-treatment"], ["Breast and cancer surgery", "/health-library/breast-cancer-surgery"]],
-  },
-  "dr-nidhi-thakur": {
-    intro: "Dr Nidhi Thakur provides obstetric, gynaecological, laparoscopic, hysteroscopy and infertility care at Anand Hospital, near Miglani Cinema on Rampur Road, Moradabad.",
-    focus: ["High-risk pregnancy and obstetric care", "Normal and Caesarean delivery planning", "Gynaecology and women’s health", "Laparoscopic gynaecological assessment", "Hysteroscopy", "PCOS and infertility evaluation"],
-    links: [["High-risk pregnancy care", "/health-library/high-risk-pregnancy-care"], ["Normal delivery", "/health-library/normal-delivery"], ["Caesarean delivery", "/health-library/caesarean-delivery"], ["PCOS treatment", "/health-library/pcos-treatment"], ["Infertility evaluation", "/health-library/infertility-evaluation"], ["Hysteroscopy", "/health-library/hysteroscopy"], ["Hysterectomy", "/health-library/hysterectomy"], ["Ovarian cyst treatment", "/health-library/ovarian-cyst-treatment"]],
-  },
-};
-
-export function generateStaticParams() { return doctors.map((doctor) => ({ slug: doctorSlug(doctor.name) })); }
-
+export function generateStaticParams() { return doctors.map(doctor => ({ slug: doctorSlug(doctor.name) })); }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = (await params).slug;
-  const doctor = doctors.find((item) => doctorSlug(item.name) === slug);
+  const doctor = doctors.find(item => doctorSlug(item.name) === slug);
   if (!doctor) return {};
-  const targeted = slug === "dr-subhash-singh" ? surgeryKeywords : slug === "dr-nidhi-thakur" ? womensHealthKeywords : [`${doctor.role} in Moradabad`, doctor.department];
+  const keywords = slug === 'dr-subhash-singh' ? surgeryKeywords : slug === 'dr-nidhi-thakur' ? womensHealthKeywords : [`${doctor.role} in Moradabad`, doctor.department];
   const title = slug === "dr-subhash-singh" ? "Dr Subhash Singh | Laparoscopic Surgeon in Moradabad" : slug === "dr-nidhi-thakur" ? "Dr Nidhi Thakur | Gynaecologist in Moradabad" : `${doctor.name} | ${doctor.role} in Moradabad`;
-  return createPageMetadata({ title, description: `${doctor.name}, ${doctor.role} at Anand Hospital Moradabad. ${doctor.qualification}. Request an appointment with the hospital team.`, path: `/doctors/${slug}`, keywords: targeted, image: doctor.photo, imageAlt: doctor.name });
+  return createPageMetadata({ title, description: `${doctor.name}, ${doctor.qualification}. Explore clinical experience, care interests and consultation information at Anand Hospital, Moradabad.`, path: `/doctors/${slug}`, keywords, image: doctor.photo.replace('/doctors/', '/doctors/profiles/'), imageAlt: doctor.name });
 }
+const list = (items: readonly string[], empty: string) => items.length ? <ul>{items.map(item => <li key={item}>{item}</li>)}</ul> : <p className="doctor-profile-note">{empty}</p>;
 
 export default async function DoctorProfilePage({ params }: Props) {
   const slug = (await params).slug;
-  const doctor = doctors.find((item) => doctorSlug(item.name) === slug);
-  if (!doctor) notFound();
-  const details = profileDetails[slug] ?? { intro: `${doctor.name} provides specialist care at Anand Hospital in Moradabad.`, focus: [doctor.department, doctor.role], links: [] };
+  const doctor = doctors.find(item => doctorSlug(item.name) === slug);
+  const profile = doctorProfiles[slug];
+  if (!doctor || !profile) notFound();
+  const path = `/doctors/${slug}`;
+  const scheduled = slug === 'dr-nidhi-thakur' || slug === 'dr-subhash-singh';
   const appointment = `/appointment?${new URLSearchParams({ doctor: doctor.name, department: doctor.department }).toString()}#appointment-form`;
-  const structuredData = {
-    "@context": "https://schema.org", "@type": "Physician", name: doctor.name, image: `${siteUrl}${doctor.photo}`,
-    medicalSpecialty: doctor.department, jobTitle: doctor.role, description: doctor.experience,
-    worksFor: { "@type": "Hospital", name: "Anand Hospital", url: siteUrl },
-    address: { "@type": "PostalAddress", streetAddress: "Near Miglani Cinema, Rampur Road", addressLocality: "Moradabad", postalCode: "244001", addressCountry: "IN" },
+  const articles = healthArticles.filter(article => articleClinician(article)?.href === path);
+  const relatedServices = profile.serviceSlugs.map(serviceSlug => procedures.find(item => item.slug === serviceSlug) ?? services.find(item => item.slug === serviceSlug)).filter(item => item !== undefined);
+  const group = slug === 'dr-nidhi-thakur' ? 'nidhi' : slug === 'dr-subhash-singh' ? 'subhash' : undefined;
+  const recognition = group ? awards.filter(award => award.group === group) : [];
+  const awardItems = recognition.filter(award => award.kind === 'award');
+  const photo = doctor.photo.replace('/doctors/', '/doctors/profiles/');
+  const jsonLd = {
+    '@context': 'https://schema.org', '@type': 'Person', '@id': `${siteUrl}${path}#doctor`,
+    name: profile.fullName ?? doctor.name, url: `${siteUrl}${path}`, image: `${siteUrl}${photo}`, jobTitle: doctor.role,
+    description: profile.intro, knowsAbout: profile.interests,
+    worksFor: { '@type': 'Hospital', name: 'Anand Hospital', url: siteUrl },
+    hasCredential: profile.education.map(name => ({ '@type': 'EducationalOccupationalCredential', credentialCategory: 'Medical qualification', name })),
+    ...(scheduled ? { subjectOf: { '@type': 'WebPage', url: `${siteUrl}${path}#consultation`, name: 'OPD: Monday–Saturday, 11:00 AM–3:00 PM IST' } } : {}),
   };
-
-  return <SiteShell>
-
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
-    <main className="doctor-detail-page">
-      <section className="doctor-detail-hero"><div className="container doctor-detail-hero-grid"><Image src={doctor.photo} alt={doctor.name} width={1122} height={1402} priority sizes="(max-width: 760px) 70vw, 360px"/><div><p className="kicker">{doctor.department}</p><h1>{doctor.name}</h1><p className="doctor-detail-role">{doctor.role}</p><p>{details.intro}</p><dl><div><dt>Qualifications</dt><dd>{doctor.qualification}</dd></div><div><dt>Experience</dt><dd>{doctor.experience}</dd></div></dl><div className="doctor-detail-actions"><Link className="button button-blue" href={appointment}>Book an Appointment</Link><a className="button button-outline" href="tel:+917351028221">Call Hospital</a></div></div></div></section>
-<Breadcrumbs items={[{ name: "Doctors", href: "/doctors" }, { name: doctor.name, href: `/doctors/${slug}` }]} />
-      <section className="doctor-detail-content"><div className="container doctor-detail-columns"><div><h2>Clinical focus</h2><ul>{details.focus.map((item) => <li key={item}><Icon name="shield" />{item}</li>)}</ul></div><div><h2>Related patient guides</h2>{details.links.length ? <nav>{details.links.map(([label, href]) => <Link href={href} key={href}>{label}<Icon name="arrow" /></Link>)}</nav> : <p>Contact the hospital to discuss the most appropriate consultation for your needs.</p>}</div></div></section>
-      {(slug === "dr-nidhi-thakur" || slug === "dr-subhash-singh") && <section className="doctor-detail-hospital"><div className="container"><h2>Awards &amp; Felicitations</h2><p>Explore professional recognition and continued medical learning.</p><Link className="button button-outline" href={`/awards#${slug === "dr-nidhi-thakur" ? "nidhi" : "subhash"}`}>View Awards &amp; Certificates</Link></div></section>}
-      <section className="doctor-detail-hospital"><div className="container"><h2>Care at Anand Hospital</h2><p>Consultations are supported by hospital diagnostics, operation theatre and anaesthesia services, inpatient facilities, critical-care coordination and 24×7 emergency care. Treatment suitability and referrals are decided after individual assessment.</p></div></section>
-    </main>
-    <Assistance />
-  </SiteShell>;
+  return <SiteShell><article className="doctor-detail-page full-doctor-profile">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+    <section className="doctor-detail-hero"><div className="container doctor-detail-hero-grid"><Image src={photo} alt={`Professional portrait of ${doctor.name}`} width={slug === 'dr-bhoopendra-kumar-sharma' ? 640 : 800} height={1000} priority unoptimized sizes="(max-width: 760px) 70vw, 360px" /><div><p className="kicker">{doctor.department} · Anand Hospital</p><h1>{profile.fullName ?? doctor.name}</h1><p className="doctor-detail-role">{doctor.role}</p><p>{profile.intro}</p><dl><div><dt>Degrees</dt><dd>{doctor.qualification}</dd></div><div><dt>Experience</dt><dd>{doctor.experience}</dd></div></dl><div className="doctor-detail-actions"><Link className="button button-blue" href={appointment}>Book an Appointment</Link><a className="button button-outline" href="tel:+917351028221">Call Hospital</a></div></div></div></section>
+    <Breadcrumbs items={[{ name: 'Doctors', href: '/doctors' }, { name: doctor.name, href: path }]} />
+    <nav className="service-local-nav" aria-label="Doctor profile sections"><div className="container"><a href="#credentials">Qualifications &amp; Experience</a><a href="#clinical-interests">Clinical Care</a><a href="#consultation">OPD &amp; Appointments</a><a href="#educational-articles">Articles &amp; Videos</a><a href="#recognition-gallery">Recognition</a><a href="#profile-faqs">FAQs</a></div></nav>
+    <div className="container doctor-profile-layout"><div className="doctor-profile-main">
+      <section className="doctor-profile-section" id="credentials"><p className="kicker">Professional background</p><h2>Qualifications &amp; experience</h2><h3>Degrees &amp; education</h3>{list(profile.education, '')}<h3>Medical speciality</h3><p>{doctor.department} · {doctor.role}</p><h3>Clinical experience</h3>{list(profile.career, '')}<h3>Full name</h3><p>{profile.fullName ?? doctor.name}</p>{profile.registrationName && <p>Registration record name: {profile.registrationName}</p>}<h3>Registration details</h3><p>{profile.registration ?? 'Please contact reception for medical council registration details.'}</p></section>
+      <section className="doctor-profile-section" id="clinical-interests"><h2>Areas of clinical interest</h2>{list(profile.interests, '')}<h3>Procedures &amp; clinical services</h3>{list(profile.procedures, '')}<p>Suitability, the proposed procedure and any referral needs are decided after assessment. Confirm the required service and facilities with the hospital.</p><h3>Hospital affiliation</h3>{list(profile.affiliations, '')}</section>
+      <section className="doctor-profile-section" id="professional-development"><h2>Fellowships &amp; professional memberships</h2><h3>Fellowships</h3>{list(profile.fellowships, 'Fellowship information is not currently published on this profile.')}<h3>Professional memberships</h3>{list(profile.memberships, 'Professional membership details are not currently published on this profile.')}<h3>Training &amp; certifications</h3>{list(profile.training, 'Additional training certificates are not currently listed.')}<h3>Awards &amp; achievements</h3>{list([...profile.achievements, ...awardItems.map(award => `${award.title}${award.issuer ? ` – ${award.issuer}` : ''}${award.date ? ` (${award.date})` : ''}`)], 'Individual awards have not been published on this profile.')}</section>
+      <section className="doctor-profile-section" id="consultation"><p className="kicker">Plan a visit</p><h2>OPD &amp; consultation information</h2><dl className="doctor-consultation-details"><div><dt>OPD days</dt><dd>{scheduled ? 'Monday–Saturday' : 'By confirmed appointment. Call reception for OPD days.'}</dd></div><div><dt>OPD timings</dt><dd>{scheduled ? '11:00 AM–3:00 PM IST' : 'Please confirm this doctor’s timings with reception.'}</dd></div><div><dt>Languages spoken</dt><dd>Please confirm your preferred consultation language when booking.</dd></div><div><dt>Consultation fees</dt><dd>Contact reception for current fees and follow-up charges.</dd></div></dl>{scheduled && <p>Available for emergency cases. Call the hospital to confirm and coordinate emergency care; do not wait for an online appointment response if symptoms are severe.</p>}<p>Submit your preferred doctor and visit date. Reception will call to confirm availability, appointment details and your token. A submitted request is confirmed when the hospital contacts you.</p><p>Bring identification, relevant reports and a medicine list. Ask about accessibility, an accompanying person or any language support you need. For Ayushman queries, confirm eligibility and the covered package with reception.</p><div className="doctor-detail-actions"><Link className="button button-blue" href={appointment}>Request Consultation</Link><a className="button button-outline" href="tel:+917351028221">+91 7351028221</a></div><Link href="/site-information/ayushman-and-payments">Ayushman &amp; payment information</Link></section>
+      <section className="doctor-profile-section" id="educational-articles"><h2>Published educational articles</h2><p>Patient education published by Anand Hospital in this clinical area.</p>{articles.length ? <nav className="doctor-profile-links" aria-label={`${doctor.name} related educational articles`}>{articles.map(article => <Link href={`/health-library/${article.slug}`} key={article.slug}>{article.title}<span aria-hidden="true"> →</span></Link>)}</nav> : <p className="doctor-profile-note">Educational articles in this speciality are not currently listed. Your consultation can address questions about your condition and care.</p>}<h3>Research publications</h3>{list(profile.publications, 'A research publication list is not currently available on this profile.')}</section>
+      <section className="doctor-profile-section" id="videos"><h2>Educational videos</h2><p>Doctor-specific educational videos are not currently listed. You can follow <a href="https://instagram.com/anandhospital.mbd" target="_blank" rel="noreferrer">Anand Hospital’s official updates</a>, watch <a href="https://www.youtube.com/@anandhospitalmbd" target="_blank" rel="noreferrer">the hospital’s official YouTube channel</a>, or ask your clinician for patient resources relevant to your care.</p></section>
+      <section className="doctor-profile-section" id="patient-information"><h2>Patient information</h2>{list(profile.patientInfo, '')}<p>Anand Hospital is near Miglani Cinema, Rampur Road, Moradabad, Uttar Pradesh 244001. Hospital emergency care is available 24×7.</p><div className="doctor-profile-links"><a href="https://maps.google.com/?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001" target="_blank" rel="noreferrer">Hospital address &amp; directions →</a><Link href="/site-information/accessibility">Patient access &amp; assistance →</Link></div></section>
+      <section className="doctor-profile-section" id="profile-faqs"><h2>Frequently asked questions</h2><div className="procedure-faqs">{profile.faqs.map(faq => <details key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}<details><summary>How do I confirm OPD availability?</summary><p>{scheduled ? 'OPD is Monday–Saturday, 11:00 AM–3:00 PM IST. ' : ''}Call +91 7351028221 or request an appointment. Reception confirms the visit details; availability can change for urgent clinical duties.</p></details></div></section>
+      <section className="doctor-profile-section" id="reviewer-credentials"><h2>Medical reviewer credentials</h2><p>{doctor.name} · {doctor.qualification} · {doctor.role}</p><p>{doctor.experience}</p>{profile.registration && <p>{profile.registration}</p>}<p>These are the clinician’s professional credentials. A completed medical review is credited on an article only when that review has been confirmed.</p></section>
+    </div><aside className="doctor-profile-sidebar"><section><p className="kicker">Your specialist</p><h2>{doctor.name}</h2><p>{doctor.department}</p><p>{scheduled ? 'Monday–Saturday · 11:00 AM–3:00 PM IST' : 'Call to confirm OPD days and timings.'}</p><Link className="button button-blue" href={appointment}>Book Appointment</Link><a href="tel:+917351028221">Call +91 7351028221</a></section><section><h2>Relevant services &amp; procedures</h2><nav className="doctor-profile-links" aria-label="Relevant procedure pages">{relatedServices.map(service => <Link href={`/services/${service.slug}`} key={service.slug}>{service.name}<span aria-hidden="true"> →</span></Link>)}</nav></section></aside></div>
+    <section className="doctor-detail-hospital doctor-recognition" id="recognition-gallery"><div className="container"><p className="kicker">Recognition &amp; continued learning</p><h2>Awards &amp; felicitation gallery</h2>{recognition.length ? <><p>Awards, appreciation, fellowships and training certificates attributed to {doctor.name}.</p><div className="doctor-recognition-grid">{recognition.map(award => <article key={award.id}><a href={`/awards#${award.id}`} aria-label={`View ${award.title}`}><AwardPhoto image={award.images[0]} alt={`${award.title} – ${award.recipient}`} thumbnail /></a><div><span>{award.kind}</span><h3><Link href={`/awards#${award.id}`}>{award.title}</Link></h3><p>{award.issuer}</p></div></article>)}</div><Link className="button button-blue" href={`/awards#${group}`}>View All Awards &amp; Certificates</Link></> : <><p>No individual award or felicitation photographs are currently published for this doctor.</p><Link href="/awards">Explore the hospital’s awards &amp; felicitations →</Link></>}</div></section>
+  </article><Assistance /></SiteShell>;
 }

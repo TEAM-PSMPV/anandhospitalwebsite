@@ -232,6 +232,7 @@ for (const page of procedures) {
     page.imageAlt = 'Illustrative photograph of an expectant mother holding her baby bump';
   }
   if (page.slug === 'emergency-surgery') {
+    page.doctor = surgeon;
     page.image = '/images/procedures/surgical-team.webp';
     page.imageAlt = 'Illustrative photograph of a surgical team preparing and performing an operation';
   }
