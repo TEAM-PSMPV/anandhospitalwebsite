@@ -110,7 +110,7 @@ test("renders Anand Hospital identity and supplied clinical details", async () =
   assert.match(html, /20\+ years in high-risk obstetrics/);
   assert.match(html, /MCh \(Urology\)/);
   assert.doesNotMatch(html, /Dr Mohammad Fareed/);
-  assert.match(html, /Dr Rajiv Kumar/);
+  assert.match(html, /Dr Rajeev Kumar/);
   assert.doesNotMatch(html, /Talvar Rahul Bala Ratna/);
   assert.match(html, /Near Miglani Cinema/);
   assert.match(html, /Open 24 hours/);
@@ -202,7 +202,8 @@ test("renders indexable SEO metadata, doctor profiles, sitemap, breadcrumbs, red
   assert.equal(doctorResponse.status, 200);
   assert.match(doctor, /Dr Subhash Singh \| Laparoscopic Surgeon in Moradabad/);
   assert.match(doctor, /laparoscopic surgeon near Rampur Road/);
-  assert.match(doctor, /"@type":"Physician"/);
+  assert.match(doctor, /"@type":"Person"/);
+  assert.match(doctor, /"hasCredential"/);
   assert.match(doctor, /"@type":"BreadcrumbList"/);
 
   assert.equal(sitemapResponse.status, 200);
@@ -253,7 +254,7 @@ test("answers chatbot questions through the grounded Llama endpoint", async () =
       AI: {
         run: async (model, input) => {
           invocation = { model, input };
-          return { response: "Anand Hospital mein chhe listed doctors hain." };
+          return { response: "Anand Hospital mein chhe listed doctors hain." + String.fromCodePoint(0x2014) + "Reception se confirm karein." };
         },
       },
     },
@@ -261,7 +262,7 @@ test("answers chatbot questions through the grounded Llama endpoint", async () =
   );
 
   assert.equal(response.status, 200);
-  assert.deepEqual(await response.json(), { answer: "Anand Hospital mein chhe listed doctors hain." });
+  assert.deepEqual(await response.json(), { answer: "Anand Hospital mein chhe listed doctors hain.–Reception se confirm karein." });
   assert.equal(invocation.model, "@cf/meta/llama-3.1-8b-instruct-fp8");
   assert.match(invocation.input.messages[0].content, /Use ONLY the ANAND HOSPITAL WEBSITE KNOWLEDGE/);
 });
@@ -300,13 +301,14 @@ test("all sitemap pages serve self-canonical, social metadata and indexable HTML
     const response = await fetchPath(new URL(url).pathname);
     assert.equal(response.status, 200, url);
     const html = await response.text();
+    assert.doesNotMatch(html, /\u2014|&mdash;|&#8212;|&#x2014;/i, `${url}: no em dashes`);
     assert.ok(html.includes(`rel="canonical" href="${url}"`), url);
     assert.match(html, /property="og:title"/, url);
     assert.match(html, /name="twitter:card"/, url);
     assert.match(html, /<h1[ >]/, url);
     if (new URL(url).pathname === "/") {
       assert.doesNotMatch(html, /aria-label="Breadcrumb"|"@type":"BreadcrumbList"/);
-      for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609"]) assert.ok(html.includes(profile), profile);
+      for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609", "https://www.youtube.com/@anandhospitalmbd"]) assert.ok(html.includes(profile), profile);
       assert.match(html, /<picture>.*hero-mobile-360\.avif/s);
     } else {
       assert.match(html, /"@type":"BreadcrumbList"/, url);
@@ -415,4 +417,63 @@ test('all procedure pages render complete care guides and appear in both sitemap
   }
   const gallbladder = await (await fetchPath('/services/gallbladder-surgery')).text();
   for (const heading of ['Gallbladder &amp; Gallstone Surgery in Moradabad', 'Symptoms that may indicate gallstones', 'When gallbladder surgery may be advised', 'What is laparoscopic cholecystectomy?', 'Laparoscopic vs open surgery', 'Dr Subhash Singh', 'Tests commonly required', 'Anaesthesia', 'Expected hospital stay', 'Possible risks', 'Diet after gallbladder surgery', 'When can I return to normal activity?']) assert.ok(gallbladder.includes(heading), heading);
+});
+
+test('complete doctor profiles use supplied credentials, individual schedules and honest content attribution', async () => {
+  const profiles = [
+    ['dr-subhash-singh', '23457'], ['dr-nidhi-thakur', '46181'],
+    ['dr-bhoopendra-kumar-sharma', '117362'], ['dr-rajeev-kumar', '75493'],
+    ['dr-garima-singh', '39431'], ['dr-rangit-pandey', '43348'],
+  ];
+  const sitemap = await (await fetchPath('/sitemap.xml')).text();
+  const htmlSitemap = await (await fetchPath('/sitemap')).text();
+  for (const [slug, registration] of profiles) {
+    const path = `/doctors/${slug}`;
+    const response = await fetchPath(path);
+    const html = await response.text();
+    assert.doesNotMatch(html, /\u2014|&mdash;|&#8212;|&#x2014;/i, `${path}: no em dashes`);
+    assert.equal(response.status, 200, path);
+    for (const id of ['credentials', 'clinical-interests', 'professional-development', 'consultation', 'educational-articles', 'videos', 'patient-information', 'profile-faqs', 'reviewer-credentials', 'recognition-gallery']) assert.ok(html.includes(`id="${id}"`), `${path}: ${id}`);
+    assert.ok(html.includes(registration), `${path}: registration`);
+    assert.match(html, /\/images\/doctors\/profiles\/[a-z]+\.webp/, path);
+    assert.match(html, /appointment\?doctor=/, path);
+    assert.ok(sitemap.includes(`<loc>https://www.anandhospitalmbd.org${path}</loc>`), path);
+    assert.ok(htmlSitemap.includes(`href="${path}"`), path);
+    assert.doesNotMatch(html, /"reviewedBy"|"reviewedDate"/, path);
+    if (slug === 'dr-subhash-singh' || slug === 'dr-nidhi-thakur') {
+      assert.ok(html.includes('Monday–Saturday'));
+      assert.ok(html.includes('Sunday OPD is closed.'));
+      assert.ok(html.includes('emergency cases 24×7'));
+      assert.ok(html.includes('11:00 AM–3:00 PM IST'));
+    } else assert.ok(html.includes('Please confirm this doctor’s timings with reception.'));
+  }
+  const old = await fetchPath('/doctors/dr-rajiv-kumar/');
+  assert.equal(old.status, 301);
+  assert.equal(old.headers.get('location'), 'https://www.anandhospitalmbd.org/doctors/dr-rajeev-kumar');
+  const nidhi = await (await fetchPath('/doctors/dr-nidhi-thakur')).text();
+  const subhash = await (await fetchPath('/doctors/dr-subhash-singh')).text();
+  const surgeryArticles = ['gallbladder-stone-surgery', 'laparoscopic-cholecystectomy', 'hernia-surgery', 'appendix-surgery', 'piles-fissure-fistula-treatment', 'breast-cancer-surgery'];
+  const womensArticles = ['pcos', 'hysterectomy', 'ovarian-cyst-treatment', 'pcos-treatment', 'high-risk-pregnancy-care', 'normal-delivery', 'caesarean-delivery', 'infertility-evaluation', 'hysteroscopy'];
+  for (const [slugs, doctorPath, profile] of [[surgeryArticles, '/doctors/dr-subhash-singh', subhash], [womensArticles, '/doctors/dr-nidhi-thakur', nidhi]]) {
+    for (const slug of slugs) {
+      const html = await (await fetchPath(`/health-library/${slug}`)).text();
+      assert.ok(html.includes(`href="${doctorPath}"`), slug);
+      assert.ok(html.includes(`href="${doctorPath}#reviewer-credentials"`), slug);
+      assert.ok(profile.includes(`href="/health-library/${slug}"`), slug);
+    }
+  }
+  for (const slug of procedureSlugs.filter(slug => !['emergency-care','24x7-emergency','icu-critical-care'].includes(slug))) {
+    const profile = ['general-surgery','laparoscopic-surgery','gallbladder-surgery','gallstone-surgery','hernia-surgery','appendix-surgery','piles-treatment','cancer-surgery','emergency-surgery'].includes(slug) ? subhash : nidhi;
+    assert.ok(profile.includes(`href="/services/${slug}"`), slug);
+  }
+  assert.equal((nidhi.match(/aria-label="View [^"]+"/g) ?? []).length, 11);
+  assert.equal((subhash.match(/aria-label="View [^"]+"/g) ?? []).length, 3);
+});
+
+ test('appointment page uses confirmed OPD hours and Sunday closure', async () => {
+  const html = await (await fetchPath('/appointment')).text();
+  assert.ok(html.includes('11:00 AM–3:00 PM IST'));
+  assert.ok(html.includes('OPD closed'));
+  assert.ok(html.includes('including Sundays'));
+  assert.doesNotMatch(html, /9:00 AM|6:00 PM|10:15 AM/);
 });

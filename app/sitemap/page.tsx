@@ -9,7 +9,7 @@ export const metadata = createPageMetadata({ title: "Website Sitemap | Anand Hos
 import { procedures, procedureGroups } from "../procedure-data";
 const groups = [
   { id: "hospital", title: "Hospital & patient information", links: [["Home", "/"], ["About Anand Hospital", "/about"], ["Doctors & Departments", "/doctors"], ["Our Services", "/services"], ["Request an Appointment", "/appointment"], ["Hospital Gallery", "/gallery"], ["Awards & Felicitations", "/awards"], ["Patient Testimonials", "/testimonials"], ["Search the Website", "/search"], ["Website Sitemap", "/sitemap"]] },
-  { id: "doctors", title: "Our doctors", links: doctors.map((doctor) => [doctor.name, `/doctors/${doctorSlug(doctor.name)}`]) },
+  { id: "doctors", title: "Doctor profiles & consultation information", links: doctors.map((doctor) => [doctor.name, `/doctors/${doctorSlug(doctor.name)}`]) },
   { id: "services", title: "Medical services", links: services.map((service) => [service.name, `/services/${service.slug}`]) },
   ...procedureGroups.map((group, index) => ({ id: `procedure-group-${index}`, title: `${group} services & procedures`, links: procedures.filter(page => page.group === group).map(page => [page.name, `/services/${page.slug}`]) })),
   { id: "surgery", title: "Surgery & women’s health guides", links: healthArticles.filter((article) => article.treatingDoctor).map((article) => [article.title, `/health-library/${article.slug}`]) },

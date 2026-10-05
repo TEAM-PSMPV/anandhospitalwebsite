@@ -18,7 +18,7 @@ export function AwardsCarousel() {
       <div className="award-cascade">
         <div className="award-cascade-back second" aria-hidden="true" />
         <div className="award-cascade-back first" aria-hidden="true" />
-        <Link className="award-cascade-front" key={award.id} href={`/awards#${award.id}`} aria-label={`View ${award.title}`}><AwardPhoto image={award.images[0]} alt={`${award.title} — ${award.group === "other" ? "recipient unconfirmed" : award.recipient}`} thumbnail /></Link>
+        <Link className="award-cascade-front" key={award.id} href={`/awards#${award.id}`} aria-label={`View ${award.title}`}><AwardPhoto image={award.images[0]} alt={`${award.title} – ${award.group === "other" ? "recipient unconfirmed" : award.recipient}`} thumbnail /></Link>
       </div>
       <button className="award-arrow" type="button" aria-label="Next award" onClick={() => move(1)}><ArrowIcon direction="next" /></button>
     </div>

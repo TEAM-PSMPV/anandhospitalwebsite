@@ -79,7 +79,7 @@ export default function Services() {
       <section className="services-emergency">
         <div className="container services-emergency-inner">
           <Icon name="siren" />
-          <div><h2>Emergency Care — Available 24x7</h2><p>Our emergency team is always ready to provide immediate care when you need it the most.</p></div>
+          <div><h2>Emergency Care – Available 24x7</h2><p>Our emergency team is always ready to provide immediate care when you need it the most.</p></div>
           <a href="tel:+917351028221"><Icon name="phone" /><span>Call Emergency<strong>+91 7351028221</strong></span></a>
         </div>
       </section>

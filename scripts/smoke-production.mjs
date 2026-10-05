@@ -9,16 +9,21 @@ const procedureSlugs = [
 ];
 const origin = "https://www.anandhospitalmbd.org";
 async function verifyProduction() {
-for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/doctors/dr-subhash-singh", "/services", "/gallery", "/feedback", "/sitemap", "/site-information/privacy-policy"]) {
+for (const path of ["/", "/appointment", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/doctors/dr-subhash-singh", "/services", "/gallery", "/feedback", "/sitemap", "/site-information/privacy-policy"]) {
   const response = await fetch(`${origin}${path}`);
   assert.equal(response.status, 200, path);
   const html = await response.text();
+  assert.ok(!html.includes(String.fromCodePoint(0x2014)), `${path}: no em dashes`);
   const canonical = path === "/" ? origin : `${origin}${path}`;
   assert.ok(html.includes(`rel="canonical" href="${canonical}"`), `Canonical missing on ${path}`);
   if (path === "/") {
     assert.ok(!html.includes('aria-label="Breadcrumb"') && !html.includes('"@type":"BreadcrumbList"'));
-    for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609"]) assert.ok(html.includes(profile), profile);
+    for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609", "https://www.youtube.com/@anandhospitalmbd"]) assert.ok(html.includes(profile), profile);
     assert.ok(html.includes("hero-responsive-image") && html.includes('fetchPriority="high"'));
+  }
+  if (path === "/appointment") {
+    assert.ok(html.includes("11:00 AM–3:00 PM IST") && html.includes("OPD closed"));
+    assert.ok(!/9:00 AM|6:00 PM|10:15 AM/.test(html));
   }
   if (path === "/awards") {
     assert.equal((html.match(/class="award-card"/g) ?? []).length, 21);
@@ -64,6 +69,31 @@ assert.ok((await missing.text()).includes("We couldn’t find that page"));
 const redirect = await fetch(`${origin}/our-doctors/`, { redirect: "manual" });
 assert.equal(redirect.status, 301);
 assert.equal(redirect.headers.get("location"), `${origin}/doctors`);
+// Full clinician profiles and article-to-clinician links must survive deployment.
+
+for (const [slug, registration] of [['dr-subhash-singh','23457'],['dr-nidhi-thakur','46181'],['dr-bhoopendra-kumar-sharma','117362'],['dr-rajeev-kumar','75493'],['dr-garima-singh','39431'],['dr-rangit-pandey','43348']]) {
+  const response = await fetch(`${origin}/doctors/${slug}`);
+  assert.equal(response.status, 200, slug);
+  const html = await response.text();
+  assert.ok(html.includes(`rel="canonical" href="${origin}/doctors/${slug}"`), slug);
+  assert.ok(html.includes(registration), `${slug}: registration`);
+  for (const id of ['credentials','consultation','educational-articles','reviewer-credentials','recognition-gallery']) assert.ok(html.includes(`id="${id}"`), `${slug}: ${id}`);
+  const photo = html.match(/src="(\/images\/doctors\/profiles\/[a-z]+\.webp)"/)?.[1];
+  assert.ok(photo, slug);
+  const image = await fetch(`${origin}${photo}`);
+  assert.equal(image.status, 200, photo);
+  assert.match(image.headers.get('content-type') ?? '', /image\/webp/);
+  if (slug === 'dr-subhash-singh' || slug === 'dr-nidhi-thakur') assert.ok(html.includes('11:00 AM–3:00 PM IST'));
+}
+const paediatricianRedirect = await fetch(`${origin}/doctors/dr-rajiv-kumar/`, {redirect:'manual'});
+assert.equal(paediatricianRedirect.status, 301);
+assert.equal(paediatricianRedirect.headers.get('location'), `${origin}/doctors/dr-rajeev-kumar`);
+for (const [slug, doctor] of [['pcos','dr-nidhi-thakur'],['hernia-surgery','dr-subhash-singh']]) {
+  const html = await (await fetch(`${origin}/health-library/${slug}`)).text();
+  assert.ok(html.includes(`href="/doctors/${doctor}"`), slug);
+}
+console.log('Production full doctor profiles, registration details, schedules, portraits and clinical links passed.');
+
 console.log("Production procedure pages, hero images, sitemap, gallery, facility slides, feedback, footer, doctor image, SEO and custom 404 checks passed.");
 
 }

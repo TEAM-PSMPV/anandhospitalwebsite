@@ -40,7 +40,7 @@ export default function TestimonialsPage() {
         <div className="testimonials-page-grid">
           {patientTestimonials.map((testimonial) => <blockquote key={testimonial.name}>
             <p>“{testimonial.text}”</p>
-            <cite>— {testimonial.name}</cite>
+            <cite>– {testimonial.name}</cite>
           </blockquote>)}
         </div>
       </div>

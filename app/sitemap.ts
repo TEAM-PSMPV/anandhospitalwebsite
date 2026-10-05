@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticPages.map((path) => ({ url: `${siteUrl}${path}`, lastModified: updated, changeFrequency: path === "" ? "weekly" as const : "monthly" as const, priority: path === "" ? 1 : 0.8 })),
     ...sitePolicies.map((policy) => ({ url: `${siteUrl}${policyPath(policy.slug)}`, lastModified: updated, changeFrequency: "yearly" as const, priority: 0.4 })),
+    // Full clinician profiles and the CV-corrected paediatrician name share this route catalogue.
     ...doctors.map((doctor) => ({ url: `${siteUrl}/doctors/${doctorSlug(doctor.name)}`, lastModified: updated, changeFrequency: "monthly" as const, priority: 0.8 })),
     ...services.map((service) => ({ url: `${siteUrl}/services/${service.slug}`, lastModified: updated, changeFrequency: "monthly" as const, priority: 0.8 })),
     ...additionalProcedures.map((page) => ({ url: `${siteUrl}/services/${page.slug}`, lastModified: updated, changeFrequency: "monthly" as const, priority: 0.8 })),
