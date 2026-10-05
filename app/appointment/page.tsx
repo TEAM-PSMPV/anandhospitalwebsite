@@ -23,7 +23,7 @@ export default async function Appointment({ searchParams }: AppointmentPageProps
     </div>
     <aside className="appointment-next-card" aria-labelledby="appointment-next-title"><h2 id="appointment-next-title">What Happens Next?</h2>
       <ol className="appointment-steps"><li><span>1</span><div><h3>We receive your request</h3><p>Our staff receive your appointment request for review.</p></div></li><li><span>2</span><div><h3>Verification and confirmation call</h3><p>Our team will call to verify your details and confirm doctor availability.</p></div></li><li><span>3</span><div><h3>Receive your token number</h3><p>After confirmation, our staff will create your appointment, add you to the queue and share your token number by phone.</p></div></li></ol>
-      <div className="appointment-info-list"><div><Icon name="clock"/><div><h3>OPD Timings</h3><p><strong>Monday - Saturday:</strong> 9:00 AM - 6:00 PM<br/><strong>Sunday:</strong> 9:00 AM - 1:00 PM</p></div></div><div><Icon name="emergency"/><div><h3>24x7 Emergency Care</h3><p>Our emergency services are available<br/>24x7, every day.</p></div></div><div><Icon name="phone"/><div><h3>Need Help?</h3><p>Call us at <a href="tel:+917351028221">+91 7351028221</a></p></div></div></div>
+      <div className="appointment-info-list"><div><Icon name="clock"/><div><h3>OPD Timings</h3><p><strong>Dr Subhash &amp; Dr Nidhi:</strong><br/>Monday–Saturday, 11:00 AM–3:00 PM IST<br/><strong>Sunday:</strong> OPD closed. Call to confirm other doctors’ schedules.</p></div></div><div><Icon name="emergency"/><div><h3>24x7 Emergency Care</h3><p>Emergency care is available 24×7, including Sundays. Dr Subhash and Dr Nidhi are available for emergency cases; call the hospital to confirm and coordinate care.</p></div></div><div><Icon name="phone"/><div><h3>Need Help?</h3><p>Call us at <a href="tel:+917351028221">+91 7351028221</a></p></div></div></div>
       <a className="appointment-address" href="https://maps.google.com/?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001" target="_blank" rel="noreferrer"><Icon name="location"/><span><strong>Hospital Address</strong>Near Miglani Cinema, Rampur Road,<br/>Moradabad [244001]</span></a>
     </aside>
   </div></section>
@@ -32,7 +32,7 @@ export default async function Appointment({ searchParams }: AppointmentPageProps
       <a href="tel:+917351028221"><Icon name="phone"/><span><strong>Book Appointment</strong>+91 7351028221</span></a>
       <a href="tel:+919528261199"><Icon name="phone"/><span><strong>Follow-up Patient Help</strong>+91 9528261199</span></a>
       <a href="mailto:info@anandhospitalmbd.org"><Icon name="mail"/><span><strong>Email</strong>info@anandhospitalmbd.org</span></a>
-      <div><Icon name="clock"/><span><strong>OPD Timings</strong>10:15 AM to 03:00 PM</span></div>
+      <div><Icon name="clock"/><span><strong>Dr Subhash &amp; Dr Nidhi OPD</strong>Mon–Sat, 11:00 AM–3:00 PM; Sunday closed</span></div>
     </div>
   </section>
   <section className="appointment-faq" aria-labelledby="appointment-faq-title"><div className="container">

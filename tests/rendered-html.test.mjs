@@ -442,6 +442,8 @@ test('complete doctor profiles use supplied credentials, individual schedules an
     assert.doesNotMatch(html, /"reviewedBy"|"reviewedDate"/, path);
     if (slug === 'dr-subhash-singh' || slug === 'dr-nidhi-thakur') {
       assert.ok(html.includes('Monday–Saturday'));
+      assert.ok(html.includes('Sunday OPD is closed.'));
+      assert.ok(html.includes('emergency cases 24×7'));
       assert.ok(html.includes('11:00 AM–3:00 PM IST'));
     } else assert.ok(html.includes('Please confirm this doctor’s timings with reception.'));
   }
@@ -466,4 +468,12 @@ test('complete doctor profiles use supplied credentials, individual schedules an
   }
   assert.equal((nidhi.match(/aria-label="View [^"]+"/g) ?? []).length, 11);
   assert.equal((subhash.match(/aria-label="View [^"]+"/g) ?? []).length, 3);
+});
+
+ test('appointment page uses confirmed OPD hours and Sunday closure', async () => {
+  const html = await (await fetchPath('/appointment')).text();
+  assert.ok(html.includes('11:00 AM–3:00 PM IST'));
+  assert.ok(html.includes('OPD closed'));
+  assert.ok(html.includes('including Sundays'));
+  assert.doesNotMatch(html, /9:00 AM|6:00 PM|10:15 AM/);
 });

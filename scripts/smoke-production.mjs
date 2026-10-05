@@ -9,7 +9,7 @@ const procedureSlugs = [
 ];
 const origin = "https://www.anandhospitalmbd.org";
 async function verifyProduction() {
-for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/doctors/dr-subhash-singh", "/services", "/gallery", "/feedback", "/sitemap", "/site-information/privacy-policy"]) {
+for (const path of ["/", "/appointment", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/doctors/dr-subhash-singh", "/services", "/gallery", "/feedback", "/sitemap", "/site-information/privacy-policy"]) {
   const response = await fetch(`${origin}${path}`);
   assert.equal(response.status, 200, path);
   const html = await response.text();
@@ -18,8 +18,12 @@ for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/do
   assert.ok(html.includes(`rel="canonical" href="${canonical}"`), `Canonical missing on ${path}`);
   if (path === "/") {
     assert.ok(!html.includes('aria-label="Breadcrumb"') && !html.includes('"@type":"BreadcrumbList"'));
-    for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609"]) assert.ok(html.includes(profile), profile);
+    for (const profile of ["https://instagram.com/anandhospital.mbd", "https://linkedin.com/company/anand-hospital-moradabad", "https://x.com/anandhospitalmb", "https://facebook.com/profile.php?id=61595003672609", "https://www.youtube.com/@anandhospitalmbd"]) assert.ok(html.includes(profile), profile);
     assert.ok(html.includes("hero-responsive-image") && html.includes('fetchPriority="high"'));
+  }
+  if (path === "/appointment") {
+    assert.ok(html.includes("11:00 AM–3:00 PM IST") && html.includes("OPD closed"));
+    assert.ok(!/9:00 AM|6:00 PM|10:15 AM/.test(html));
   }
   if (path === "/awards") {
     assert.equal((html.match(/class="award-card"/g) ?? []).length, 21);

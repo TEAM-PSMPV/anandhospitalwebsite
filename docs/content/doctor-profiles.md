@@ -10,10 +10,14 @@ Subhash Kumar Singh 23457; Nidhi Thakur 46181; Bhoopendra Kumar Sharma 117362;
 Rangit Priyakar Panday 43348; Garima Singh 39431. Crossed-out rows are excluded.
 OPD/IPD count columns are not treated as schedules. Dr Rangit’s registered-name
 spelling is displayed separately from the CV and existing clinical display name.
+The user confirmed that the RMO registration row and the anaesthesiology CV
+refer to the same doctor, so registration 43348 is retained.
 Dr Rajeev’s CV supplies registration 75493 without an issuing council.
 
 User-confirmed OPD for Dr Subhash and Dr Nidhi: Monday–Saturday, 11:00 AM–3:00 PM
-IST. Emergency availability directs patients to call and coordinate care.
+IST. Sunday OPD is closed. Emergency availability is 24×7, including Sundays,
+and directs patients to call and coordinate care. The appointment page and
+chatbot use the same confirmed hours.
 Other clinician schedules, languages, unspecified memberships, fellowship details
 and educational video URLs are not inferred. Empty sections explain availability
 and consultation options. No authorship or completed medical review is claimed.
