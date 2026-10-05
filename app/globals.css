@@ -8765,3 +8765,54 @@ main > .services-page > section.services-emergency { min-height: 0; padding-bloc
 @media (max-width: 760px) {
   .home-page .care-feature .care-image { background-image: image-set(url("/images/optimized/reception-640.avif") type("image/avif"), url("/images/optimized/reception-640.webp") type("image/webp")); }
 }
+
+/* Procedure guides use the shared service hero, buttons and hospital palette. */
+.procedure-page .service-detail-hero h1 { font-size: clamp(2.2rem, 4.3vw, 4.6rem); line-height: 1.12; }
+.procedure-eyebrow { font-weight: 700; font-size: .9rem !important; }
+.procedure-hero-figure { margin: 0; min-width: 0; }
+.procedure-hero-figure figcaption { font-size: .7rem; padding-top: 12px; color: #deedfa; }
+.procedure-hero-figure figcaption a { color: inherit; }
+.procedure-page .service-detail-hero-photo { aspect-ratio: 4 / 3; }
+.procedure-page .service-detail-hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+.procedure-layout { display: grid; grid-template-columns: minmax(200px, .7fr) minmax(0, 2fr); gap: clamp(28px, 5vw, 80px); padding-block: 48px; align-items: start; }
+.procedure-contents { padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--blue-pale); }
+.procedure-contents h2 { color: var(--blue); margin-top: 0; font-size: 1.15rem; }
+.procedure-contents ol { padding-left: 20px; }
+.procedure-contents li { margin: 12px 0; font-size: .86rem; line-height: 1.5; }
+.procedure-contents a, .procedure-copy a { color: var(--blue); }
+.procedure-contents p { font-size: .8rem; line-height: 1.6; }
+.procedure-section { padding-block: 28px; border-bottom: 1px solid var(--line); scroll-margin-top: 32px; }
+.procedure-section:first-child { padding-top: 0; }
+.procedure-section h2 { color: var(--blue); font-size: clamp(1.35rem, 2.4vw, 2rem); line-height: 1.25; letter-spacing: -.025em; margin: 0 0 20px; }
+.procedure-section p, .procedure-section li { font-size: 1rem; line-height: 1.85; }
+.procedure-section ul { padding-left: 22px; }
+.procedure-section li + li { margin-top: 10px; }
+.procedure-team { background: var(--blue-pale); padding: 28px; border-radius: 12px; margin-top: 28px; }
+.procedure-copy .button-blue { color: #fff; }
+.procedure-warning { border-left: 4px solid var(--blue); padding: 28px; background: #f0f7fb; margin-top: 28px; }
+.procedure-faqs details { border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 12px 0; }
+.procedure-faqs summary { cursor: pointer; color: var(--blue); font-weight: 700; line-height: 1.5; }
+.procedure-sources p, .procedure-sources li { font-size: .85rem; }
+.procedure-visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.procedure-page .service-detail-section h2, .procedure-directory h2 { font-size: clamp(1.8rem, 3vw, 3rem); }
+.procedure-visit-grid .button-outline { color: var(--blue); border-color: var(--blue); }
+.procedure-visit-grid address { font-style: normal; line-height: 1.8; margin-top: 28px; }
+.procedure-map iframe { display: block; width: 100%; height: 350px; border: 0; border-radius: 12px; background: #e4edf3; }
+.procedure-map > a { display: inline-block; color: var(--blue); margin-top: 16px; }
+.procedure-related { display: flex; flex-wrap: wrap; gap: 12px; }
+.procedure-related a { padding: 16px 20px; border: 1px solid var(--line); border-radius: 8px; color: var(--blue); text-decoration: none; }
+.procedure-directory-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 28px; }
+.procedure-directory-grid section { padding: 24px; border: 1px solid var(--line); border-radius: 12px; }
+.procedure-directory-grid h3 { color: var(--blue); margin-top: 0; }
+.procedure-directory-grid ul { list-style: none; padding: 0; margin: 0; }
+.procedure-directory-grid li + li { border-top: 1px solid var(--line); }
+.procedure-directory-grid a { display: flex; justify-content: space-between; gap: 12px; padding-block: 12px; color: var(--blue); font-size: .9rem; text-decoration: none; }
+@media (max-width: 767px) {
+  .procedure-layout, .procedure-visit-grid, .procedure-directory-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .procedure-layout { padding-block: 28px; }
+  .procedure-page .service-detail-hero-grid { gap: 28px; }
+  .procedure-page .service-detail-actions { flex-wrap: wrap; }
+  .procedure-page .service-local-nav .container { gap: 24px; }
+  .procedure-section p, .procedure-section li { font-size: .95rem; }
+  .procedure-map iframe { height: 280px; }
+}

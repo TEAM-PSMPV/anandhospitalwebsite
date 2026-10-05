@@ -10,6 +10,8 @@ import { Breadcrumbs, createPageMetadata, hospitalKeywords, surgeryKeywords, wom
 
 export const metadata: Metadata = createPageMetadata({ title: "Hospital Services in Moradabad | Anand Hospital", description: "Explore surgery, maternity, emergency, ICU, paediatrics, urology and other hospital services at Anand Hospital in Moradabad.", path: "/services", keywords: [...hospitalKeywords, ...surgeryKeywords, ...womensHealthKeywords] });
 
+import { procedures, procedureGroups } from "../procedure-data";
+
 const facilityGroups: ReadonlyArray<{ title: string; tone: "blue" | "green"; items: ReadonlyArray<{ title: string; description: string; icon: IconName; image: string; imageAlt: string; imageKind?: "icon"; galleryGroup?: "icu" | "deluxe" }> }> = [
   { title: "Diagnostics & Facilities", tone: "blue", items: [
     { title: "Pathology Lab", description: "Accurate and timely lab testing with advanced equipment.", icon: "path-lab", image: "/icons/set-2/path-lab.svg", imageAlt: "Pathology laboratory", imageKind: "icon" },
@@ -73,6 +75,7 @@ export default function Services() {
         </div>
       </section>
 
+      <section className="service-detail-section procedure-directory"><div className="container"><p className="kicker">Understand your treatment options</p><h2>Services &amp; procedure guides</h2><p>Explore symptoms, evaluation, treatment choices, preparation and recovery before your consultation.</p><div className="procedure-directory-grid">{procedureGroups.map(group => <section key={group}><h3>{group}</h3><ul>{procedures.filter(page => page.group === group).map(page => <li key={page.slug}><Link href={`/services/${page.slug}`}>{page.name}<span aria-hidden="true"> →</span></Link></li>)}</ul></section>)}</div></div></section>
       <section className="services-emergency">
         <div className="container services-emergency-inner">
           <Icon name="siren" />

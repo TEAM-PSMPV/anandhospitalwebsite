@@ -124,7 +124,7 @@ const securityHeaders = {
     "connect-src 'self' https://cloudflareinsights.com",
     "font-src 'self' data:",
     "form-action 'self'",
-    "frame-src 'self' https://www.instagram.com",
+    "frame-src 'self' https://www.instagram.com https://maps.google.com https://www.google.com",
     "frame-ancestors 'none'",
     "img-src 'self' data:",
     "object-src 'none'",

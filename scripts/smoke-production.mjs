@@ -1,5 +1,12 @@
 import assert from "node:assert/strict";
 import { setTimeout } from "node:timers/promises";
+const procedureSlugs = [
+  'general-surgery', 'laparoscopic-surgery', 'gallbladder-surgery', 'gallstone-surgery',
+  'hernia-surgery', 'appendix-surgery', 'piles-treatment', 'cancer-surgery',
+  'obstetrics-gynaecology', 'high-risk-pregnancy', 'pregnancy-care', 'maternity-care',
+  'pcos-treatment', 'infertility-evaluation', 'hysteroscopy', 'laparoscopic-gynaecology',
+  'emergency-care', 'icu-critical-care', '24x7-emergency', 'emergency-surgery',
+];
 const origin = "https://www.anandhospitalmbd.org";
 async function verifyProduction() {
 for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/doctors/dr-subhash-singh", "/services", "/gallery", "/feedback", "/sitemap", "/site-information/privacy-policy"]) {
@@ -31,6 +38,21 @@ for (const path of ["/", "/doctors", "/awards", "/doctors/dr-nidhi-thakur", "/do
 const sitemap = await (await fetch(`${origin}/sitemap.xml`)).text();
 assert.ok(sitemap.includes(`<loc>${origin}/awards</loc>`));
 assert.ok(sitemap.includes(`<loc>${origin}/gallery</loc>`));
+for (const slug of procedureSlugs) {
+  const path = `/services/${slug}`;
+  const response = await fetch(`${origin}${path}`);
+  assert.equal(response.status, 200, path);
+  const html = await response.text();
+  assert.ok(html.includes(`rel="canonical" href="${origin}${path}"`), path);
+  for (const marker of ['id="evaluation-team"', 'id="warning-signs"', 'id="faqs"', 'Cost / Ayushman eligibility', 'Illustrative image']) assert.ok(html.includes(marker), `${path}: ${marker}`);
+  assert.ok(sitemap.includes(`<loc>${origin}${path}</loc>`), `${path}: sitemap`);
+  const imagePath = html.match(/src="(\/images\/procedures\/[a-z-]+\.webp)"/)?.[1];
+  assert.ok(imagePath, `${path}: hero image`);
+  const image = await fetch(`${origin}${imagePath}`);
+  assert.equal(image.status, 200, imagePath);
+  assert.match(image.headers.get('content-type') ?? '', /image\/webp/);
+  assert.ok((response.headers.get('content-security-policy') ?? '').includes('https://maps.google.com'), 'Map frame CSP');
+}
 const doctorImage = await fetch(`${origin}/_vinext/image?url=%2Fimages%2Fdoctors%2Fdrgarima.webp&w=120&q=75`, {headers:{accept:'image/avif,image/webp'}});
 assert.equal(doctorImage.status, 200, 'Compact doctor photograph');
 assert.match(doctorImage.headers.get('content-type'), /image\/(avif|webp)/);
@@ -42,7 +64,7 @@ assert.ok((await missing.text()).includes("We couldn’t find that page"));
 const redirect = await fetch(`${origin}/our-doctors/`, { redirect: "manual" });
 assert.equal(redirect.status, 301);
 assert.equal(redirect.headers.get("location"), `${origin}/doctors`);
-console.log("Production gallery, facility slides, feedback, footer, doctor image, SEO and custom 404 checks passed.");
+console.log("Production procedure pages, hero images, sitemap, gallery, facility slides, feedback, footer, doctor image, SEO and custom 404 checks passed.");
 
 }
 

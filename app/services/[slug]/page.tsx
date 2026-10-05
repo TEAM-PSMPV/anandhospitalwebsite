@@ -6,15 +6,20 @@ import { Assistance, Icon, SiteShell } from "../../site-shell";
 import Image from "next/image";
 import { Breadcrumbs, createPageMetadata, hospitalKeywords, surgeryKeywords, womensHealthKeywords } from "../../seo";
 
+import { procedures } from "../../procedure-data";
+import { ProcedurePage } from "../../procedure-page";
+
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return services.map(({ slug }) => ({ slug }));
+  return [...new Set([...services, ...procedures].map(item => item.slug))].map(slug => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const procedure = procedures.find(item => item.slug === slug);
   const service = services.find((item) => item.slug === slug);
+  if (procedure) return createPageMetadata({ title: `${procedure.title} | Anand Hospital`, description: procedure.intro, path: `/services/${procedure.slug}`, keywords: procedure.group === "Surgery" ? surgeryKeywords : procedure.group === "Women’s Health" ? womensHealthKeywords : hospitalKeywords, image: procedure.image });
   if (!service) return {};
   const keywords = service.slug === "general-surgery" ? surgeryKeywords : service.slug === "obstetrics-gynaecology" ? womensHealthKeywords : hospitalKeywords;
   return createPageMetadata({ title: `${service.name} in Moradabad | Anand Hospital`, description: `${service.description} Learn about ${service.name.toLowerCase()} at Anand Hospital, Near Miglani Cinema, Rampur Road, Moradabad 244001.`, path: `/services/${service.slug}`, keywords, image: service.heroImage });
@@ -24,6 +29,8 @@ const supportingIcons = ["a-female-doctor", "alcohol-disinfection", "doctor-set-
 
 export default async function ServicePage({ params }: Props) {
   const { slug } = await params;
+  const procedure = procedures.find(item => item.slug === slug);
+  if (procedure) return <ProcedurePage page={procedure} />;
   const service = services.find((item) => item.slug === slug);
   if (!service) notFound();
   const start = services.findIndex((item) => item.slug === slug);
