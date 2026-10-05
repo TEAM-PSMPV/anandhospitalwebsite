@@ -376,3 +376,43 @@ test("doctor image service accepts the requested 120px width and still rejects i
   const invalid = await worker.fetch(new Request('http://localhost/_vinext/image?url=%2Fimages%2Fdoctors%2Fdrgarima.webp&w=117&q=75'), env, {});
   assert.equal(invalid.status, 400);
 });
+
+const procedureSlugs = [
+  'general-surgery', 'laparoscopic-surgery', 'gallbladder-surgery', 'gallstone-surgery',
+  'hernia-surgery', 'appendix-surgery', 'piles-treatment', 'cancer-surgery',
+  'obstetrics-gynaecology', 'high-risk-pregnancy', 'pregnancy-care', 'maternity-care',
+  'pcos-treatment', 'infertility-evaluation', 'hysteroscopy', 'laparoscopic-gynaecology',
+  'emergency-care', 'icu-critical-care', '24x7-emergency', 'emergency-surgery',
+];
+
+test('all procedure pages render complete care guides and appear in both sitemaps', async () => {
+  const xmlResponse = await fetchPath('/sitemap.xml');
+  const xml = await xmlResponse.text();
+  const htmlSitemap = await (await fetchPath('/sitemap')).text();
+  const directory = await (await fetchPath('/services')).text();
+  assert.equal(xmlResponse.status, 200);
+  const urls = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
+  assert.equal(new Set(urls).size, urls.length, 'sitemap must not contain duplicate URLs');
+  for (const slug of procedureSlugs) {
+    const path = `/services/${slug}`;
+    const response = await fetchPath(path);
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    assert.match(html, /<h1[^>]*>[^<]*Moradabad/, path);
+    assert.match(html, /id="evaluation-team"/, path);
+    assert.match(html, /id="warning-signs"/, path);
+    assert.match(html, /Cost \/ Ayushman eligibility/, path);
+    assert.match(html, /Frequently asked questions/, path);
+    assert.match(html, /href="\/appointment"/, path);
+    assert.match(html, /tel:\+917351028221/, path);
+    assert.match(html, /maps\.google\.com\/maps\?/, path);
+    assert.match(html, /\/images\/procedures\/[a-z-]+\.webp/, path);
+    assert.match(html, /Illustrative image/, path);
+    assert.ok(urls.includes(`https://www.anandhospitalmbd.org${path}`), path);
+    assert.ok(htmlSitemap.includes(`href="${path}"`), path);
+    assert.ok(directory.includes(`href="${path}"`), path);
+    assert.match(html, new RegExp(`rel="canonical"[^>]*href="https://www.anandhospitalmbd.org${path}"|href="https://www.anandhospitalmbd.org${path}"[^>]*rel="canonical"`), path);
+  }
+  const gallbladder = await (await fetchPath('/services/gallbladder-surgery')).text();
+  for (const heading of ['Gallbladder &amp; Gallstone Surgery in Moradabad', 'Symptoms that may indicate gallstones', 'When gallbladder surgery may be advised', 'What is laparoscopic cholecystectomy?', 'Laparoscopic vs open surgery', 'Dr Subhash Singh', 'Tests commonly required', 'Anaesthesia', 'Expected hospital stay', 'Possible risks', 'Diet after gallbladder surgery', 'When can I return to normal activity?']) assert.ok(gallbladder.includes(heading), heading);
+});

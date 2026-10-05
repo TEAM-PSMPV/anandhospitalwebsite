@@ -6,10 +6,12 @@ import { sitePolicies, policyPath } from "../policy-data";
 import { SiteShell } from "../site-shell";
 import { Breadcrumbs, createPageMetadata, doctorSlug } from "../seo";
 export const metadata = createPageMetadata({ title: "Website Sitemap | Anand Hospital Moradabad", description: "Find all Anand Hospital pages, grouped by doctors, services, hospital galleries, health information and website policies.", path: "/sitemap" });
+import { procedures, procedureGroups } from "../procedure-data";
 const groups = [
   { id: "hospital", title: "Hospital & patient information", links: [["Home", "/"], ["About Anand Hospital", "/about"], ["Doctors & Departments", "/doctors"], ["Our Services", "/services"], ["Request an Appointment", "/appointment"], ["Hospital Gallery", "/gallery"], ["Awards & Felicitations", "/awards"], ["Patient Testimonials", "/testimonials"], ["Search the Website", "/search"], ["Website Sitemap", "/sitemap"]] },
   { id: "doctors", title: "Our doctors", links: doctors.map((doctor) => [doctor.name, `/doctors/${doctorSlug(doctor.name)}`]) },
   { id: "services", title: "Medical services", links: services.map((service) => [service.name, `/services/${service.slug}`]) },
+  ...procedureGroups.map((group, index) => ({ id: `procedure-group-${index}`, title: `${group} services & procedures`, links: procedures.filter(page => page.group === group).map(page => [page.name, `/services/${page.slug}`]) })),
   { id: "surgery", title: "Surgery & women’s health guides", links: healthArticles.filter((article) => article.treatingDoctor).map((article) => [article.title, `/health-library/${article.slug}`]) },
   { id: "health", title: "Health Library & wellbeing", links: [["Health Library", "/health-library"], ...healthArticles.filter((article) => !article.treatingDoctor).map((article) => [article.title, `/health-library/${article.slug}`])] },
   { id: "policies", title: "Site information & policies", links: [["Site Information & Policies", "/site-information"], ...sitePolicies.map((policy) => [policy.title, policyPath(policy.slug)]), ["Send Us Feedback", "/feedback"]] },
