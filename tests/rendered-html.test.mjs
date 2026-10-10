@@ -135,13 +135,13 @@ test("renders the requested appointment and facility content", async () => {
   assert.match(prefilledAppointmentHtml, /<option value="General Surgery" selected="">/);
 
   assert.equal(servicesResponse.status, 200);
-  assert.match(servicesHtml, /Critical Care High Tech ICU/);
+  assert.match(servicesHtml, /ICU Facility/);
   assert.doesNotMatch(servicesHtml, />Blood Bank</);
   assert.match(servicesHtml, /\/images\/facilities\/imaging-services\.webp/);
-  assert.match(servicesHtml, /href="\/gallery#icu"/);
-  assert.match(servicesHtml, /\/images\/facilities\/health-checkups-ot\.webp/);
+  assert.match(servicesHtml, /href="\/services\/critical-care"/);
+  assert.match(servicesHtml, /id="patient-support"/);
   assert.match(servicesHtml, /href="\/gallery#deluxe"/);
-  assert.match(servicesHtml, /\/images\/facilities\/home-care\.webp/);
+  assert.doesNotMatch(servicesHtml, /\/images\/facilities\/home-care\.webp/);
   assert.doesNotMatch(servicesHtml, /class="cta-photo"/);
 });
 
@@ -347,8 +347,8 @@ test("gallery, patient policies, feedback and complete HTML sitemap render witho
   assert.match(gallery, /"@type":"ImageObject"/);
   assert.match(gallery, /type="image\/avif"/);
   const services = await (await fetchPath('/services')).text();
-  assert.match(services, /aria-label="Next ICU photograph"/);
-  assert.match(services, /aria-label="Next deluxe room photograph"/);
+  assert.match(services, /id="hospital-facilities"/);
+  assert.match(services, /id="diagnostics"/);
   assert.doesNotMatch(services, /Estb\. in 2007/);
   assert.match(services, /href="https:\/\/www\.teampsmpv\.com\/"/);
   assert.match(services, /teampsmpv-monogram-white\.webp/);
@@ -412,7 +412,7 @@ test('all procedure pages render complete care guides and appear in both sitemap
     assert.match(html, /Illustrative image/, path);
     assert.ok(urls.includes(`https://www.anandhospitalmbd.org${path}`), path);
     assert.ok(htmlSitemap.includes(`href="${path}"`), path);
-    assert.ok(directory.includes(`href="${path}"`), path);
+    if (!["gallstone-surgery", "pregnancy-care", "icu-critical-care", "24x7-emergency", "emergency-surgery"].includes(slug)) assert.ok(directory.includes(`href="${path}"`), path);
     assert.match(html, new RegExp(`rel="canonical"[^>]*href="https://www.anandhospitalmbd.org${path}"|href="https://www.anandhospitalmbd.org${path}"[^>]*rel="canonical"`), path);
   }
   const gallbladder = await (await fetchPath('/services/gallbladder-surgery')).text();
@@ -476,4 +476,25 @@ test('complete doctor profiles use supplied credentials, individual schedules an
   assert.ok(html.includes('OPD closed'));
   assert.ok(html.includes('including Sundays'));
   assert.doesNotMatch(html, /9:00 AM|6:00 PM|10:15 AM/);
+});
+
+test('service directory groups care once and keeps one emergency action', async () => {
+  const html = await (await fetchPath('/services')).text();
+  for (const id of ['medical-services', 'treatments-procedures', 'diagnostics', 'hospital-facilities', 'patient-support']) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  assert.equal((html.match(/class="services-emergency"/g) ?? []).length, 1);
+  assert.equal((html.match(/<h1[ >]/g) ?? []).length, 1);
+  const treatments = html.split('id="treatments-procedures"')[1].split('class="services-facilities"')[0];
+  for (const slug of ['laparoscopic-surgery', 'gallbladder-surgery', 'cancer-surgery', 'hysteroscopy', 'infertility-evaluation']) {
+    assert.ok(treatments.includes(`href="/services/${slug}"`), slug);
+  }
+  for (const slug of ['general-surgery', 'gallstone-surgery', 'emergency-care', 'emergency-surgery', '24x7-emergency']) {
+    assert.ok(!treatments.includes(`href="/services/${slug}"`), `duplicate entry: ${slug}`);
+  }
+  assert.match(html, /Cancer Surgery Evaluation/);
+  assert.doesNotMatch(html, /Ayushman Card Facility Available/);
+  assert.match(html, /\/icons\/set-5\/simple\/right-arrow.svg/);
+  assert.match(html, /\/icons\/set-5\/simple\/down-arrow.svg/);
+  assert.doesNotMatch(html, /right-arrow-next\.svg|left-arrow-back\.svg|> →</);
 });

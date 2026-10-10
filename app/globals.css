@@ -1824,7 +1824,7 @@ body :is(svg, .site-icon) {
 }
 .nav-dropdown-arrow {
   object-fit: contain;
-  rotate: 0deg;
+
 }
 
 .doctor-grid article {
@@ -2826,10 +2826,10 @@ main > section,
   }
   .nav-services-label .nav-dropdown-arrow {
     display: block;
-    rotate: -90deg;
+
   }
   .nav-services.is-open .nav-dropdown-arrow {
-    rotate: 90deg;
+
   }
   .nav.services-view > a {
     display: none;
@@ -4000,7 +4000,7 @@ main .cta {
   width: 14px !important;
   height: 14px !important;
   margin: 0;
-  rotate: 0deg;
+
   filter: invert(20%) sepia(92%) saturate(1695%) hue-rotate(184deg)
     brightness(83%) contrast(101%);
 }
@@ -8700,11 +8700,9 @@ main > section.information-hub, main > section.html-sitemap, main > section.feed
 /* Supplied directional SVGs share predictable sizing in links and controls. */
 .arrow-icon { display: inline-block; width: 1.25em; height: 1.25em; min-width: 1.25em; object-fit: contain; vertical-align: middle; flex-shrink: 0; }
 .button .arrow-icon, .footer-links .arrow-icon { width: 20px; height: 20px; min-width: 20px; }
-.button-blue .arrow-icon, .services-book .arrow-icon, .footer-links .arrow-icon { filter: invert(1); }
+.button-blue .arrow-icon, .services-book .arrow-icon, .footer-links .arrow-icon { filter: none; }
 .award-arrow .arrow-icon, .doctor-carousel-arrow .arrow-icon, .testimonial-stage button .arrow-icon { width: 28px; height: 28px; }
-.nav-dropdown-arrow { transform: rotate(90deg); }
-.nav-services.is-open .nav-dropdown-arrow { transform: rotate(-90deg); }
-.seo-breadcrumb li:not(:last-child)::after { content: ""; width: 14px; height: 14px; margin: 0 2px; background: #7e95a7; mask: url("/icons/set-5/right-arrow.svg") center / contain no-repeat; }
+.seo-breadcrumb li:not(:last-child)::after { content: ""; width: 14px; height: 14px; margin: 0 2px; background: #7e95a7; mask: url("/icons/set-5/simple/right-arrow.svg") center / contain no-repeat; }
 
 /* Each desktop gallery collection follows the supplied full-viewport references. */
 main > section.professional-gallery-section { min-height: 100svh; display: flex; align-items: center; background: #fff; scroll-margin-top: 110px; padding: clamp(32px, 6vh, 80px) 0; }
@@ -8857,4 +8855,69 @@ main > .services-page > section.services-emergency { min-height: 0; padding-bloc
  .doctor-consultation-details, .doctor-recognition-grid { grid-template-columns: minmax(0, 1fr); }
  .doctor-recognition-grid img { height: 280px; }
  .doctor-profile-section p, .doctor-profile-section li { font-size: .95rem; }
+}
+
+/* Rounded breadcrumb reference, retaining the site's type and colour palette. */
+.seo-breadcrumb { border: 0; background: transparent; padding-block: 18px; }
+.seo-breadcrumb ol { width: fit-content; max-width: 100%; padding: 9px 16px; gap: 7px; border: 1px solid #e5edf3; border-radius: 32px; background: #fff; box-shadow: 0 5px 22px rgba(2, 55, 103, .12) !important; }
+.seo-breadcrumb a, .seo-breadcrumb [aria-current="page"] { border-radius: 24px; padding: 5px 10px; }
+.seo-breadcrumb [aria-current="page"] { background: #edf5fa; }
+.seo-breadcrumb li { overflow-wrap: anywhere; }
+.seo-breadcrumb li:not(:last-child)::after { flex-shrink: 0; }
+.arrow-icon { background-color: currentColor; mask: var(--arrow-url) center / contain no-repeat; }
+.nav-dropdown-arrow, .nav-services.is-open .nav-dropdown-arrow { transform: none !important; }
+.services-menu { grid-template-columns: 1fr; min-height: auto; max-height: calc(100dvh - 188px); overflow-y: auto; }
+.services-menu-list { grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; gap: 24px; }
+.services-menu-list h2 { color: var(--blue); font-size: .85rem; margin: 0 0 12px; }
+.services-menu-list section { display: flex; flex-direction: column; }
+.services-menu-list a { padding: 7px 0; font-size: .78rem; }
+.services-menu-art { display: none; }
+.services-menu-list .services-menu-all { grid-column: 1 / -1; }
+.services-page > section:is(.services-specialties, .procedure-directory, .services-facilities, .services-doctors, .services-faq, .services-emergency) { padding-block: 40px; min-height: auto !important; }
+.services-page :is(.services-specialties, .services-facility-group, .services-doctors, .services-faq) h2 { margin: 0 0 24px; }
+.services-page .services-specialty-grid article { display: flex; flex-direction: column; }
+.services-page .services-specialty-grid h3 { margin: 17px 0 10px; color: #0877d1; font-size: 1.02rem; font-weight: 600; line-height: 1.25; }
+.services-page .services-specialty-grid a { margin-top: auto; }
+.services-page .procedure-directory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.services-page .services-facility-groups { display: flex; flex-direction: column; gap: 40px; }
+.services-page .services-facility-group > div { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.services-page #diagnostics > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.services-page .services-facility-group article { display: flex; flex-direction: column; min-height: 0; }
+.services-page .services-facility-image { aspect-ratio: 16 / 10; height: auto; overflow: hidden; }
+.services-page .services-facility-image > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.services-page .services-facility-image--icon { background: #edf5fa; }
+.services-page .services-facility-copy { gap: 12px; }
+.services-page .services-facility-copy p { margin: 0; }
+.services-page .services-facility-copy a { margin-top: auto; }
+.services-ayushman { margin-top: 24px; padding: 24px; border: 1px solid #e5edf3; border-radius: 12px; }
+.services-faq details { border-bottom: 1px solid #e5edf3; padding: 18px 0; }
+.services-faq summary { cursor: pointer; font-weight: 600; }
+.services-faq p { margin: 16px 0 0; }
+.services-page [id] { scroll-margin-top: 140px; }
+@media (max-width: 1100px) {
+  .services-menu-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .services-page .services-facility-group > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .seo-breadcrumb ol { padding: 7px 10px; gap: 3px; border-radius: 24px; }
+  .seo-breadcrumb a, .seo-breadcrumb [aria-current="page"] { padding: 4px 7px; }
+  .services-menu { max-height: none; }
+  .services-menu-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .services-page .procedure-directory-grid, .services-page .services-facility-group > div, .services-page #diagnostics > div { grid-template-columns: 1fr; }
+  .services-page > section:is(.services-specialties, .procedure-directory, .services-facilities, .services-doctors, .services-faq, .services-emergency) { padding-block: 28px; }
+
+}
+.nav-dropdown-arrow { filter: none; }
+.services-page .services-facility-image > .site-icon { width: 84px; height: 84px; }
+/* Supplied disclosure arrows also replace the CSS-drawn FAQ chevrons. */
+:is(.faq .faq-grid, .appointment-faq, .services-faq) summary { position: relative; padding-right: 42px; list-style: none; }
+.services-faq summary::-webkit-details-marker { display: none; }
+:is(.faq .faq-grid, .appointment-faq, .services-faq) summary::after { content: ""; position: absolute; top: 50%; right: 18px; width: 12px; height: 12px; border: 0; background: #045aa7; mask: url("/icons/set-5/simple/down-arrow.svg") center / contain no-repeat; transform: translateY(-50%); }
+.appointment-faq summary::after { background: #1b8cff; }
+:is(.faq .faq-grid, .appointment-faq, .services-faq) details[open] summary::after { mask-image: url("/icons/set-5/simple/up-arrow.svg"); transform: translateY(-50%); }
+.services-page :is(.services-specialties, .services-facility-group, .services-doctors, .services-faq) h2 { color: var(--blue); font-size: clamp(1.8rem, 3vw, 3rem); line-height: 1.25; }
+@media (min-width: 1101px) {
+  .services-menu-list { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .services-menu-list section:nth-child(3) { grid-column: span 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+  .services-menu-list section:nth-child(3) h2 { grid-column: 1 / -1; }
 }

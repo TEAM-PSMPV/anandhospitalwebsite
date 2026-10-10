@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type SVGProps } from "react";
-import { services as hospitalServices } from "./data";
+import { serviceNavigationGroups } from "./service-directory";
 import { DeferredChatbot } from "./deferred-chatbot";
 
 export type IconName =
@@ -131,8 +131,17 @@ export function SiteShell({ children }: { children: ReactNode }) {
       if (target instanceof Element && servicesRef.current?.contains(target) && target.closest("button, a")) return;
       setServicesOpen(false);
     };
+    const closeServicesOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setServicesOpen(false);
+      servicesRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+    };
     document.addEventListener("pointerdown", closeServicesOnOutsidePointer);
-    return () => document.removeEventListener("pointerdown", closeServicesOnOutsidePointer);
+    document.addEventListener("keydown", closeServicesOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeServicesOnOutsidePointer);
+      document.removeEventListener("keydown", closeServicesOnEscape);
+    };
   }, [servicesOpen]);
   return <>
     <a className="skip-link" href="#main">Skip to main content</a>
@@ -143,8 +152,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
         </Link>
         <nav className={`${open ? "nav is-open" : "nav"}${servicesOpen ? " services-view" : ""}`} aria-label="Main navigation">
           {nav.map(([icon, label, href]) => label === "Services" ? <div ref={servicesRef} className={servicesOpen ? "nav-services is-open" : "nav-services"} key={label}>
-            <button className={pathname.startsWith("/services") ? "active" : ""} type="button" aria-expanded={servicesOpen} aria-controls="services-navigation-menu" onClick={() => setServicesOpen((current) => !current)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><Image className="nav-dropdown-arrow" src="/icons/set-5/right-arrow-next.svg" width={16} height={16} alt="" /></span></button>
-            <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list"><p>Services &amp; Specialty Areas</p>{hospitalServices.map((service) => <Link href={`/services/${service.slug}`} key={service.slug} onClick={closeNavigation}>{service.shortName}</Link>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div><div className="services-menu-art"><Image src="/images/facilities/reception-area.webp" width={1448} height={1086} alt="Anand Hospital reception area" /></div></div>
+            <button className={pathname.startsWith("/services") ? "active" : ""} type="button" aria-expanded={servicesOpen} aria-controls="services-navigation-menu" onClick={() => setServicesOpen((current) => !current)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><ArrowIcon direction={servicesOpen ? "up" : "down"} className="nav-dropdown-arrow" /></span></button>
+            <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list">{serviceNavigationGroups.map(group => <section key={group.title}><h2>{group.title}</h2>{group.items.map(item => <Link href={item.href} key={item.href} onClick={closeNavigation}>{item.name}</Link>)}</section>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div></div>
           </div> : <Link className={pathname === href ? "active" : ""} href={href} key={label} onClick={closeNavigation}><Icon name={icon} /><span>{label}</span></Link>)}
         </nav>
         <button className={open ? "menu-button is-open" : "menu-button"} type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => { setOpen((current) => !current); setServicesOpen(false); }}>{open ? <svg className="menu-close-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" /></svg> : <Icon name="menu" />}</button>
@@ -171,7 +180,7 @@ function SocialStrip() {
 function Footer() {
   const footerGroups = [
     { title: "Explore Anand Hospital", links: [["Home", "/"], ["About Us", "/about"], ["Doctors", "/doctors"], ["Services", "/services"], ["Hospital Gallery", "/gallery"], ["Awards & Felicitations", "/awards"], ["Book Appointment", "/appointment"]] },
-    { title: "Care & Health Guides", links: [["General & Laparoscopic Surgery", "/services/general-surgery"], ["Obstetrics & Gynaecology", "/services/obstetrics-gynaecology"], ["Emergency Care", "/services/emergency-care"], ["ICU & Critical Care", "/services/critical-care"], ["Paediatrics", "/services/pediatrics"], ["Urology", "/services/urology"], ["Health Library", "/health-library"]] },
+    { title: "Care & Health Guides", links: [["Medical Services", "/services#medical-services"], ["Treatments & Procedures", "/services#treatments-procedures"], ["Diagnostics", "/services#diagnostics"], ["Patient Support", "/services#patient-support"], ["Health Library", "/health-library"]] },
     { title: "Patient Support", links: [["Ayushman & Payment Information", "/site-information/ayushman-and-payments"], ["Patient Testimonials", "/testimonials"], ["FAQs", "/about#faq"], ["Contact Hospital", "mailto:info@anandhospitalmbd.org"], ["Send Us Feedback", "/feedback"], ["Website Sitemap", "/sitemap"]] },
     { title: "Site Information & Policies", links: [["All Site Information", "/site-information"], ["About This Website", "/site-information/about-this-website"], ["Privacy Policy", "/site-information/privacy-policy"], ["Website Terms of Use", "/site-information/terms-of-use"], ["Medical Information", "/site-information/medical-information"], ["Accessibility", "/site-information/accessibility"], ["Cookies & Browser Settings", "/site-information/cookies-and-browser-settings"], ["Social Media Policy", "/site-information/social-media-policy"], ["Advertising & Editorial Policy", "/site-information/advertising-and-editorial-policy"], ["Copyright & Licensing", "/site-information/copyright-and-licensing"]] },
   ] as const;

@@ -1,3 +1,4 @@
+import { ArrowIcon } from "./arrow-icon";
 import Image from 'next/image';
 import Link from 'next/link';
 import { Assistance, SiteShell } from './site-shell';
@@ -34,7 +35,7 @@ export function ProcedurePage({ page }: { page: Procedure }) {
       </div>
     </div>
     <section className="service-detail-section service-detail-why" id="visit"><div className="container procedure-visit-grid"><div><p className="kicker">Plan your visit</p><h2>{isEmergency ? 'Reach emergency care.' : 'Book a consultation.'}</h2><p>Bring your reports and medicine list. Reception will confirm the clinician’s availability and appointment details.</p><div className="service-detail-actions"><Link className="button button-blue" href="/appointment">Book Consultation</Link><a className="button button-outline" href="tel:+917351028221">+91 7351028221</a></div><address>Anand Hospital<br />Near Miglani Cinema, Rampur Road<br />Moradabad, Uttar Pradesh 244001</address><p>Hospital emergency care is available 24 hours.</p></div><div className="procedure-map"><iframe title="Map showing Anand Hospital, Rampur Road, Moradabad" src="https://maps.google.com/maps?q=Anand%20Hospital%20Near%20Miglani%20Cinema%20Rampur%20Road%20Moradabad%20244001&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" /><a href="https://maps.google.com/?q=Anand+Hospital+Near+Miglani+Cinema+Rampur+Road+Moradabad+244001" target="_blank" rel="noreferrer">Open map and get directions</a></div></div></section>
-    <section className="service-detail-section"><div className="container"><p className="kicker">Related care</p><h2>Explore {page.group.toLowerCase()}</h2><div className="procedure-related">{related.map(item => <Link key={item.slug} href={`/services/${item.slug}`}>{item.name}<span aria-hidden="true"> →</span></Link>)}</div></div></section>
+    <section className="service-detail-section"><div className="container"><p className="kicker">Related care</p><h2>Explore {page.group.toLowerCase()}</h2><div className="procedure-related">{related.map(item => <Link key={item.slug} href={`/services/${item.slug}`}>{item.name}<ArrowIcon /></Link>)}</div></div></section>
   </article><Assistance /></SiteShell>;
 }
 function imageCredit(path: string) {
