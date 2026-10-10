@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type SVGProps } from "react";
 import { serviceNavigationGroups } from "./service-directory";
+import { aboutNavigationGroups, doctorNavigationGroups } from "./navigation-directory";
 import { DeferredChatbot } from "./deferred-chatbot";
 
 export type IconName =
@@ -120,29 +121,33 @@ const nav = [
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const servicesRef = useRef<HTMLDivElement>(null);
+  const [activeDropdown, setActiveDropdown] = useState<"about" | "services" | "doctors" | null>(null);
+  const navigationRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  const closeNavigation = () => { setOpen(false); setServicesOpen(false); };
+  const closeNavigation = () => { setOpen(false); setActiveDropdown(null); };
+  const menus = {
+    "About Us": { id: "about" as const, groups: aboutNavigationGroups },
+    Services: { id: "services" as const, groups: serviceNavigationGroups },
+    Doctors: { id: "doctors" as const, groups: doctorNavigationGroups },
+  };
   useEffect(() => {
-    if (!servicesOpen) return;
-    const closeServicesOnOutsidePointer = (event: PointerEvent) => {
-      const target = event.target;
-      if (target instanceof Element && servicesRef.current?.contains(target) && target.closest("button, a")) return;
-      setServicesOpen(false);
+    if (!activeDropdown) return;
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (event.target instanceof Node && navigationRef.current?.contains(event.target)) return;
+      setActiveDropdown(null);
     };
-    const closeServicesOnEscape = (event: KeyboardEvent) => {
+    const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      setServicesOpen(false);
-      servicesRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+      navigationRef.current?.querySelector<HTMLButtonElement>('button[aria-expanded="true"]')?.focus();
+      setActiveDropdown(null);
     };
-    document.addEventListener("pointerdown", closeServicesOnOutsidePointer);
-    document.addEventListener("keydown", closeServicesOnEscape);
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    document.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.removeEventListener("pointerdown", closeServicesOnOutsidePointer);
-      document.removeEventListener("keydown", closeServicesOnEscape);
+      document.removeEventListener("pointerdown", closeOnOutsidePointer);
+      document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [servicesOpen]);
+  }, [activeDropdown]);
   return <>
     <a className="skip-link" href="#main">Skip to main content</a>
     <header className="site-header">
@@ -150,13 +155,18 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <Link className="brand" href="/" aria-label="Anand Hospital home">
           <Image src="/brand/anand-hospital-logo.svg" width={160} height={136} alt="Anand Hospital" priority />
         </Link>
-        <nav className={`${open ? "nav is-open" : "nav"}${servicesOpen ? " services-view" : ""}`} aria-label="Main navigation">
-          {nav.map(([icon, label, href]) => label === "Services" ? <div ref={servicesRef} className={servicesOpen ? "nav-services is-open" : "nav-services"} key={label}>
-            <button className={pathname.startsWith("/services") ? "active" : ""} type="button" aria-expanded={servicesOpen} aria-controls="services-navigation-menu" onClick={() => setServicesOpen((current) => !current)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><ArrowIcon direction={servicesOpen ? "up" : "down"} className="nav-dropdown-arrow" /></span></button>
-            <div className="services-menu" id="services-navigation-menu"><div className="services-menu-list">{serviceNavigationGroups.map(group => <section key={group.title}><h2>{group.title}</h2>{group.items.map(item => <Link href={item.href} key={item.href} onClick={closeNavigation}>{item.name}</Link>)}</section>)}<Link className="services-menu-all" href="/services" onClick={closeNavigation}>See all Services</Link></div></div>
-          </div> : <Link className={pathname === href ? "active" : ""} href={href} key={label} onClick={closeNavigation}><Icon name={icon} /><span>{label}</span></Link>)}
+        <nav ref={navigationRef} className={`${open ? "nav is-open" : "nav"}${activeDropdown ? " services-view" : ""}`} aria-label="Main navigation">
+          {nav.map(([icon, label, href]) => {
+            const menu = menus[label as keyof typeof menus];
+            if (!menu) return <Link className={pathname === href ? "active" : ""} href={href} key={label} onClick={closeNavigation}><Icon name={icon} /><span>{label}</span></Link>;
+            const expanded = activeDropdown === menu.id;
+            return <div className={`nav-services nav-${menu.id}${expanded ? " is-open" : ""}`} key={label}>
+              <button className={pathname.startsWith(href) ? "active" : ""} type="button" aria-expanded={expanded} aria-controls={`${menu.id}-navigation-menu`} onClick={() => setActiveDropdown(current => current === menu.id ? null : menu.id)}><Icon name={icon} /><span className="nav-services-label"><span>{label}</span><ArrowIcon direction={expanded ? "up" : "down"} className="nav-dropdown-arrow" /></span></button>
+              <div className={`services-menu ${menu.id}-menu`} id={`${menu.id}-navigation-menu`}><div className="services-menu-list">{menu.groups.map(group => <section key={group.title}><h2>{group.title}</h2>{group.items.map(item => <Link href={item.href} key={item.href} onClick={closeNavigation}>{item.name}</Link>)}</section>)}<Link className="services-menu-all" href={href} onClick={closeNavigation}>{menu.id === "about" ? "About Anand Hospital" : menu.id === "doctors" ? "View All Doctors" : "See all Services"} <ArrowIcon /></Link></div></div>
+            </div>;
+          })}
         </nav>
-        <button className={open ? "menu-button is-open" : "menu-button"} type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => { setOpen((current) => !current); setServicesOpen(false); }}>{open ? <svg className="menu-close-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" /></svg> : <Icon name="menu" />}</button>
+        <button className={open ? "menu-button is-open" : "menu-button"} type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => { setOpen((current) => !current); setActiveDropdown(null); }}>{open ? <svg className="menu-close-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" /></svg> : <Icon name="menu" />}</button>
       </div>
     </header>
     <main id="main">{children}</main>
@@ -182,7 +192,7 @@ function Footer() {
     { title: "Explore Anand Hospital", links: [["Home", "/"], ["About Us", "/about"], ["Doctors", "/doctors"], ["Services", "/services"], ["Hospital Gallery", "/gallery"], ["Awards & Felicitations", "/awards"], ["Book Appointment", "/appointment"]] },
     { title: "Care & Health Guides", links: [["Medical Services", "/services#medical-services"], ["Treatments & Procedures", "/services#treatments-procedures"], ["Diagnostics", "/services#diagnostics"], ["Patient Support", "/services#patient-support"], ["Health Library", "/health-library"]] },
     { title: "Patient Support", links: [["Ayushman & Payment Information", "/site-information/ayushman-and-payments"], ["Patient Testimonials", "/testimonials"], ["FAQs", "/about#faq"], ["Contact Hospital", "mailto:info@anandhospitalmbd.org"], ["Send Us Feedback", "/feedback"], ["Website Sitemap", "/sitemap"]] },
-    { title: "Site Information & Policies", links: [["All Site Information", "/site-information"], ["About This Website", "/site-information/about-this-website"], ["Privacy Policy", "/site-information/privacy-policy"], ["Website Terms of Use", "/site-information/terms-of-use"], ["Medical Information", "/site-information/medical-information"], ["Accessibility", "/site-information/accessibility"], ["Cookies & Browser Settings", "/site-information/cookies-and-browser-settings"], ["Social Media Policy", "/site-information/social-media-policy"], ["Advertising & Editorial Policy", "/site-information/advertising-and-editorial-policy"], ["Copyright & Licensing", "/site-information/copyright-and-licensing"]] },
+    { title: "Site Information & Policies", links: [["All Site Information & Policies", "/site-information"], ["Privacy Policy", "/site-information/privacy-policy"], ["Website Terms of Use", "/site-information/terms-of-use"], ["Medical Information", "/site-information/medical-information"], ["Accessibility", "/site-information/accessibility"]] },
   ] as const;
 
   return <footer className="site-footer">

@@ -498,3 +498,30 @@ test('service directory groups care once and keeps one emergency action', async 
   assert.match(html, /\/icons\/set-5\/simple\/down-arrow.svg/);
   assert.doesNotMatch(html, /right-arrow-next\.svg|left-arrow-back\.svg|> →</);
 });
+
+test("new postpartum and PCOS guide has medical sources and credited real photography", async () => {
+  const response = await fetchPath("/health-library/postpartum-pcos-weight-management");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Obesity and Weight Management After Childbirth or with PCOS/);
+  assert.match(html, /Postpartum recovery and breastfeeding come first/);
+  assert.match(html, /Medical information sources/);
+  assert.match(html, /www\.acog\.org/);
+  assert.match(html, /pmc\.ncbi\.nlm\.nih\.gov/);
+  assert.match(html, /Illustrative stock photograph/);
+  assert.match(html, /Anna Pelzer/);
+  assert.match(html, /on Unsplash/);
+  const index = await (await fetchPath("/health-library")).text();
+  assert.match(index, /href="\/health-library\/postpartum-pcos-weight-management"/);
+  const { readFile } = await import("node:fs/promises");
+  const creditSource = await readFile(new URL("../app/health-library/photo-credits.ts", import.meta.url), "utf8");
+  const credits = JSON.parse(creditSource.slice(creditSource.indexOf("= ") + 2).trim().replace(/;$/, ""));
+  assert.equal(Object.keys(credits).length, 21);
+  for (const [asset, credit] of Object.entries(credits)) {
+    assert.match(credit.url, /^https:\/\/unsplash\.com\/photos\//);
+    const bytes = await readFile(new URL(`../public${asset}`, import.meta.url));
+    assert.equal(bytes.toString("ascii", 0, 4), "RIFF");
+    assert.equal(bytes.toString("ascii", 8, 12), "WEBP");
+    assert.ok(bytes.length < 350000, `${asset} must stay compressed`);
+  }
+});

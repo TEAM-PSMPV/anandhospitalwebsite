@@ -8921,3 +8921,82 @@ main > .services-page > section.services-emergency { min-height: 0; padding-bloc
   .services-menu-list section:nth-child(3) { grid-column: span 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
   .services-menu-list section:nth-child(3) h2 { grid-column: 1 / -1; }
 }
+
+/* Discreet supplied arrows retain their colour and a generous control hit area. */
+.arrow-icon { width: .85em; height: .85em; min-width: .85em; }
+.button .arrow-icon, .footer-links .arrow-icon, .services-book .arrow-icon { width: 12px; height: 12px; min-width: 12px; }
+.award-arrow .arrow-icon, .doctor-carousel-arrow .arrow-icon, .testimonial-stage button .arrow-icon, .gallery-slide-arrow .arrow-icon { width: 18px; height: 18px; min-width: 18px; }
+.site-header .nav-dropdown-arrow { width: 10px !important; height: 10px !important; min-width: 10px; }
+.seo-breadcrumb li:not(:last-child)::after { width: 10px; height: 10px; }
+:is(.faq .faq-grid, .appointment-faq, .services-faq) summary::after { width: 10px; height: 10px; }
+/* Hide the tracks without disabling wheel, touch or keyboard scrolling. */
+*, *::before, *::after { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { width: 0; height: 0; display: none; }
+.about-menu .services-menu-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.doctors-menu .services-menu-list { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+:is(.about-menu, .doctors-menu) .services-menu-list section:nth-child(3) { display: flex; grid-column: auto; }
+.about-story { scroll-margin-top: 150px; }
+/* A compact footer keeps the complete contact block within a desktop view. */
+.site-footer { min-height: 0; }
+.site-footer .footer-main { flex: initial; justify-content: flex-start; gap: 24px; padding-block: 28px; }
+.site-footer .footer-intro { padding-bottom: 20px; }
+.site-footer .footer-intro h2 { font-size: clamp(1.3rem, 2vw, 1.8rem); }
+.site-footer .footer-grid { gap: 24px; }
+.site-footer .footer-links a { font-size: .75rem; min-height: 28px; padding-block: 4px; line-height: 1.45; }
+.site-footer .footer-links h2 { font-size: .85rem; margin-bottom: 10px; }
+.site-footer .footer-logo { width: 82px; height: 82px; }
+.site-footer .footer-brand p { font-size: .75rem; line-height: 1.6; }
+.site-footer .footer-contact { padding-block: 16px; }
+.site-footer .footer-contact-grid > * { padding-block: 8px; }
+.site-footer .footer-copyright { padding-block: 14px; }
+/* Manual gallery panels follow the supplied stacked-card reference. */
+main > section.professional-gallery-section { min-height: auto; padding-block: 36px; }
+.professional-gallery-layout { display: block; width: min(1280px, calc(100% - 40px)); padding: 30px 36px; background: #eef7fb; }
+.professional-gallery-copy { position: relative; padding-right: 220px; }
+.professional-gallery-copy h2 { font-size: clamp(1.4rem, 2.4vw, 2rem); letter-spacing: 0; }
+.professional-gallery-copy > p { font-size: .85rem; line-height: 1.7; max-width: 780px; margin: 14px 0 22px; }
+.professional-gallery-rule { display: none; }
+.gallery-collection-link { position: absolute; top: 0; right: 0; display: inline-flex; align-items: center; gap: 8px; color: #045aa7; font-size: .85rem; }
+.gallery-slideshow-stage { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 24px; align-items: center; max-width: 940px; margin: 30px auto 0; }
+.gallery-slide-arrow { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; color: #023767; background: transparent; cursor: pointer; }
+.professional-cascade-stack { height: auto; aspect-ratio: 16 / 9; padding: 14px 16px; }
+.professional-cascade-back { inset: 14px 16px; background: #fff; border: 1px solid #cbdce7; border-radius: 10px; opacity: 1 !important; }
+.professional-cascade-back.layer-1 { transform: translate(8px, -7px) rotate(2deg); }
+.professional-cascade-back.layer-2 { transform: translate(14px, -14px) rotate(3deg); }
+.professional-cascade-front { position: relative; inset: auto; width: 100%; height: 100%; background: #fff; padding: 12px; border: 1px solid #dce7ee; border-radius: 10px; }
+.professional-cascade-front picture, .professional-cascade-front img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.gallery-slideshow-caption { text-align: center; max-width: 740px; margin: 22px auto 12px; color: #023767; }
+.gallery-slideshow-caption h3 { font-size: 1.1rem; font-weight: 500; margin: 0 0 10px; }
+.gallery-slideshow-caption p { font-size: .85rem; line-height: 1.7; min-height: 2.9em; margin: 0 0 14px; }
+.gallery-slideshow-caption > span { font-size: .8rem; }
+.gallery-slideshow-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; margin-top: 22px; }
+.gallery-slideshow-dots button { position: relative; width: 28px; height: 32px; border: 0; background: transparent; cursor: pointer; }
+.gallery-slideshow-dots button::after { content: ""; position: absolute; inset: 12px 10px; border-radius: 50%; background: #a4b5c3; }
+.gallery-slideshow-dots button[aria-current="true"]::after { background: #045aa7; }
+@media (max-width: 1100px) {
+  :is(.about-menu, .doctors-menu) .services-menu-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .professional-gallery-layout { width: calc(100% - 30px); padding: 24px 14px; }
+  .professional-gallery-copy { padding-right: 0; }
+  .gallery-collection-link { position: static; margin-bottom: 16px; }
+  .gallery-slideshow-stage { grid-template-columns: 36px minmax(0, 1fr) 36px; gap: 4px; margin-top: 14px; }
+  .gallery-slide-arrow { width: 36px; height: 44px; }
+  .professional-cascade-stack { aspect-ratio: 4 / 3; padding: 8px; }
+  .professional-cascade-back { inset: 8px; }
+  .professional-cascade-front { padding: 6px; }
+  .gallery-slideshow-caption h3 { font-size: 1rem; }
+  .site-footer .footer-links a { min-height: 36px; }
+}
+
+.health-photo-credit { font-size: .75rem; color: #536577; line-height: 1.6; margin-bottom: 22px; }
+.health-photo-credit a { text-decoration: underline; }
+.site-footer .footer-links a { margin-bottom: 3px; }
+.site-footer .footer-contact-grid > * { min-height: 64px; }
+@media (min-width: 900px) {
+  .site-footer .footer-grid { grid-template-columns: 1.2fr 1fr 1.1fr 1fr 1.2fr; gap: 18px; }
+  .site-footer .footer-brand { grid-column: auto; padding-right: 14px; }
+  .site-footer .footer-contact-grid { grid-template-columns: 1.4fr 1fr 1.4fr .65fr; }
+  .site-footer .footer-contact-grid > * { border-bottom: 0; }
+  .site-footer .footer-links h2 { white-space: normal; }
+}

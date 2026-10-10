@@ -7,6 +7,7 @@ import { Assistance, Icon, SiteShell } from "../../site-shell";
 import { getHealthArticle, healthArticles } from "@/app/health-library/articles";
 import { Breadcrumbs, createPageMetadata } from "../../seo";
 
+import { healthPhotoCredits } from "../photo-credits";
 import { articleClinician } from "../../article-clinicians";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -19,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HealthArticlePage({ params }: Props) {
   const article = getHealthArticle((await params).slug);
   if (!article) notFound();
+  const credit = healthPhotoCredits[article.image];
   const clinician = articleClinician(article);
   const index = healthArticles.findIndex(({ slug }) => slug === article.slug);
   const related = Array.from({ length: 3 }, (_, offset) => healthArticles[(index + offset + 1) % healthArticles.length]);
@@ -31,6 +33,7 @@ export default async function HealthArticlePage({ params }: Props) {
       </div><Image className="health-article-hero-image" src={article.image} alt={article.imageAlt} width={1536} height={1024} priority /></div></header>
 <Breadcrumbs items={[{ name: "Health Library", href: "/health-library" }, { name: article.title, href: `/health-library/${article.slug}` }]} />
       <div className="container health-article-body"><div className="health-article-prose">
+        {credit && <p className="health-photo-credit">Illustrative stock photograph · Photo by <a href={credit.url} target="_blank" rel="noreferrer">{credit.photographer} on Unsplash</a></p>}
         <p className="health-article-lead">{article.intro}</p>
         {article.sections.map((section) => <section key={section.heading}><h2>{section.heading}</h2>{section.paragraphs?.map((text) => <p key={text}>{text}</p>)}{section.points && <ul>{section.points.map((point) => <li key={point}>{point}</li>)}</ul>}</section>)}
         {clinician && <section className="health-article-doctor"><h2>Treating doctor</h2><h3>{clinician.name}</h3><p>{clinician.role}</p><Link href={clinician.href}>View doctor profile <Icon name="arrow" /></Link><Link href={`${clinician.href}#reviewer-credentials`}>Clinical credentials</Link></section>}

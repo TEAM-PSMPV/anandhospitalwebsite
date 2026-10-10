@@ -6,7 +6,7 @@ import { doctorSlug, siteUrl } from "./seo";
 
 import { additionalProcedures } from "./procedure-data";
 
-const updated = new Date("2026-10-05T00:00:00.000Z");
+const updated = new Date("2026-10-10T00:00:00.000Z");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = ["", "/about", "/doctors", "/services", "/appointment", "/health-library", "/testimonials", "/awards", "/gallery", "/site-information", "/feedback", "/sitemap"];

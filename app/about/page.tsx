@@ -50,7 +50,7 @@ export default function About() { return <SiteShell>
   </div><div className="about-hero-photo" /></div></section>
 <Breadcrumbs items={[{ name: "About", href: "/about" }]} />
 
-  <section className="about-story viewport-section"><div className="container story-grid">
+  <section className="about-story viewport-section" id="history"><div className="container story-grid">
     <div><p className="kicker">Our Story</p><h2>Care built on trust, compassion and clinical excellence.</h2><p>Anand Hospital was founded with the vision of providing affordable, ethical and patient-centered healthcare to families in Moradabad. We have grown into a trusted multispecialty hospital while staying close to the community we serve.</p>
       <ul className="check-list"><li>Open 24 hours, every day</li><li>Specialist care under one roof</li></ul>
     </div><Image src="/images/hospital-reception.webp" alt="Anand Hospital reception area" width={1280} height={960} />
