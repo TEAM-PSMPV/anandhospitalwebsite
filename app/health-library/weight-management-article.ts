@@ -4,7 +4,7 @@ export const weightManagementArticle: HealthArticle = {
   slug: "postpartum-pcos-weight-management", category: "WOMEN’S HEALTH",
   title: "Obesity and Weight Management After Childbirth or with PCOS",
   summary: "A gradual, personalised weight reduction programme that supports postpartum recovery, breastfeeding and metabolic health with PCOS.",
-  image: "/images/health-library/postpartum-pcos-weight-management.webp",
+  image: "/images/health-library/unsplash/balanced-nutrition.webp",
   imageAlt: "A colourful bowl of vegetables, beans and salad", readingTime: "6 min read",
   keywords: ["postpartum weight management", "PCOS weight reduction programme", "obesity care Moradabad"],
   intro: "Weight changes after childbirth and with polycystic ovary syndrome (PCOS) can be influenced by hormones, sleep, recovery, medicines and insulin resistance. Obesity is a health condition, not a personal failure. A safe programme begins with your circumstances and goals, rather than a deadline to return to a previous body size.",

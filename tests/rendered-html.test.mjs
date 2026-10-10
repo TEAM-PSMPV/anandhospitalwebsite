@@ -168,7 +168,8 @@ test("renders complete Health Library procedure guides", async () => {
 
   responses.forEach((response) => assert.equal(response.status, 200));
   pages.forEach((html, index) => {
-    assert.match(html, new RegExp(`/images/health-library/${slugs[index]}\\.webp`));
+    assert.match(html, /\/images\/health-library\/unsplash\/[a-z-]+\.webp/);
+    assert.match(html, /Illustrative stock photograph/);
     assert.match(html, /Treating doctor/);
     assert.match(html, /Hospital facilities/);
     assert.match(html, /Frequently asked questions/);
@@ -516,7 +517,7 @@ test("new postpartum and PCOS guide has medical sources and credited real photog
   const { readFile } = await import("node:fs/promises");
   const creditSource = await readFile(new URL("../app/health-library/photo-credits.ts", import.meta.url), "utf8");
   const credits = JSON.parse(creditSource.slice(creditSource.indexOf("= ") + 2).trim().replace(/;$/, ""));
-  assert.equal(Object.keys(credits).length, 21);
+  assert.equal(Object.keys(credits).length, 7);
   for (const [asset, credit] of Object.entries(credits)) {
     assert.match(credit.url, /^https:\/\/unsplash\.com\/photos\//);
     const bytes = await readFile(new URL(`../public${asset}`, import.meta.url));
