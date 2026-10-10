@@ -30,7 +30,13 @@ for (const path of ["/", "/appointment", "/doctors", "/awards", "/doctors/dr-nid
     assert.ok(html.includes('id="nidhi"') && html.includes('id="subhash"'));
   }
   if (path === "/doctors") assert.ok(html.includes('class="award-cascade"'));
-  if (path === "/services") assert.ok(html.includes('aria-label="Next ICU photograph"') && html.includes('aria-label="Next deluxe room photograph"'));
+  if (path === "/services") {
+    for (const id of ["medical-services", "treatments-procedures", "diagnostics", "hospital-facilities", "patient-support"]) assert.ok(html.includes(`id="${id}"`), `Services group missing: ${id}`);
+    assert.equal((html.match(/class="services-emergency"/g) ?? []).length, 1);
+    assert.ok(html.includes('/icons/set-5/simple/right-arrow.svg'));
+    assert.ok(html.includes('href="/services/critical-care"') && html.includes('href="/gallery#deluxe"'));
+    assert.ok(!html.includes('Ayushman Card Facility Available'));
+  }
   if (path === "/gallery") {
     assert.equal((html.match(/"@type":"ImageObject"/g) ?? []).length, 24);
     assert.equal((html.match(/aria-roledescription="carousel"/g) ?? []).length, 4);
